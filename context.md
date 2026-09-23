@@ -4,7 +4,7 @@
 
 ## Current status
 
-Project initialization complete. Step 0 (Project bootstrap), Step 1 (Dataset audit), and Step 2 (Data ingestion) are done. Step 3 (Build splits) is pending.
+Project initialization complete. Step 0 (Project bootstrap), Step 1 (Dataset audit), Step 2 (Data ingestion), and Step 3 (Build splits) are done. Step 4 (Image embedding retrieval baseline) is pending.
 
 ## Current project definition
 
@@ -135,3 +135,19 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 **Risks/issues:** None. The ML interface contract is established.
 
 **Next action:** Move to Step 3: Build valid train/validation/test splits from the unified manifest.
+
+### 2026-09-23 16:50 — Step 3 (Build valid train/validation/test splits)
+
+**Change:** Created and executed `scripts/build_splits.py` to partition the data.
+
+**Files changed:** `scripts/build_splits.py`, generated files in `data/processed/`.
+
+**Reason:** Needed to prevent data leakage and ensure that the evaluation measures instance generalization (a physical item in the train set must never appear in the validation/test sets).
+
+**Evidence/results:** Successfully generated instance-disjoint splits: Train (742 instances), Validation (159 instances), Test (159 instances). Assertions passed successfully confirming 0 overlap between the splits.
+
+**Decision:** Opted for a 70% / 15% / 15% random split based on `item_instance_id` with a fixed seed of 42 to ensure reproducibility.
+
+**Risks/issues:** None. The evaluation dataset is ready.
+
+**Next action:** Move to Step 4: Baseline image embedding retrieval (which evaluates the `test` split).
