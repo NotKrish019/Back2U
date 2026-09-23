@@ -223,3 +223,23 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 **Risks/issues:** None. The core ML pipeline is fully functional and ready for the 4.6GB raw payload transition in the future.
 
 **Next action:** Transition from pure ML pipeline engineering to deploying the Lost & Found UI/Frontend and API layer, or run a data-collection sprint to populate the real dataset.
+
+### 2026-09-23 19:05 — Step 9 (Inference API & UI)
+
+**Change:** Developed a lightweight FastAPI web server (`src/app/main.py`) serving a vanilla HTML/JS frontend to allow direct testing of the Siamese Network retrieval model. Added Jinja2 templates (`index.html` and `results.html`).
+
+**Files changed:** `src/app/main.py`, `src/app/templates/index.html`, `src/app/templates/results.html`, `requirements.txt`.
+
+**Reason:** The user requested a way to visually upload a raw photograph with no metadata (a mock "Lost" query) to test if the model can accurately fetch matching instances from the FAISS database (the mock "Found" queries), while keeping the frontend highly basic since a coworker is handling the final React/Next.js frontend.
+
+**Evidence/results:** 
+1. The FastAPI app mounts the static files and templates.
+2. The UI features a layman's explanation of the Siamese Triplet model and FAISS vector matching.
+3. The server successfully loads `mir_siamese_best.pth` and the `test_split.jsonl` FAISS index at startup.
+4. Queries compute the 128-dim embedding and retrieve the top-5 matches with dynamic confidence bands (High/Med/Low).
+
+**Decision:** Opted for FastAPI + Jinja2 (HTML) over a heavier framework like Gradio or React, per the user's explicit preference for a basic HTML form structure. The backend can easily be refactored to serve raw JSON when the coworker's frontend is ready.
+
+**Risks/issues:** The current gallery (FAISS index) relies on the `test_split.jsonl` from the local file system. In production, this will need to be a persistently updated vector database.
+
+**Next action:** Hand off the FastAPI JSON endpoints to the frontend coworker.

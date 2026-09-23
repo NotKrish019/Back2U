@@ -86,21 +86,29 @@ def generate_manifest():
                     }
                     f.write(json.dumps(rec) + '\n')
                     
-        # Mock PACO
-        for i in range(50):
-            instance_id = f"paco_instance_{i}"
-            rec = {
-                "dataset": "paco",
-                "source_category": "unknown",
-                "project_category": "laptop",
-                "instance_id": instance_id,
-                "image_id": f"{instance_id}_0",
-                "source_path": f"data/raw/paco_images/dummy_{i}.jpg",
-                "split": "train"
-            }
-            f.write(json.dumps(rec) + '\n')
+        # Read actual downloaded PACO files
+        paco_dir = "data/raw/paco_images"
+        if os.path.exists(paco_dir):
+            paco_files = []
+            for root, _, files in os.walk(paco_dir):
+                for f in files:
+                    if f.endswith('.jpg'):
+                        paco_files.append(os.path.relpath(os.path.join(root, f), paco_dir))
+                        
+            for i, fname in enumerate(paco_files):
+                instance_id = f"paco_instance_{i}"
+                rec = {
+                    "dataset": "paco",
+                    "source_category": "unknown",
+                    "project_category": "laptop",
+                    "instance_id": instance_id,
+                    "image_id": f"{instance_id}_0",
+                    "source_path": f"data/raw/paco_images/{fname.replace(os.sep, '/')}",
+                    "split": "train"
+                }
+                f.write(json.dumps(rec) + '\n')
 
 if __name__ == "__main__":
     download_objectron_subset(max_instances=10)
-    download_paco_subset(max_images=50)
+    download_paco_subset(max_images=200)
     generate_manifest()
