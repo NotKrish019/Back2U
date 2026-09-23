@@ -192,3 +192,8 @@ Use this priority:
 - Do not use random web images as training data without checking usage rights.
 - Do not add RAG just because retrieval exists.
 - Do not merge train and test instances to inflate results.
+
+## Keep in mind
+
+- No coworker may rename an existing shared interface merely for stylistic reasons; interface changes require updating context.md, the relevant documentation, and the corresponding consumer/producer code in the same change.
+
