@@ -122,6 +122,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Await approval on the dataset subset recommendation before moving to Step 2 (Data ingestion and normalization).
 
+
 ### 2026-09-23 16:45 — Step 2 (Data Ingestion and Normalization)
 
 **Change:** Created the dataset schema and adapters under `src/data/` for Objectron and PACO-LVIS. 
@@ -253,3 +254,56 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 - **What changed**: Removed Objectron mock 'grey box' generation logic from download_selected_data.py. Reinstalled standard CPU-only PyTorch because CUDA wheels are unavailable for Python 3.14.
 - **Why it changed**: The user correctly pointed out that the mocked grey boxes are useless for actual feature learning. GPU training could not be enabled due to bleeding-edge Python 3.14 environment limitations on Windows.
 - **Next action**: Wait for the 20-epoch CPU training loop on 9,000+ real PACO images to complete, after which the FastAPI server will auto-restart.
+
+### 2026-09-23 16:44 — Step 14-16 (Application & Integration Setup)
+
+**Change:** As Coworker 2, created the FastAPI backend application in `src/api/` with SQLite database (`models.py`, `schemas.py`) and a `MockRetrievalService`. Created the Next.js frontend in `frontend/` featuring "Report Lost/Found" and "Search Results" UI connecting to the mock backend.
+
+**Files changed:** `src/api/*`, `frontend/*`, `requirements.txt`, `tests/api/*`.
+
+**Reason:** Enables Coworker 2 to build the complete application logic, database flow, and frontend interactions independently of Coworker 1's ML training timeline.
+
+**Evidence/results:** Pytest tests pass for the backend API contracts. Frontend compiles and implements the canonical API schema correctly.
+
+**Decision:** Used `MockRetrievalService` inside `RetrievalService` abstraction. Strict adherence to terminology: `ItemInstance`, `Report`, `RetrievalResult`. 
+
+**Risks/issues:** When RealRetrievalService is implemented, must strictly verify it matches the mock's schema contract or the UI will break.
+
+**Next action:** Await Coworker 1's dataset ingestion and ML model baseline completion to replace the `MockRetrievalService` with the real model.
+
+### 2026-09-23 18:30 — Homepage UX Revision (Privacy & Interaction)
+
+**Change:** Surgically revised the `frontend/src/app/page.tsx` hero section. Replaced the rotating public item visual with an abstract, interactive "Search Lens" component. Expanded the clickable footprint and hover states of the "I LOST SOMETHING" and "I FOUND SOMETHING" actions.
+
+**Files changed:** `frontend/src/app/page.tsx`
+
+**Reason:** To prevent exposing actual or mock item data on a public landing page for privacy reasons, whilst making the primary actions more obvious and ensuring the dynamic feel is retained through an editorial animation.
+
+**Evidence/results:** Next.js compiles cleanly. The "Search Lens" loops smoothly with Framer Motion and redirects to `/search`. Sections below the hero (Campus Signal, How It Works) are perfectly intact.
+
+**Decision:** Opted for CSS and Framer Motion abstractions for the Search Lens to maintain the elegant, non-AI design language requested.
+
+**Risks/issues:** None. The core application logic remains completely unaffected.
+
+### 2026-09-23 23:45 — UI Enhancements, Rebranding & Auth Expansion
+
+**Change:** 
+- Rebranded application from CampusFind to Back2U across all pages, meta tags, and legal policies.
+- Generated and integrated a custom 3D glowing 'U' arrow favicon matching the aesthetic.
+- Added a custom 404 page (`src/app/not-found.tsx`) with a pulsing radar animation and branded messaging.
+- Implemented Firebase Phone Authentication alongside Email/Google login in `authService.ts` and `login/page.tsx`, utilizing an invisible reCAPTCHA.
+- Created Terms & Conditions page and added a Cookie Consent Banner.
+- Updated Settings page to display phone numbers and control SMS notification preferences.
+
+**Files changed:** `frontend/src/app/*`, `frontend/src/components/*`, `frontend/src/lib/firebase/authService.ts`
+
+**Reason:** Fulfilling user requests to finalize the brand identity (Back2U) and expand authentication capabilities to support SMS/mobile users, along with necessary legal compliance (Terms, Cookies, Privacy updates).
+
+**Evidence/results:** UI fully reflects the Back2U brand. Firebase Phone Auth flow mounts properly. Cookie banner works via localStorage. Settings page correctly tracks SMS preferences.
+
+**Decision:** Handled phone authentication natively using Firebase's `RecaptchaVerifier` and `signInWithPhoneNumber` rather than third-party SMS providers to maintain integration with the existing Firebase Auth wrapper.
+
+**Risks/issues:** Phone authentication requires the Firebase project to be on the Blaze billing plan to send actual SMS messages, or requires adding test phone numbers in the console.
+
+**Next action:** Await backend integration and real ML retrieval pipeline.
+
