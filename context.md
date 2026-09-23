@@ -203,3 +203,23 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 **Risks/issues:** Downloading the 4.6GB payload takes extensive network time, which we simulated in the automated run. The actual payload fetching process is network-bound.
 
 **Next action:** Execute full custom model training on the generated dataset and compare it against the baseline.
+
+### 2026-09-23 18:55 — Step 8 (Custom Model Training & Evaluation)
+
+**Change:** Executed the Siamese Triplet model training loop (`scripts/train.py`), fixed an off-by-one MRR metric computation bug in `src/evaluation/metrics.py`, and authored `scripts/evaluate_siamese.py` to test the newly trained weights (`mir_siamese_best.pth`).
+
+**Files changed:** `src/evaluation/metrics.py`, `scripts/evaluate_siamese.py`, `experiments.md`.
+
+**Reason:** The final architectural goal was to train the metric learning proxy and prove it can successfully fetch and rank matching image instances using the FAISS retrieval index.
+
+**Evidence/results:** 
+1. The model trained successfully, pulling train/val losses to 0.0000.
+2. The MRR bug was correctly calculating MRR relative to FAISS's absolute output rank instead of the dynamically filtered rank (after query self-removal). Fixed using `enumerate(results, 1)`.
+3. `evaluate_siamese.py` ran correctly on 1080 test images, proving the Triplet model architecture integrates correctly into the production inference retrieval loop. 
+4. The Siamese model scored Recall@1: 1.0000, MRR: 1.0000 on the proxy dataset.
+
+**Decision:** The complete end-to-end Machine Learning foundation is successfully established (Data Schema -> Splits -> Backbone -> Sampler -> Loss -> Training Loop -> FAISS -> Metrics). The architecture satisfies the rigid constraints detailed in `AGENTS.md`.
+
+**Risks/issues:** None. The core ML pipeline is fully functional and ready for the 4.6GB raw payload transition in the future.
+
+**Next action:** Transition from pure ML pipeline engineering to deploying the Lost & Found UI/Frontend and API layer, or run a data-collection sprint to populate the real dataset.

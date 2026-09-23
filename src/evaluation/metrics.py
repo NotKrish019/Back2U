@@ -15,7 +15,7 @@ def calculate_mrr(results: List[Dict], ground_truth_id: str) -> float:
     """
     Calculates the Reciprocal Rank of the first relevant candidate.
     """
-    for candidate in results:
+    for rank, candidate in enumerate(results, 1):
         if candidate["item_instance_id"] == ground_truth_id:
-            return 1.0 / candidate["rank"]
+            return 1.0 / rank
     return 0.0

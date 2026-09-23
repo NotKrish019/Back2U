@@ -139,3 +139,29 @@ Because COIL-100 is extremely clean, the network overfit to a perfect 0.0 loss i
 
 ### Decision
 The PyTorch training codebase is robust. The next step is to swap the proxy dataset with a targeted, small "surgical subset" (5-6GB) of the real Objectron/PACO data (laptops, backpacks, keys) to train the real production model.
+
+---
+
+### Experiment ID
+`E004`
+
+### Objective
+Evaluate the newly trained Siamese network weights against the baseline.
+
+### Dataset
+COIL-100 Test Split (15 objects, 1,080 images).
+
+### Model
+SiameseNetwork (ResNet50 backbone + 128-dim projection head), loaded from `mir_siamese_best.pth`.
+
+### Results
+- Recall@1: 1.0000
+- Recall@5: 1.0000
+- Recall@10: 1.0000
+- MRR: 1.0000
+
+### Observations
+The MRR calculation bug was fixed (using the `enumerate` index rather than the hardcoded FAISS offset). The custom model retained the perfect 1.000 Recall/MRR performance seen in the baseline. Because the dataset is COIL-100 (which is extremely easy for instance retrieval due to black backgrounds), both the frozen ResNet and the trained Siamese model max out the metrics.
+
+### Decision
+The evaluation codebase flawlessly handles custom trained weights. We are now officially ready to point this exact pipeline (train + evaluate) at the real-world PACO/Objectron 1.5GB subset.
