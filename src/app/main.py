@@ -5,8 +5,6 @@ import torch
 import shutil
 from pathlib import Path
 from fastapi import FastAPI, File, UploadFile, Request
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from torchvision import transforms
 from PIL import Image
@@ -20,9 +18,6 @@ from src.retrieval.faiss_index import RetrievalIndex
 app = FastAPI(title="Lost Property Re-ID")
 
 app.mount("/data", StaticFiles(directory=str(project_root / "data")), name="data")
-
-templates = Jinja2Templates(directory=str(project_root / "src" / "app" / "templates"))
-
 # Global State
 model = None
 index = None
@@ -74,34 +69,7 @@ def startup_event():
                     print(f"Skipping {rec['image_path']}: {e}")
         print(f"Index built with {index.index.ntotal} items.")
 
-@app.get("/", response_class=HTMLResponse)
-async def home(request: Request):
-    return templates.TemplateResponse(request, "index.html")
 
-@app.post("/search")
-async def search_lost_item(request: Request, file: UploadFile = File(...)):
-    # Save the uploaded file temporarily
-    upload_dir = project_root / "data" / "uploads"
-    upload_dir.mkdir(parents=True, exist_ok=True)
-    file_path = upload_dir / file.filename
-    
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-        
-    # Process Image
-    img = Image.open(file_path).convert("RGB")
-    img_tensor = transform(img).unsqueeze(0).to(device)
-    with torch.no_grad():
-        query_emb = model(img_tensor).cpu().numpy().flatten()
-        
-    # Retrieve
-    raw_results = index.search(query_emb, top_k=5)
-    
-    # Render results
-    return templates.TemplateResponse(request, "results.html", {
-        "query_img": f"/data/uploads/{file.filename}",
-        "results": raw_results
-    })
 
 @app.post("/api/search")
 async def api_search_lost_item(file: UploadFile = File(...)):
