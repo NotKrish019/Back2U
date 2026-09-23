@@ -1,0 +1,26 @@
+# Data
+data/raw/
+data/interim/
+data/processed/
+
+# Models and Checkpoints
+checkpoints/
+
+# Virtual Environment
+.venv/
+env/
+venv/
+
+# Caches and temporary files
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+
+# Secrets and local config
+.env
+local_config.yaml
+
+# IDE
+.vscode/
+.idea/
