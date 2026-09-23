@@ -17,6 +17,13 @@ class TripletDataset(Dataset):
             T.ToTensor(),
             T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         ])
+        self.aug_transform = T.Compose([
+            T.RandomResizedCrop(224, scale=(0.7, 1.0)),
+            T.RandomHorizontalFlip(),
+            T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+            T.ToTensor(),
+            T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        ])
         
         self.records = []
         self.instance_to_images = defaultdict(list)
@@ -27,7 +34,7 @@ class TripletDataset(Dataset):
                 if not line.strip(): continue
                 rec = json.loads(line)
                 self.records.append(rec)
-                self.instance_to_images[rec["item_instance_id"]].append(rec["image_path"])
+                self.instance_to_images[rec.get("instance_id") or rec.get("item_instance_id")].append(rec["image_path"])
                 
         self.instance_ids = list(self.instance_to_images.keys())
         
@@ -40,7 +47,7 @@ class TripletDataset(Dataset):
 
     def __getitem__(self, idx):
         anchor_record = self.records[idx]
-        anchor_id = anchor_record["item_instance_id"]
+        anchor_id = anchor_record.get("instance_id") or anchor_record.get("item_instance_id")
         anchor_path = anchor_record["image_path"]
         
         # Positive: A different image of the SAME instance
@@ -68,7 +75,11 @@ class TripletDataset(Dataset):
             
         if self.transform:
             anchor_tensor = self.transform(anchor_img)
-            positive_tensor = self.transform(positive_img)
             negative_tensor = self.transform(negative_img)
+            
+            if positive_path == anchor_path:
+                positive_tensor = self.aug_transform(positive_img)
+            else:
+                positive_tensor = self.transform(positive_img)
             
         return anchor_tensor, positive_tensor, negative_tensor

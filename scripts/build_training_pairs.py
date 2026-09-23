@@ -18,8 +18,8 @@ def build_training_pairs():
     for rec in records:
         instance_to_records[rec["instance_id"]].append(rec)
         
-    valid_instances = [iid for iid, recs in instance_to_records.items() if len(recs) >= 2]
-    print(f"Found {len(valid_instances)} instances with multiple views for Positive pairs.")
+    valid_instances = [iid for iid, recs in instance_to_records.items() if len(recs) >= 1]
+    print(f"Found {len(valid_instances)} valid instances for Anchor/Positive pairs.")
     
     category_to_instances = defaultdict(list)
     for iid, recs in instance_to_records.items():
@@ -38,7 +38,8 @@ def build_training_pairs():
         
         for _ in range(10):
             anchor = random.choice(recs)
-            positive = random.choice([r for r in recs if r["image_id"] != anchor["image_id"]])
+            other_views = [r for r in recs if r["image_id"] != anchor["image_id"]]
+            positive = random.choice(other_views) if other_views else anchor
             
             if hard_negative_pool and random.random() > 0.2:
                 neg_id = random.choice(hard_negative_pool)

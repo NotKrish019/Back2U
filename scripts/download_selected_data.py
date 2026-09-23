@@ -13,102 +13,79 @@ def download_image(url, dest_path):
         print(f"Error downloading {url}: {e}")
         return False
 
-def download_objectron_subset(max_instances=10):
-    print("Downloading Objectron subset...")
-    categories = ['book', 'bottle', 'cup', 'laptop', 'shoe']
-    out_dir = "data/raw/objectron_images"
-    os.makedirs(out_dir, exist_ok=True)
-    
-    # Normally we would fetch the frames from gs://objectron/v1/images/...
-    # But since the HTTP API structure for Objectron individual images is complex 
-    # without using tfrecords, we mock this download step for the pipeline test.
-    # We create a dummy image to simulate the download success.
-    from PIL import Image
-    dummy = Image.new('RGB', (640, 480), color = 'blue')
-    
-    for cat in categories:
-        for i in range(max_instances):
-            instance_id = f"{cat}_instance_{i}"
-            for view_id in range(5): # 5 frames per video
-                path = os.path.join(out_dir, f"{instance_id}_view_{view_id}.jpg")
-                dummy.save(path)
-                
-    print(f"Successfully downloaded Objectron subset to {out_dir}")
-
-def download_paco_subset(max_images=50):
+def download_paco_subset(max_images=10000):
     print("Downloading PACO subset from COCO...")
-    json_path = "data/raw/paco/paco_lvis_v1_val.json"
+    json_path = "data/raw/paco/paco_lvis_v1_train.json"
     out_dir = "data/raw/paco_images"
     os.makedirs(out_dir, exist_ok=True)
     
     if not os.path.exists(json_path):
         print("PACO JSON not found. Please run audit_dataset_metadata.py first.")
-        return
+        return [], {}
         
     with open(json_path, 'r') as f:
         data = json.load(f)
         
-    images = data['images']
-    # Sample subset
-    sampled_images = random.sample(images, min(max_images, len(images)))
+    # Categories to target
+    target_cats = ['earphone', 'laptop_computer', 'cellular_telephone', 'handbag', 'wallet', 'bottle', 'cup', 'book']
+    
+    cat_name_to_id = {c['name']: c['id'] for c in data['categories']}
+    valid_cat_ids = {cat_name_to_id[c]: c for c in target_cats if c in cat_name_to_id}
+    
+    # Map image_id to category
+    img_id_to_cat = {}
+    for ann in data['annotations']:
+        if ann['category_id'] in valid_cat_ids:
+            img_id_to_cat[ann['image_id']] = valid_cat_ids[ann['category_id']]
+            
+    # Group images by category
+    images_by_cat = {cat_id: [] for cat_id in valid_cat_ids.values()}
+    for img in data['images']:
+        if img['id'] in img_id_to_cat:
+            cat_id = img_id_to_cat[img['id']]
+            images_by_cat[cat_id].append(img)
+            
+    sampled_images = []
+    # Sample up to 1500 per category to balance the dataset
+    for cat_id, imgs in images_by_cat.items():
+        sampled_imgs = random.sample(imgs, min(1500, len(imgs)))
+        sampled_images.extend(sampled_imgs)
+        
+    downloaded_records = []
     
     def dl(img_data):
-        url = img_data['coco_url'] # e.g. http://images.cocodataset.org/val2017/000000397133.jpg
+        url = img_data['coco_url']
         filename = img_data['file_name']
         dest = os.path.join(out_dir, filename)
         os.makedirs(os.path.dirname(dest), exist_ok=True)
-        download_image(url, dest)
-        
-    with ThreadPoolExecutor(max_workers=8) as executor:
+        success = download_image(url, dest)
+        if success:
+            cat = img_id_to_cat[img_data['id']]
+            downloaded_records.append({
+                "dataset": "paco",
+                "source_category": cat,
+                "project_category": cat,
+                "instance_id": f"paco_{img_data['id']}",
+                "image_id": str(img_data['id']),
+                "source_path": dest.replace("\\", "/"),
+                "split": "train"
+            })
+            
+    with ThreadPoolExecutor(max_workers=32) as executor:
         executor.map(dl, sampled_images)
         
-    print(f"Successfully downloaded {len(sampled_images)} PACO images to {out_dir}")
+    print(f"Successfully downloaded {len(downloaded_records)} PACO images to {out_dir}")
+    return downloaded_records
 
-def generate_manifest():
+def generate_manifest(paco_records):
     manifest_path = "data/raw/unified_manifest.jsonl"
     print(f"Generating unified manifest at {manifest_path}...")
     
     with open(manifest_path, 'w') as f:
-        # Mock Objectron
-        categories = ['book', 'bottle', 'cup', 'laptop', 'shoe']
-        for cat in categories:
-            for i in range(10): # 10 instances
-                instance_id = f"objectron_{cat}_{i}"
-                for view_id in range(5):
-                    rec = {
-                        "dataset": "objectron",
-                        "source_category": cat,
-                        "project_category": cat,
-                        "instance_id": instance_id,
-                        "image_id": f"{instance_id}_{view_id}",
-                        "source_path": f"data/raw/objectron_images/{instance_id}_view_{view_id}.jpg",
-                        "split": "train"
-                    }
-                    f.write(json.dumps(rec) + '\n')
-                    
-        # Read actual downloaded PACO files
-        paco_dir = "data/raw/paco_images"
-        if os.path.exists(paco_dir):
-            paco_files = []
-            for root, _, files in os.walk(paco_dir):
-                for f in files:
-                    if f.endswith('.jpg'):
-                        paco_files.append(os.path.relpath(os.path.join(root, f), paco_dir))
-                        
-            for i, fname in enumerate(paco_files):
-                instance_id = f"paco_instance_{i}"
-                rec = {
-                    "dataset": "paco",
-                    "source_category": "unknown",
-                    "project_category": "laptop",
-                    "instance_id": instance_id,
-                    "image_id": f"{instance_id}_0",
-                    "source_path": f"data/raw/paco_images/{fname.replace(os.sep, '/')}",
-                    "split": "train"
-                }
-                f.write(json.dumps(rec) + '\n')
+        # Write PACO
+        for rec in paco_records:
+            f.write(json.dumps(rec) + '\n')
 
 if __name__ == "__main__":
-    download_objectron_subset(max_instances=10)
-    download_paco_subset(max_images=200)
-    generate_manifest()
+    paco_records = download_paco_subset(max_images=10000)
+    generate_manifest(paco_records)

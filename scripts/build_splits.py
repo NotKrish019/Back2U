@@ -7,7 +7,7 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser(description="Build instance-disjoint splits to prevent data leakage")
-    parser.add_argument("--input", type=str, default="data/interim/unified_manifest.jsonl")
+    parser.add_argument("--input", type=str, default="data/processed/unified_manifest.jsonl")
     parser.add_argument("--outdir", type=str, default="data/processed")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility")
     parser.add_argument("--train-ratio", type=float, default=0.7)
@@ -31,7 +31,7 @@ def main():
             if not line.strip():
                 continue
             record = json.loads(line)
-            instance_id = record['item_instance_id']
+            instance_id = record.get('instance_id') or record.get('item_instance_id')
             instances[instance_id].append(record)
             
     unique_ids = list(instances.keys())

@@ -243,3 +243,13 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 **Risks/issues:** The current gallery (FAISS index) relies on the `test_split.jsonl` from the local file system. In production, this will need to be a persistently updated vector database.
 
 **Next action:** Hand off the FastAPI JSON endpoints to the frontend coworker.
+
+### Sept 23, 2026: Full Dataset Scale-Up
+- **What changed**: Updated PACO dataset download logic to use paco_lvis_v1_train.json and over-sample minority classes (earphones, wallets). Increased epochs to 20.
+- **Why it changed**: The small validation dataset lacked sufficient representation of core target classes, resulting in poor retrieval accuracy for user test images.
+- **Next action**: Run full data pipeline and train for 20 epochs on GPU.
+
+### Sept 23, 2026: Removal of Mock Data & CPU Fallback
+- **What changed**: Removed Objectron mock 'grey box' generation logic from download_selected_data.py. Reinstalled standard CPU-only PyTorch because CUDA wheels are unavailable for Python 3.14.
+- **Why it changed**: The user correctly pointed out that the mocked grey boxes are useless for actual feature learning. GPU training could not be enabled due to bleeding-edge Python 3.14 environment limitations on Windows.
+- **Next action**: Wait for the 20-epoch CPU training loop on 9,000+ real PACO images to complete, after which the FastAPI server will auto-restart.

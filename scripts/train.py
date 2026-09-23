@@ -26,8 +26,8 @@ def main():
     val_dataset = TripletDataset(val_manifest)
     
     # We use a small batch size to fit in basic GPUs during development
-    train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True, num_workers=0)
-    val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False, num_workers=0)
+    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=0)
+    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False, num_workers=0)
     
     print(f"Train batches: {len(train_loader)}, Val batches: {len(val_loader)}")
     
@@ -40,7 +40,7 @@ def main():
     criterion = nn.TripletMarginLoss(margin=0.2, p=2)
     optimizer = torch.optim.AdamW(filter(lambda p: p.requires_grad, model.parameters()), lr=1e-4, weight_decay=1e-4)
     
-    num_epochs = 3
+    num_epochs = 20
     best_val_loss = float('inf')
     
     models_dir = Path("models/checkpoints")
@@ -76,10 +76,6 @@ def main():
             if (i + 1) % 10 == 0:
                 print(f"Epoch [{epoch+1}/{num_epochs}], Step [{i+1}/{len(train_loader)}], Loss: {loss.item():.4f}")
                 
-            # For the proxy test, we only run 30 steps to prove it works
-            if i >= 30:
-                print("Stopping early for proxy dataset test...")
-                break
                 
         # Validation
         model.eval()
@@ -97,10 +93,7 @@ def main():
                 loss = criterion(emb_a, emb_p, emb_n)
                 val_loss += loss.item()
                 
-                if i >= 10: # limit validation for speed in proxy
-                    break
-                    
-        val_loss /= min(len(val_loader), 11)
+        val_loss /= len(val_loader)
         print(f"Epoch [{epoch+1}/{num_epochs}] Validation Loss: {val_loss:.4f}")
         
         # Save best model

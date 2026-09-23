@@ -53,7 +53,7 @@ def startup_event():
     
     if test_split_path.exists():
         with open(test_split_path, 'r') as f:
-            for line in f:
+            for i, line in enumerate(f):
                 if not line.strip(): continue
                 rec = json.loads(line)
                 try:
@@ -63,10 +63,10 @@ def startup_event():
                         emb = model(img_tensor).cpu().numpy().flatten()
                     
                     index.add_item(
-                        item_instance_id=rec["item_instance_id"],
+                        item_instance_id=rec.get("instance_id") or rec.get("item_instance_id"),
                         embedding=emb,
                         metadata={
-                            "category": rec["item_category"],
+                            "category": rec.get("project_category") or rec.get("item_category"),
                             "image_path": "/" + rec["image_path"].replace("\\", "/")
                         }
                     )
@@ -76,7 +76,7 @@ def startup_event():
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request, "index.html")
 
 @app.post("/search")
 async def search_lost_item(request: Request, file: UploadFile = File(...)):
@@ -98,8 +98,25 @@ async def search_lost_item(request: Request, file: UploadFile = File(...)):
     raw_results = index.search(query_emb, top_k=5)
     
     # Render results
-    return templates.TemplateResponse("results.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "results.html", {
         "query_img": f"/data/uploads/{file.filename}",
         "results": raw_results
     })
+
+@app.post("/api/search")
+async def api_search_lost_item(file: UploadFile = File(...)):
+    # JSON API endpoint for React frontend
+    upload_dir = project_root / "data" / "uploads"
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    file_path = upload_dir / file.filename
+    
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    img = Image.open(file_path).convert("RGB")
+    img_tensor = transform(img).unsqueeze(0).to(device)
+    with torch.no_grad():
+        query_emb = model(img_tensor).cpu().numpy().flatten()
+        
+    raw_results = index.search(query_emb, top_k=5)
+    return {"query_img": f"/data/uploads/{file.filename}", "results": raw_results}
