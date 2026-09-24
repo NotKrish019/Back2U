@@ -307,3 +307,39 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Await backend integration and real ML retrieval pipeline.
 
+### 2026-09-24 13:10 — UI Form Validation & Hotspots Feature
+
+**Change:** 
+- Implemented robust front-end form validation on the Search (`/search`) and Report (`/report`) pages ensuring users provide required descriptions and locations.
+- Replaced native date inputs with a custom `react-datepicker` component, requiring users to explicitly click an "OK" button to select precise date/time.
+- Replaced the unused static Campus Map (`/map`) with a dynamic "Campus Hotspots" dashboard showing high-activity zones based on real report density.
+
+**Files changed:** `frontend/src/app/search/page.tsx`, `frontend/src/app/report/page.tsx`, `frontend/src/app/map/page.tsx`, `frontend/src/components/Header.tsx`, `frontend/package.json`
+
+**Reason:** The UI needed strict constraints to prevent empty API submissions, and the aesthetic required a sleeker date-picker. The map asset was unavailable, so replacing it with Hotspots added tangible value based on real data.
+
+**Evidence/results:** Forms throw visual errors if submitted empty. Hotspots page renders a clean list view with clickable active zones. Navigation reflects the "Hotspots" name change.
+
+**Decision:** Opted to use `react-datepicker` to fit the dark mode UI perfectly, and completely removed the fake map UI to prevent user confusion.
+
+**Risks/issues:** None.
+
+**Next action:** Write automated tests for frontend states.
+
+### 2026-09-24 13:10 — Backend ML Integration (RealRetrievalService)
+
+**Change:** 
+- Hooked up the Next.js frontend to the live Python FastAPI backend running on port 8000 (`127.0.0.1:8000`).
+- Switched the application from the `MockRetrievalService` to the `RealRetrievalService` (PyTorch/FAISS inference engine).
+
+**Files changed:** `frontend/src/services/api.ts`
+
+**Reason:** Coworker 1 completed the baseline ML retrieval engine, allowing Coworker 2 to finalize the application integration.
+
+**Evidence/results:** Searching from the frontend successfully hits the backend `/api/v1/retrieval/search` endpoint and triggers actual model inference, rendering the exact JSON contract results (including similarity score) back to the UI.
+
+**Decision:** Hardcoded `127.0.0.1` instead of `localhost` to bypass IPv6 resolution failures on specific macOS development environments.
+
+**Risks/issues:** Need to finalize the automated API and Integration test suites to enforce the contract strictly.
+
+**Next action:** Implement automated API/Integration tests (valid/invalid reports, Top-K handling, JSON contract verification).

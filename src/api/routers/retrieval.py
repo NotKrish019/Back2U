@@ -1,12 +1,15 @@
 from fastapi import APIRouter, HTTPException, Depends
 from src.api.schemas import RetrievalQuery, RetrievalResult
-from src.api.services.retrieval_service import MockRetrievalService, RetrievalService
+from src.api.services.retrieval_service import MockRetrievalService, RetrievalService, RealRetrievalService
 
 router = APIRouter()
 
+# Instantiate once so we don't reload the PyTorch model and FAISS index on every request
+real_retrieval_service = RealRetrievalService()
+
 def get_retrieval_service() -> RetrievalService:
-    # Later this can be swapped out with RealRetrievalService based on config
-    return MockRetrievalService()
+    # Swapped out with RealRetrievalService
+    return real_retrieval_service
 
 @router.post("/search", response_model=RetrievalResult)
 def search(query: RetrievalQuery, service: RetrievalService = Depends(get_retrieval_service)):
