@@ -3,11 +3,15 @@ import sys
 import json
 import torch
 import shutil
+import ssl
 from pathlib import Path
 from fastapi import FastAPI, File, UploadFile, Request
 from fastapi.staticfiles import StaticFiles
 from torchvision import transforms
 from PIL import Image
+
+# Bypass SSL verification for PyTorch weight downloads
+ssl._create_default_https_context = ssl._create_unverified_context
 
 project_root = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(project_root))

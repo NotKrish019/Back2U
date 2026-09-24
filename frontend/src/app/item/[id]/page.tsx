@@ -1,107 +1,84 @@
 'use client';
 
-import { use } from 'react';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check, Search, ZoomIn } from 'lucide-react';
+import { use, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, Heart, ZoomIn, ShieldCheck } from 'lucide-react';
+import { SectionLabel, Button } from '@/components/ManusUI';
 
-export default function ItemDetail({ params }: { params: Promise<{ id: string }> }) {
-  // Use React.use() to unwrap params
+export default function DetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const router = useRouter();
+  const [open, setOpen] = useState(true);
+  
+  // mock item since API doesn't have getReport(id) yet
+  const item = {
+    id: id,
+    name: "Sand canvas backpack",
+    location: "West Quad · Bench 04",
+    date: "Today, 12:40 pm",
+    status: "Held at North Hall",
+    match: "Strong visual match",
+    accent: "coral",
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1100&q=85",
+    description: "Soft canvas backpack with a wide front pocket, dark straps, and a tiny orange thread detail near the zip.",
+  };
 
   return (
-    <div style={{ display: 'flex', minHeight: 'calc(100vh - 80px)', backgroundColor: 'var(--bg-cream)' }}>
-      
-      {/* Left Column: Image Area */}
-      <motion.div 
-        initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
-        style={{ flex: 1, backgroundColor: '#D6CFE2', position: 'relative', overflow: 'hidden' }}
-      >
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '300px', height: '200px', backgroundImage: 'url("https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80")', backgroundSize: 'cover' }}></div>
-        
-        {/* Overlay gradient at bottom */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '30%', background: 'linear-gradient(to top, rgba(0,0,0,0.6), transparent)' }} />
-        
-        <div style={{ position: 'absolute', bottom: '2rem', left: '2rem', color: 'white' }}>
-          <div style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.2rem' }}>FOUND • CENTRAL LIBRARY</div>
-          <div style={{ fontSize: '0.65rem', opacity: 0.8, letterSpacing: '0.05em' }}>TODAY • 12:42 PM</div>
-        </div>
-        
-        <div style={{ position: 'absolute', bottom: '2rem', right: '2rem', display: 'flex', gap: '0.5rem' }}>
-          <button style={{ width: '32px', height: '32px', borderRadius: '50%', border: '1px solid white', background: 'transparent', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}><Search size={14} /></button>
-          <button style={{ width: '32px', height: '32px', borderRadius: '50%', border: '1px solid white', background: 'transparent', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}><ZoomIn size={14} /></button>
-        </div>
-      </motion.div>
-
-      {/* Right Column: Details Area */}
-      <motion.div 
-        initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-        style={{ flex: 1, padding: '4rem', display: 'flex', flexDirection: 'column' }}
-      >
-        <Link href="/search" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-purple)', fontSize: '0.85rem', marginBottom: '3rem', fontWeight: 500 }}>
-          <ArrowLeft size={16} /> Back to possible matches
-        </Link>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-          <span style={{ backgroundColor: 'var(--accent-red)', color: 'white', padding: '0.2rem 0.5rem', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.05em' }}>STRONG VISUAL MATCH</span>
-          <span style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', color: '#8C8797' }}>ITEM DETAIL</span>
-        </div>
-
-        <h1 className="heading-xl" style={{ fontSize: '4rem', marginBottom: '2rem' }}>BLACK NIKE<br/>BACKPACK</h1>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '1.5rem 0', marginBottom: '2rem' }}>
-          <div>
-            <div style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', color: '#8C8797', marginBottom: '0.2rem' }}>STATUS</div>
-            <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>FOUND</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', color: '#8C8797', marginBottom: '0.2rem' }}>LOCATION</div>
-            <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>CENTRAL LIBRARY</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', color: '#8C8797', marginBottom: '0.2rem' }}>DATE</div>
-            <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>TODAY • 12:42 PM</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', color: '#8C8797', marginBottom: '0.2rem' }}>CATEGORY</div>
-            <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>BAGS</div>
+    <div className="page-shell detail-page">
+      <div className="detail-back container-wide">
+        <button onClick={() => router.push("/search")}><ArrowLeft size={16} />Back to results</button>
+        <span>Report {item.id}</span>
+      </div>
+      <section className="detail-layout container-wide">
+        <div className="detail-photo-wrap">
+          <img src={item.image} alt={item.name} />
+          <div className="photo-controls">
+            <button><ZoomIn size={15} />View larger</button>
+            <span>Photo shared by campus community</span>
           </div>
         </div>
-
-        <p className="body-text" style={{ marginBottom: '3rem' }}>
-          Black Nike backpack with a small orange keychain on the front pocket. {id}
-        </p>
-
-        {/* Why this may be a match block */}
-        <div style={{ border: '1px solid var(--border-color)', borderRadius: '4px', padding: '1.5rem', marginBottom: '3rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em' }}>
-            <span>WHY THIS MAY BE A MATCH</span>
-            <span>↓</span>
+        <div className="detail-copy">
+          <SectionLabel>Possible match</SectionLabel>
+          <h1>{item.name}</h1>
+          <div className="detail-status">
+            <span className="status-pip" />{item.status}<span>·</span>{item.date}
           </div>
-          <div className="grid grid-cols-3">
-            {[
-              "Black exterior",
-              "Front pocket",
-              "Orange keychain detail"
-            ].map(reason => (
-              <div key={reason}>
-                <Check size={16} color="var(--accent-red)" style={{ marginBottom: '0.5rem' }} />
-                <div style={{ fontSize: '0.85rem', color: 'var(--text-purple)' }}>{reason}</div>
+          <p className="detail-description">{item.description}</p>
+          <div className="detail-meta">
+            <div><span>Last reported at</span><b>{item.location}</b></div>
+            <div><span>Match signal</span><b>{item.match}</b></div>
+          </div>
+          <div className="match-explainer">
+            <button onClick={() => setOpen(!open)}>
+              <span>Why this may be a match</span>
+              <ChevronDown className={open ? "rotate" : ""} size={18} />
+            </button>
+            {open && (
+              <div className="explainer-body">
+                <p>We noticed a few details that line up with your search:</p>
+                <ul>
+                  <li><Check size={15} />Similar colour and overall shape</li>
+                  <li><Check size={15} />A visible front-pocket detail</li>
+                  <li><Check size={15} />Reported in the same part of campus</li>
+                </ul>
+                <small>These are visual clues, not a confirmed identification.</small>
               </div>
-            ))}
+            )}
+          </div>
+          <div className="detail-actions">
+            <Button onClick={() => router.push(`/item/${item.id}/compare`)} variant="solid" icon={<ArrowRight size={17} />}>Compare with my photo</Button>
+            <Button onClick={() => router.push("/my-reports")} variant="text" icon={<Heart size={17} />}>Save this match</Button>
           </div>
         </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: 'auto' }}>
-          <button className="btn btn-primary" style={{ backgroundColor: 'var(--text-dark)' }}>
-            COMPARE WITH MY ITEM <ArrowRight size={16} style={{ marginLeft: '8px' }} />
-          </button>
-          <button className="btn btn-outline" style={{ backgroundColor: 'white' }}>
-            Not mine
-          </button>
+      </section>
+      <section className="contact-callout container-wide">
+        <div>
+          <SectionLabel>Next step</SectionLabel>
+          <h2>Could this be<br /><em>your item?</em></h2>
         </div>
-        <p className="caption" style={{ marginTop: '1rem' }}>Messages stay inside Back2U. Meet in a public place.</p>
-      </motion.div>
+        <p>If the comparison feels right, you can mark it as a possible match. We’ll keep your details private while the report owner is contacted.</p>
+        <Button onClick={() => router.push(`/item/${item.id}/compare`)} variant="outline" icon={<ArrowUpRight size={16} />}>Open comparison</Button>
+      </section>
     </div>
   );
 }

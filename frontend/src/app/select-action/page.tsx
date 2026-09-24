@@ -1,63 +1,43 @@
 'use client';
-
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { ArrowUpRight } from 'lucide-react';
+import { SectionLabel, PageTop } from '@/components/ManusUI';
 
-export default function SelectAction() {
+export default function SelectActionPage() {
+  const router = useRouter();
+  
   return (
-    <div className="container" style={{ paddingTop: '8rem', paddingBottom: '8rem', minHeight: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} style={{ textAlign: 'center', marginBottom: '4rem' }}>
-        <span className="subheading">Start Search</span>
-        <h1 className="heading-xl">WHAT ARE YOU LOOKING FOR?</h1>
-        <p className="body-text" style={{ maxWidth: '400px', margin: '0 auto' }}>
-          Select an option below to begin a report.
-        </p>
-      </motion.div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', width: '100%', maxWidth: '800px' }}>
-        <Link href="/report?type=lost" style={{ display: 'block', textDecoration: 'none' }}>
-          <motion.div 
-            whileHover="hover"
-            initial="initial"
-            style={{ padding: '3rem', border: '1px solid var(--border-color)', borderRadius: '8px', cursor: 'pointer', transition: 'background-color 0.3s, border-color 0.3s', height: '100%' }}
-            variants={{
-              hover: { backgroundColor: 'rgba(240, 92, 85, 0.04)', borderColor: 'rgba(240, 92, 85, 0.2)' }
-            }}
-          >
-            <span className="subheading" style={{ color: 'var(--accent-red)' }}>01</span>
-            <h3 className="heading-lg" style={{ marginBottom: '1rem', fontSize: '2rem' }}>I LOST SOMETHING</h3>
-            <p className="body-text" style={{ marginBottom: '2rem' }}>Find an item that belongs to you.</p>
-            <motion.div 
-              style={{ display: 'flex', alignItems: 'center', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.05em', color: 'var(--accent-red)' }}
-              variants={{ hover: { x: 4 } }}
-            >
-              SUBMIT A LOST REPORT <ArrowUpRight size={20} style={{ marginLeft: '4px' }} />
-            </motion.div>
-          </motion.div>
-        </Link>
-
-        <Link href="/report?type=found" style={{ display: 'block', textDecoration: 'none' }}>
-          <motion.div 
-            whileHover="hover"
-            initial="initial"
-            style={{ padding: '3rem', border: '1px solid var(--border-color)', borderRadius: '8px', cursor: 'pointer', transition: 'background-color 0.3s, border-color 0.3s', height: '100%' }}
-            variants={{
-              hover: { backgroundColor: 'rgba(229, 192, 95, 0.06)', borderColor: 'rgba(229, 192, 95, 0.3)' }
-            }}
-          >
-            <span className="subheading" style={{ color: '#E5A05F' }}>02</span>
-            <h3 className="heading-lg" style={{ marginBottom: '1rem', fontSize: '2rem' }}>I FOUND SOMETHING</h3>
-            <p className="body-text" style={{ marginBottom: '2rem' }}>Help return an item to its owner.</p>
-            <motion.div 
-              style={{ display: 'flex', alignItems: 'center', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.05em', color: '#E5A05F' }}
-              variants={{ hover: { x: 4 } }}
-            >
-              SUBMIT A FOUND REPORT <ArrowUpRight size={20} style={{ marginLeft: '4px' }} />
-            </motion.div>
-          </motion.div>
-        </Link>
-      </div>
+    <div className="page-shell select-action-page">
+      <PageTop 
+        eyebrow="Start here" 
+        title={<>What brings<br /><em>you in?</em></>} 
+        intro="Choose the path that matches your moment. You can always change direction." 
+      />
+      <section className="choice-section container-wide">
+        <div className="choice-intro">
+          <SectionLabel>Two simple paths</SectionLabel>
+          <h2>Good things<br /><em>come back.</em></h2>
+          <p>Back2U keeps the useful bit upfront: whether you’re looking for something or helping it get home.</p>
+        </div>
+        <div className="choice-list">
+          <button className="choice-row choice-row-coral" onClick={() => router.push("/search")}>
+            <span className="choice-number">01</span>
+            <div>
+              <h3>I lost something</h3>
+              <p>Search campus reports with a photo, description, or both.</p>
+            </div>
+            <ArrowUpRight className="choice-arrow" size={22} />
+          </button>
+          <button className="choice-row choice-row-yellow" onClick={() => router.push("/report?type=found")}>
+            <span className="choice-number">02</span>
+            <div>
+              <h3>I found something</h3>
+              <p>Report it with the details that help the right person recognise it.</p>
+            </div>
+            <ArrowUpRight className="choice-arrow" size={22} />
+          </button>
+        </div>
+      </section>
     </div>
   );
 }

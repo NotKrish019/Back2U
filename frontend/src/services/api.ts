@@ -1,9 +1,10 @@
-const API_BASE = 'http://localhost:8000/api/v1';
+const API_BASE = 'http://127.0.0.1:8000/api/v1';
 
 export interface ReportCreate {
   report_type: 'lost' | 'found';
   item_category?: string;
   description?: string;
+  location?: string;
   image_reference?: string;
 }
 
@@ -14,7 +15,7 @@ export interface RetrievalQuery {
 }
 
 export interface RetrievalResultItem {
-  item_instance_id: str;
+  item_instance_id: string;
   similarity_score: number;
   rank: number;
 }

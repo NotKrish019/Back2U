@@ -32,37 +32,22 @@ export default function AuthNav() {
   }, []);
 
   if (loading) {
-    return <nav style={{ display: 'flex', gap: '2rem', opacity: 0.5 }}>Loading...</nav>;
+    return <div style={{ opacity: 0.5 }}>...</div>;
   }
 
   return (
-    <nav style={{ display: 'flex', gap: '2rem', opacity: 0.8, alignItems: 'center', position: 'relative' }}>
+    <>
       {user ? (
         <div ref={dropdownRef} style={{ position: 'relative' }}>
           <button 
+            className="profile-button"
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            style={{ 
-              background: 'rgba(255,255,255,0.1)', 
-              border: '1px solid rgba(255,255,255,0.2)', 
-              borderRadius: '50%', 
-              width: '40px', 
-              height: '40px', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              cursor: 'pointer',
-              color: 'var(--white)',
-              transition: 'all 0.2s',
-              padding: 0,
-              overflow: 'hidden'
-            }}
-            className="hover:bg-white/20"
+            aria-label="Profile"
           >
-            {user.photoURL ? (
-              <img src={user.photoURL} alt="Profile" referrerPolicy="no-referrer" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            ) : (
-              <User size={20} />
-            )}
+            <User size={18} />
+            <span>
+              {user.displayName ? user.displayName.substring(0, 2).toUpperCase() : 'ME'}
+            </span>
           </button>
 
           <AnimatePresence>
@@ -76,34 +61,34 @@ export default function AuthNav() {
                   position: 'absolute',
                   top: 'calc(100% + 10px)',
                   right: 0,
-                  backgroundColor: 'var(--white)',
+                  backgroundColor: 'var(--paper)',
                   borderRadius: '8px',
-                  boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
+                  boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
                   minWidth: '220px',
                   overflow: 'hidden',
                   zIndex: 100,
-                  color: 'var(--text-purple)',
-                  border: '1px solid var(--border-color)'
+                  color: 'var(--ink)',
+                  border: '1px solid var(--line)'
                 }}
               >
-                <div style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)', backgroundColor: 'var(--bg-cream)' }}>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-purple)' }}>{user.displayName || 'Campus User'}</div>
-                  <div style={{ fontSize: '0.75rem', opacity: 0.7, wordBreak: 'break-all' }}>{user.email}</div>
+                <div style={{ padding: '1rem', borderBottom: '1px solid var(--line)', backgroundColor: 'var(--cream)' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--ink)' }}>{user.displayName || 'Campus User'}</div>
+                  <div style={{ fontSize: '11px', opacity: 0.7, wordBreak: 'break-all', fontFamily: '"DM Mono", monospace' }}>{user.email}</div>
                 </div>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', padding: '0.5rem' }}>
-                  <Link href="/my-reports" onClick={() => setDropdownOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', fontSize: '0.85rem', fontWeight: 500, borderRadius: '6px', transition: 'background 0.2s', color: 'inherit' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-cream)'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                  <Link href="/my-reports" onClick={() => setDropdownOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', fontSize: '13px', fontWeight: 500, borderRadius: '6px', transition: 'background 0.2s', color: 'inherit' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--cream)'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
                     <FileText size={16} />
                     My Reports
                   </Link>
-                  <Link href="/settings" onClick={() => setDropdownOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', fontSize: '0.85rem', fontWeight: 500, borderRadius: '6px', transition: 'background 0.2s', color: 'inherit' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-cream)'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                  <Link href="/settings" onClick={() => setDropdownOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', fontSize: '13px', fontWeight: 500, borderRadius: '6px', transition: 'background 0.2s', color: 'inherit' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--cream)'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
                     <Settings size={16} />
                     Account Settings
                   </Link>
                   
-                  <div style={{ height: '1px', backgroundColor: 'var(--border-color)', margin: '0.25rem 0' }} />
+                  <div style={{ height: '1px', backgroundColor: 'var(--line)', margin: '0.25rem 0' }} />
                   
-                  <button onClick={handleSignOut} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', fontSize: '0.85rem', fontWeight: 500, borderRadius: '6px', transition: 'background 0.2s', color: 'var(--accent-red)', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', width: '100%' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(240, 92, 85, 0.1)'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                  <button onClick={handleSignOut} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', fontSize: '13px', fontWeight: 500, borderRadius: '6px', transition: 'background 0.2s', color: 'var(--coral)', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', width: '100%' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(233, 109, 89, 0.1)'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
                     <LogOut size={16} />
                     Sign Out
                   </button>
@@ -113,10 +98,10 @@ export default function AuthNav() {
           </AnimatePresence>
         </div>
       ) : (
-        <Link href="/login" style={{ transition: 'opacity 0.2s', fontWeight: 700, color: 'var(--accent-red)' }} className="hover:opacity-100">
+        <Link href="/login" className="action-link" style={{ fontSize: '12px', fontWeight: 600 }}>
           Sign In
         </Link>
       )}
-    </nav>
+    </>
   );
 }
