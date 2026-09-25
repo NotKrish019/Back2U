@@ -288,6 +288,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 - **Evidence/results**: Extracted and successfully ingested 7,590 headphones, 1,260 smartphones, and 324 earphones. Rebuilt `train_split.jsonl` containing 9,693 clean, disjoint records.
 - **Next action**: Retrain the model on the new dataset splits.
 
+## Coworker 2 Updates (Backend & UI Integration)
 ### 2026-09-23 16:44 — Step 14-16 (Application & Integration Setup)
 
 **Change:** As Coworker 2, created the FastAPI backend application in `src/api/` with SQLite database (`models.py`, `schemas.py`) and a `MockRetrievalService`. Created the Next.js frontend in `frontend/` featuring "Report Lost/Found" and "Search Results" UI connecting to the mock backend.
@@ -487,3 +488,9 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 **Reason:** 
 - The search page form acts conceptually as a "Lost Report" entry point for users. However, it was previously only triggering a read-only FAISS lookup (`api.search`). Consequently, the user's lost item details were never saved to PostgreSQL and did not appear in the "My Reports" dashboard.
 - Now, when a user visually inputs an item name, location, and description into the search form, it is automatically saved as a persistent "Lost" report in the background, matching user expectations.
+
+### Sept 25, 2026: Final 20-Epoch Production Training
+- **What changed**: Ran full model training script (`scripts/train.py`) on the newly cleaned dataset (9,693 training records) combining PACO, custom headphones, and earphones.
+- **Why it changed**: To bake the final production model weights over the new de-cluttered dataset for the final pipeline integration.
+- **Evidence/results**: Training successfully completed all 20 Epochs on the GPU. The new `mir_siamese_best.pth` achieved a stellar Validation Loss of **0.0001** (at Epoch 11).
+- **Next action**: Connect the trained model with Coworker 2's backend and frontend integration for full end-to-end functionality.
