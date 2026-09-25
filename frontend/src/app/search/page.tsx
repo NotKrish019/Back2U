@@ -65,26 +65,44 @@ function SearchFlowContent() {
     }
   };
 
+  const [reportCreated, setReportCreated] = useState(false);
+
   useEffect(() => {
     if (view === 'searching') {
       const interval = window.setInterval(() => setProgress((p) => Math.min(95, p + 7)), 150);
-      api.search({ text: description, top_k: 6 })
-        .then(res => {
+      
+      const executeSearchAndReport = async () => {
+        try {
+          // If the user filled out the form (itemName exists) and we haven't created a report yet
+          if (itemName.trim() && !reportCreated) {
+            const formData = {
+              report_type: 'lost' as const,
+              item_category: itemName,
+              description: description,
+              location: `${location} (${date?.toLocaleString()})`,
+              image_reference: image || ""
+            };
+            await api.createReport(formData);
+            setReportCreated(true);
+          }
+          
+          const res = await api.search({ text: description, top_k: 6 });
           setResult(res);
           setProgress(100);
           setTimeout(() => setView('results'), 500);
-        })
-        .catch(err => {
+        } catch (err: any) {
           alert(err.message);
           setView('find');
-        })
-        .finally(() => {
+        } finally {
           clearInterval(interval);
-        });
+        }
+      };
+
+      executeSearchAndReport();
       
       return () => clearInterval(interval);
     }
-  }, [view]);
+  }, [view, itemName, description, location, date, image, reportCreated]);
 
   if (view === 'find') {
     return (
@@ -169,7 +187,7 @@ function SearchFlowContent() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>When was it? <span style={{ color: 'var(--coral)', fontSize: '18px', lineHeight: 1 }}>*</span></div>
                 <DatePicker 
                   selected={date} 
-                  onChange={(d) => {
+                  onChange={(d: Date | null) => {
                     setDate(d);
                     if (errors.date) setErrors(prev => ({ ...prev, date: false }));
                   }} 
@@ -249,7 +267,7 @@ function SearchFlowContent() {
       <section className="results-grid container-wide">
         {items.length > 0 ? (
           items.map((item, index) => (
-            <ResultCard key={item.item_instance_id} item={item} primary={index === 0} onClick={() => router.push(`/item/${item.item_instance_id}`)} />
+            <ResultCard key={item.item_instance_id} item={item} primary={index === 0} onClick={() => router.push(`/item/${item.report_id || item.item_instance_id}`)} />
           ))
         ) : (
           <div className="empty-state">

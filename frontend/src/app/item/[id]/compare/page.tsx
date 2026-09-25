@@ -1,9 +1,10 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Check, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
 import { SectionLabel, PageTop, Button } from '@/components/ManusUI';
+import { api, ReportOut } from '../../../../services/api';
 
 export default function ComparePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -11,20 +12,55 @@ export default function ComparePage({ params }: { params: Promise<{ id: string }
   const [value, setValue] = useState(52);
   const [choice, setChoice] = useState<"mine" | "not" | null>(null);
   
+  const [item, setItem] = useState<ReportOut | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    api.getReport(id)
+      .then(res => setItem(res))
+      .catch(err => setError("Failed to load report."))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) {
+    return <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading comparison...</div>;
+  }
+
+  if (error || !item) {
+    return (
+      <div className="page-shell compare-page" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+        <h2>Report not found</h2>
+        <p>{error}</p>
+        <div style={{ marginTop: '2rem' }}>
+          <Button onClick={() => router.push(`/item/${id}`)} variant="solid">Back to report</Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="page-shell compare-page">
       <PageTop 
         eyebrow="Compare" 
         title={<>Could this be<br /><em>yours?</em></>} 
         intro="Drag the line across the photos. Look for the small details that only you would recognise." 
-        action={<div className="compare-counter"><span>01</span> / 03 <b>COMPARISON</b></div>} 
+        action={<div className="compare-counter"><span>01</span> / 01 <b>COMPARISON</b></div>} 
       />
       <section className="compare-layout container-wide">
         <div className="compare-stage">
-          <img className="compare-image compare-image-back" src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1100&q=85" alt="Reported item" />
-          <div className="compare-image-front" style={{ width: `${value}%` }}>
-            <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1100&q=85" alt="Your uploaded photo" />
-          </div>
+          {item.image_reference ? (
+            <>
+              <img className="compare-image compare-image-back" src={item.image_reference} alt="Reported item" />
+              <div className="compare-image-front" style={{ width: `${value}%` }}>
+                <img src={item.image_reference} alt="Your uploaded photo (Pending ML)" />
+              </div>
+            </>
+          ) : (
+            <div style={{ width: '100%', height: '100%', background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              No image available for comparison
+            </div>
+          )}
           <div className="compare-divider" style={{ left: `${value}%` }}>
             <span className="compare-handle"><ChevronLeft size={15} /><ChevronRight size={15} /></span>
           </div>
@@ -33,15 +69,12 @@ export default function ComparePage({ params }: { params: Promise<{ id: string }
           <input aria-label="Compare images" type="range" min="5" max="95" value={value} onChange={(e) => setValue(Number(e.target.value))} />
         </div>
         <div className="compare-side">
-          <SectionLabel>Things that look similar</SectionLabel>
+          <SectionLabel>Compare Details</SectionLabel>
           <h2>Small details<br /><em>matter.</em></h2>
-          <div className="similar-list">
-            <div><Check size={16} /><span>Colour</span><b>Canvas / sand</b></div>
-            <div><Check size={16} /><span>Shape</span><b>Front pocket</b></div>
-            <div><Check size={16} /><span>Feature</span><b>Dark straps</b></div>
-            <div><Check size={16} /><span>Detail</span><b>Orange thread</b></div>
+          <div className="similar-list" style={{ marginTop: '1rem', opacity: 0.8 }}>
+             <p>{item.description || "No description provided."}</p>
           </div>
-          <div className="compare-vote">
+          <div className="compare-vote" style={{ marginTop: '2rem' }}>
             {choice ? (
               <div className="vote-thanks">
                 <Check size={18} />

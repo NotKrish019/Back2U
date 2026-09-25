@@ -8,19 +8,10 @@ class RetrievalService:
 
 class MockRetrievalService(RetrievalService):
     def search(self, query: RetrievalQuery) -> RetrievalResult:
-        # Mock logic to return candidates
-        results = []
-        for i in range(query.top_k):
-            # Generate fake item IDs and descending scores
-            results.append(RetrievalResultItem(
-                item_instance_id=f"item_mock_{random.randint(1000, 9999)}",
-                similarity_score=round(max(0.1, 0.99 - (i * 0.05)), 2),
-                rank=i + 1
-            ))
-            
+        # ML is not connected yet; do not fabricate matches.
         return RetrievalResult(
-            model_version="mock-v0.1.0",
-            results=results
+            model_version="ml-pending",
+            results=[]
         )
 
 class RealRetrievalService(RetrievalService):

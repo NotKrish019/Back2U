@@ -1,20 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Filter, ArrowUpRight, Map as MapIcon } from 'lucide-react';
 import { SectionLabel, PageTop, Button } from '@/components/ManusUI';
+import { api, ReportOut } from '../../services/api';
 
 export default function BrowsePage() {
   const router = useRouter();
   const [category, setCategory] = useState("All reports");
   const categories = ["All reports", "Bags", "Tech", "Cards & keys", "Clothing"];
   
-  const items = [
-    { id: 1, name: "Sand canvas backpack", location: "West Quad · Bench 04", match: "Strong visual match", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1100&q=85" },
-    { id: 2, name: "Canvas daypack", location: "Student Union · 2nd floor", match: "Similar appearance", image: "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=1100&q=85" },
-    { id: 3, name: "Everyday rucksack", location: "Library steps", match: "Possible match", image: "https://images.unsplash.com/photo-1491637639811-60e2756cc1c7?auto=format&fit=crop&w=1100&q=85" }
-  ];
+  const [reports, setReports] = useState<ReportOut[]>([]);
+  const [dataLoading, setDataLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    api.getAllReports()
+      .then((data) => {
+        // Only show 'found' reports that are still open
+        setReports(data.filter(r => r.report_type === 'found' && r.status === 'open'));
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("Failed to load reports. Please try again later.");
+      })
+      .finally(() => setDataLoading(false));
+  }, []);
+
+  // Simple client side filtering
+  const filteredReports = category === "All reports" 
+    ? reports 
+    : reports.filter(r => (r.item_category || "").toLowerCase().includes(category.toLowerCase()));
+
+  if (dataLoading) {
+    return <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading found items...</div>;
+  }
 
   return (
     <div className="page-shell browse-page">
@@ -30,24 +51,43 @@ export default function BrowsePage() {
             <button key={c} className={category === c ? "tab-active" : ""} onClick={() => setCategory(c)}>{c}</button>
           ))}
         </div>
-        <button className="filter-button"><Filter size={15} />Filters <span>2</span></button>
+        <button className="filter-button"><Filter size={15} />Filters</button>
       </div>
+      
+      {error && (
+        <section className="container-wide" style={{ color: 'var(--coral)', marginBottom: '2rem' }}>
+          <p>{error}</p>
+        </section>
+      )}
+
       <section className="browse-grid container-wide">
-        {items.map((item, i) => (
-          <button className={`browse-card browse-card-${i}`} key={item.id} onClick={() => router.push(`/item/${item.id}`)}>
-            <div className="browse-image">
-              <img src={item.image} alt={item.name} />
-              <span>{item.match}</span>
-            </div>
-            <div className="browse-card-copy">
-              <div>
-                <span>{item.location}</span>
-                <h3>{item.name}</h3>
+        {filteredReports.length === 0 && !error ? (
+          <div className="empty-state" style={{ gridColumn: '1 / -1', padding: '4rem 0', textAlign: 'center' }}>
+            <span>NO FOUND ITEMS</span>
+            <h2>Nothing matches right now.</h2>
+            <p>We don't have any active found reports matching this filter.</p>
+          </div>
+        ) : (
+          filteredReports.map((item, i) => (
+            <button className={`browse-card browse-card-${i}`} key={item.report_id} onClick={() => router.push(`/item/${item.report_id}`)}>
+              <div className="browse-image">
+                {item.image_reference ? (
+                   <img src={item.image_reference} alt={item.item_category || "Item"} />
+                ) : (
+                   <div style={{width: '100%', height: '100%', background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>No Image</div>
+                )}
+                <span>Found Item</span>
               </div>
-              <ArrowUpRight size={17} />
-            </div>
-          </button>
-        ))}
+              <div className="browse-card-copy">
+                <div>
+                  <span>{item.location || "Unknown location"}</span>
+                  <h3>{item.item_category || "Untitled Item"}</h3>
+                </div>
+                <ArrowUpRight size={17} />
+              </div>
+            </button>
+          ))
+        )}
       </section>
       <section className="browse-bottom container-wide">
         <div>

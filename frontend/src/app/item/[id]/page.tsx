@@ -1,73 +1,79 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, Heart, ZoomIn, ShieldCheck } from 'lucide-react';
 import { SectionLabel, Button } from '@/components/ManusUI';
+import { api, ReportOut } from '../../../services/api';
 
 export default function DetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
   const [open, setOpen] = useState(true);
   
-  // mock item since API doesn't have getReport(id) yet
-  const item = {
-    id: id,
-    name: "Sand canvas backpack",
-    location: "West Quad · Bench 04",
-    date: "Today, 12:40 pm",
-    status: "Held at North Hall",
-    match: "Strong visual match",
-    accent: "coral",
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1100&q=85",
-    description: "Soft canvas backpack with a wide front pocket, dark straps, and a tiny orange thread detail near the zip.",
-  };
+  const [item, setItem] = useState<ReportOut | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    api.getReport(id)
+      .then(res => setItem(res))
+      .catch(err => {
+        console.error(err);
+        setError("Failed to load report. It may have been deleted or you don't have access.");
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) {
+    return <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading report details...</div>;
+  }
+
+  if (error || !item) {
+    return (
+      <div className="page-shell detail-page" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+        <h2>Report not found</h2>
+        <p>{error}</p>
+        <div style={{ marginTop: '2rem' }}>
+          <Button onClick={() => router.push("/browse")} variant="solid">Browse public reports</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-shell detail-page">
       <div className="detail-back container-wide">
         <button onClick={() => router.push("/search")}><ArrowLeft size={16} />Back to results</button>
-        <span>Report {item.id}</span>
+        <span>Report {item.report_id}</span>
       </div>
       <section className="detail-layout container-wide">
         <div className="detail-photo-wrap">
-          <img src={item.image} alt={item.name} />
+          {item.image_reference ? (
+            <img src={item.image_reference} alt={item.item_category || "Report image"} />
+          ) : (
+            <div style={{ width: '100%', height: '400px', background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              No photo available
+            </div>
+          )}
           <div className="photo-controls">
             <button><ZoomIn size={15} />View larger</button>
             <span>Photo shared by campus community</span>
           </div>
         </div>
         <div className="detail-copy">
-          <SectionLabel>Possible match</SectionLabel>
-          <h1>{item.name}</h1>
+          <SectionLabel>{item.report_type === 'found' ? "Found Item" : "Lost Item"}</SectionLabel>
+          <h1>{item.item_category || "Untitled Item"}</h1>
           <div className="detail-status">
-            <span className="status-pip" />{item.status}<span>·</span>{item.date}
+            <span className="status-pip" />{item.status}<span>·</span>{new Date(item.created_at).toLocaleString()}
           </div>
-          <p className="detail-description">{item.description}</p>
+          <p className="detail-description">{item.description || "No description provided."}</p>
           <div className="detail-meta">
-            <div><span>Last reported at</span><b>{item.location}</b></div>
-            <div><span>Match signal</span><b>{item.match}</b></div>
+            <div><span>Last reported at</span><b>{item.location || "Unknown"}</b></div>
           </div>
-          <div className="match-explainer">
-            <button onClick={() => setOpen(!open)}>
-              <span>Why this may be a match</span>
-              <ChevronDown className={open ? "rotate" : ""} size={18} />
-            </button>
-            {open && (
-              <div className="explainer-body">
-                <p>We noticed a few details that line up with your search:</p>
-                <ul>
-                  <li><Check size={15} />Similar colour and overall shape</li>
-                  <li><Check size={15} />A visible front-pocket detail</li>
-                  <li><Check size={15} />Reported in the same part of campus</li>
-                </ul>
-                <small>These are visual clues, not a confirmed identification.</small>
-              </div>
-            )}
-          </div>
-          <div className="detail-actions">
-            <Button onClick={() => router.push(`/item/${item.id}/compare`)} variant="solid" icon={<ArrowRight size={17} />}>Compare with my photo</Button>
-            <Button onClick={() => router.push("/my-reports")} variant="text" icon={<Heart size={17} />}>Save this match</Button>
+          <div className="detail-actions" style={{ marginTop: '2rem' }}>
+            <Button onClick={() => router.push(`/item/${item.report_id}/compare`)} variant="solid" icon={<ArrowRight size={17} />}>Compare with my photo</Button>
+            <Button onClick={() => router.push("/my-reports")} variant="text" icon={<Heart size={17} />}>Save this report</Button>
           </div>
         </div>
       </section>
@@ -77,7 +83,7 @@ export default function DetailPage({ params }: { params: Promise<{ id: string }>
           <h2>Could this be<br /><em>your item?</em></h2>
         </div>
         <p>If the comparison feels right, you can mark it as a possible match. We’ll keep your details private while the report owner is contacted.</p>
-        <Button onClick={() => router.push(`/item/${item.id}/compare`)} variant="outline" icon={<ArrowUpRight size={16} />}>Open comparison</Button>
+        <Button onClick={() => router.push(`/item/${item.report_id}/compare`)} variant="outline" icon={<ArrowUpRight size={16} />}>Open comparison</Button>
       </section>
     </div>
   );

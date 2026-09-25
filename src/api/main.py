@@ -1,12 +1,12 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from src.api.routers import retrieval, reports
-from src.api.database import engine, Base
+from src.api.routers import retrieval, reports, users, claims
+from src.api.database import engine, get_db
+from sqlalchemy.orm import Session
+from sqlalchemy import text
+from fastapi import Depends, HTTPException
 from src.api.config import settings
-
-# Create DB tables
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
@@ -30,6 +30,26 @@ app.include_router(
     tags=["reports"]
 )
 
+app.include_router(
+    users.router,
+    prefix=f"{settings.API_V1_STR}/users",
+    tags=["users"]
+)
+
+app.include_router(
+    claims.router,
+    prefix=f"{settings.API_V1_STR}/claims",
+    tags=["claims"]
+)
+
 @app.get("/")
 def root():
     return {"message": f"Welcome to {settings.PROJECT_NAME} API"}
+
+@app.get("/health")
+def health_check(db: Session = Depends(get_db)):
+    try:
+        db.execute(text("SELECT 1"))
+        return {"status": "healthy", "database": "connected"}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail="Database unavailable")

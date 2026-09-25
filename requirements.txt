@@ -12,3 +12,6 @@ pydantic
 python-dotenv
 pytest
 httpx
+alembic
+psycopg2-binary
+firebase-admin

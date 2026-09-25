@@ -172,7 +172,7 @@ function ReportContent() {
               <label>When? <span>Required</span>
                 <DatePicker 
                   selected={form.date} 
-                  onChange={(d) => { update("date", d); setError(""); }} 
+                  onChange={(d: Date | null) => { update("date", d); setError(""); }} 
                   showTimeInput
                   timeInputLabel="Time:"
                   dateFormat="dd/MM/yyyy, h:mm aa"

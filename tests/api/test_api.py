@@ -1,8 +1,24 @@
 from fastapi.testclient import TestClient
 from src.api.main import app
 from src.api.config import settings
+from src.api.auth import get_current_user
+from src.api.models import User
+from src.api.database import SessionLocal
 
 client = TestClient(app)
+
+def mock_get_current_user():
+    db = SessionLocal()
+    user = db.query(User).filter(User.id == "test_user_id").first()
+    if not user:
+        user = User(id="test_user_id", firebase_uid="test_uid", email="test@example.com")
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    db.close()
+    return user
+
+app.dependency_overrides[get_current_user] = mock_get_current_user
 
 def test_read_main():
     response = client.get("/")
@@ -16,9 +32,8 @@ def test_search_retrieval():
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["model_version"] == "mock-v0.1.0"
-    assert len(data["results"]) == 3
-    assert data["results"][0]["similarity_score"] > data["results"][1]["similarity_score"]
+    assert data["model_version"] == "ml-pending"
+    assert len(data["results"]) == 0
 
 def test_search_retrieval_invalid():
     response = client.post(
@@ -27,7 +42,7 @@ def test_search_retrieval_invalid():
     )
     assert response.status_code == 400
     data = response.json()
-    assert data["detail"]["code"] == "INVALID_QUERY"
+    assert data["detail"] == "A query image or text is required."
 
 def test_create_report():
     response = client.post(

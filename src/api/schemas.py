@@ -33,6 +33,14 @@ class RetrievalResultItem(BaseModel):
     item_instance_id: str
     similarity_score: float
     rank: int
+    
+    # Enriched application data (supplied by backend, not ML)
+    report_id: Optional[str] = None
+    report_type: Optional[str] = None
+    item_category: Optional[str] = None
+    location: Optional[str] = None
+    image_reference: Optional[str] = None # Will be blurred/watermarked for 'found' items
+    status: Optional[str] = None
 
 class RetrievalResult(BaseModel):
     model_version: str

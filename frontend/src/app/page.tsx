@@ -32,6 +32,47 @@ function SearchLens({ onClick }: { onClick: () => void }) {
     </div>
   );
 }
+function AnimatedHeroFootnote() {
+  const items = ["keys", "wallet", "favorite jacket", "headphones", "student ID"];
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % items.length);
+    }, 2500);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="hero-footnote" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div style={{ position: 'relative', width: '12px', height: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <motion.div
+          animate={{ scale: [1, 1.8, 1], opacity: [0.6, 0, 0.6] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          style={{ position: 'absolute', width: '10px', height: '10px', backgroundColor: 'var(--coral, #f05a4f)', borderRadius: '50%' }}
+        />
+        <div style={{ width: '6px', height: '6px', backgroundColor: 'var(--coral, #f05a4f)', borderRadius: '50%', zIndex: 1 }} />
+      </div>
+      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+        Reuniting you with your
+        <div style={{ position: 'relative', width: '130px', height: '24px', overflow: 'hidden' }}>
+          <AnimatePresence mode="popLayout">
+            <motion.b
+              key={items[index]}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -20, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              style={{ position: 'absolute', left: 4, top: 0, color: 'var(--coral, #f05a4f)' }}
+            >
+              {items[index]}
+            </motion.b>
+          </AnimatePresence>
+        </div>
+      </span>
+    </div>
+  );
+}
 
 export default function Home() {
   const router = useRouter();
@@ -68,10 +109,7 @@ export default function Home() {
             <Button onClick={() => router.push("/search")} variant="solid" icon={<ArrowRight size={17} />}>Find an item</Button>
             <Button onClick={() => router.push("/report?type=found")} variant="outline" icon={<ArrowUpRight size={16} />}>Report found</Button>
           </div>
-          <div className="hero-footnote">
-            <span className="avatar-stack"><i>A</i><i>M</i><i>J</i></span>
-            <span>Helping <b>2,400+</b> campus items get back where they belong.</span>
-          </div>
+          <AnimatedHeroFootnote />
         </div>
         <SearchLens onClick={() => router.push("/search")} />
         <div className="hero-side-note"><span>SCROLL TO EXPLORE</span><ArrowDownRight size={20} /></div>
@@ -176,7 +214,7 @@ export default function Home() {
         <div className="bottom-links">
           <button onClick={() => router.push("/search")}><span>Start a search</span><ArrowRight size={18} /></button>
           <button onClick={() => router.push("/report?type=found")}><span>Report something found</span><ArrowRight size={18} /></button>
-          <button onClick={() => router.push("/map")}><span>Open campus map</span><ArrowRight size={18} /></button>
+          <button onClick={() => router.push("/map")}><span>View hotspots</span><ArrowRight size={18} /></button>
         </div>
       </section>
     </div>

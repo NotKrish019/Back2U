@@ -2,29 +2,47 @@
 
 import { useAuth } from '@/lib/firebase/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowRight, ArrowUpRight, CircleHelp } from 'lucide-react';
 import { SectionLabel, PageTop, Button } from '@/components/ManusUI';
+import { api, ReportOut } from '../../services/api';
 
 export default function MyReportsPage() {
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
+  const [reports, setReports] = useState<ReportOut[]>([]);
+  const [dataLoading, setDataLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!authLoading && !user) {
       router.push('/login');
     }
-  }, [user, loading, router]);
+  }, [user, authLoading, router]);
 
-  if (loading || !user) {
+  useEffect(() => {
+    if (user) {
+      api.getUserReports()
+        .then((data) => {
+          setReports(data);
+        })
+        .catch((err) => {
+          console.error(err);
+          setError("Failed to load reports. Please try again.");
+        })
+        .finally(() => {
+          setDataLoading(false);
+        });
+    }
+  }, [user]);
+
+  if (authLoading || !user || dataLoading) {
     return <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading your reports...</div>;
   }
 
-  const reports = [
-    { type: "LOST REPORT", title: "Black canvas backpack", date: "Started today · West Quad", status: "2 possible matches", color: "coral" },
-    { type: "FOUND REPORT", title: "Silver water bottle", date: "Submitted yesterday · Gym", status: "Waiting for a match", color: "yellow" },
-    { type: "LOST REPORT", title: "Blue knit scarf", date: "Closed 12 Sep · North Hall", status: "Returned to owner", color: "blue" }
-  ];
+  const activeCount = reports.filter(r => r.status !== 'closed' && r.status !== 'returned').length;
+  const matchesCount = reports.filter(r => r.status === 'matched').length;
+  const returnedCount = reports.filter(r => r.status === 'returned').length;
 
   return (
     <div className="page-shell reports-page">
@@ -35,31 +53,55 @@ export default function MyReportsPage() {
         action={<Button onClick={() => router.push("/report?type=found")} variant="solid" icon={<ArrowRight size={16} />}>New report</Button>} 
       />
       <section className="reports-summary container-wide">
-        <div><span>ACTIVE REPORTS</span><b>2</b></div>
-        <div><span>POSSIBLE MATCHES</span><b>2</b></div>
-        <div><span>RETURNED</span><b>1</b></div>
+        <div><span>ACTIVE REPORTS</span><b>{activeCount}</b></div>
+        <div><span>POSSIBLE MATCHES</span><b>{matchesCount}</b></div>
+        <div><span>RETURNED</span><b>{returnedCount}</b></div>
       </section>
+      
+      {error && (
+        <section className="container-wide" style={{ color: 'var(--coral)', marginBottom: '2rem' }}>
+          <p>{error}</p>
+        </section>
+      )}
+
       <section className="timeline container-wide">
-        {reports.map((report, i) => (
-          <button className="timeline-row" key={report.title} onClick={() => router.push(`/item/${i + 1}`)}>
-            <div className={`timeline-marker marker-${report.color}`}>
-              <span>{String(i + 1).padStart(2, "0")}</span>
+        {reports.length === 0 && !error ? (
+          <div className="empty-state" style={{ padding: '4rem 0', textAlign: 'center' }}>
+            <span>NO REPORTS YET</span>
+            <h2>Nothing on the radar.</h2>
+            <p>Lost something or found an item? Start a report to track it here.</p>
+            <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+               <Button onClick={() => router.push("/search")} variant="outline">Search for a lost item</Button>
+               <Button onClick={() => router.push("/report?type=found")} variant="solid">Report a found item</Button>
             </div>
-            <div className="timeline-content">
-              <div className="timeline-top">
-                <span>{report.type}</span>
-                <small>{i === 0 ? "Just now" : i === 1 ? "Yesterday" : "12 Sep"}</small>
-              </div>
-              <h3>{report.title}</h3>
-              <p>{report.date}</p>
-              <div className="timeline-status">
-                <span className={`status-line status-${report.color}`} />
-                {report.status}
-              </div>
-            </div>
-            <ArrowUpRight size={18} />
-          </button>
-        ))}
+          </div>
+        ) : (
+          reports.map((report, i) => {
+            const isFound = report.report_type === 'found';
+            const color = isFound ? 'yellow' : (report.status === 'returned' || report.status === 'closed' ? 'blue' : 'coral');
+            
+            return (
+              <button className="timeline-row" key={report.report_id} onClick={() => router.push(`/item/${report.report_id}`)}>
+                <div className={`timeline-marker marker-${color}`}>
+                  <span>{String(i + 1).padStart(2, "0")}</span>
+                </div>
+                <div className="timeline-content">
+                  <div className="timeline-top">
+                    <span style={{ textTransform: 'uppercase' }}>{report.report_type} REPORT</span>
+                    <small>{new Date(report.created_at).toLocaleDateString()}</small>
+                  </div>
+                  <h3>{report.item_category || "Untitled Item"}</h3>
+                  <p>{report.location || "Unknown location"}</p>
+                  <div className="timeline-status">
+                    <span className={`status-line status-${color}`} />
+                    <span style={{ textTransform: 'capitalize' }}>{report.status}</span>
+                  </div>
+                </div>
+                <ArrowUpRight size={18} />
+              </button>
+            );
+          })
+        )}
       </section>
       <div className="reports-help container-wide">
         <div>
