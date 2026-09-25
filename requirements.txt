@@ -5,3 +5,13 @@ pandas
 requests
 jupyter
 tqdm
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+python-dotenv
+pytest
+httpx
+alembic
+psycopg2-binary
+firebase-admin
