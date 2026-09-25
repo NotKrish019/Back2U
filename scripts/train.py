@@ -8,10 +8,12 @@ from pathlib import Path
 project_root = Path(__file__).resolve().parent.parent
 sys.path.append(str(project_root))
 
+import time
 from src.models.siamese_network import SiameseNetwork
 from src.data.triplet_dataset import TripletDataset
 
 def main():
+    # torch.set_num_threads(2) # Limit CPU cores to reduce overheating
     print("Initializing Siamese Network Training (Triplet Loss)...")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
@@ -26,8 +28,8 @@ def main():
     val_dataset = TripletDataset(val_manifest)
     
     # We use a small batch size to fit in basic GPUs during development
-    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=0)
-    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False, num_workers=0)
+    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4)
+    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False, num_workers=4)
     
     print(f"Train batches: {len(train_loader)}, Val batches: {len(val_loader)}")
     
@@ -46,8 +48,20 @@ def main():
     models_dir = Path("models/checkpoints")
     models_dir.mkdir(parents=True, exist_ok=True)
     
+    start_epoch = 0
+    checkpoint_path = models_dir / "mir_siamese_best.pth"
+    latest_path = models_dir / "mir_siamese_latest.pth"
+    if latest_path.exists():
+        model.load_state_dict(torch.load(latest_path, map_location=device))
+        print(f"Resumed weights from {latest_path} to continue training.")
+        start_epoch = 0
+    elif checkpoint_path.exists():
+        model.load_state_dict(torch.load(checkpoint_path, map_location=device))
+        print(f"Resumed weights from {checkpoint_path} to continue training.")
+        start_epoch = 0
+
     print("Starting training loop...")
-    for epoch in range(num_epochs):
+    for epoch in range(start_epoch, num_epochs):
         model.train()
         running_loss = 0.0
         
@@ -72,6 +86,9 @@ def main():
             optimizer.step()
             
             running_loss += loss.item()
+            
+            # Brief pause to let CPU cool down
+            # time.sleep(0.1)
             
             if (i + 1) % 10 == 0:
                 print(f"Epoch [{epoch+1}/{num_epochs}], Step [{i+1}/{len(train_loader)}], Loss: {loss.item():.4f}")
@@ -102,6 +119,11 @@ def main():
             checkpoint_path = models_dir / "mir_siamese_best.pth"
             torch.save(model.state_dict(), checkpoint_path)
             print(f"Saved new best model to {checkpoint_path}")
+            
+        # Save latest model progress after every epoch
+        latest_path = models_dir / "mir_siamese_latest.pth"
+        torch.save(model.state_dict(), latest_path)
+        print(f"Saved latest progress to {latest_path}")
             
     print("Training Complete!")
 

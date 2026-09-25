@@ -253,3 +253,36 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 - **What changed**: Removed Objectron mock 'grey box' generation logic from download_selected_data.py. Reinstalled standard CPU-only PyTorch because CUDA wheels are unavailable for Python 3.14.
 - **Why it changed**: The user correctly pointed out that the mocked grey boxes are useless for actual feature learning. GPU training could not be enabled due to bleeding-edge Python 3.14 environment limitations on Windows.
 - **Next action**: Wait for the 20-epoch CPU training loop on 9,000+ real PACO images to complete, after which the FastAPI server will auto-restart.
+
+### Sept 24, 2026: Training Speed Optimizations & Mid-Epoch Pause
+- **What changed**: Updated `scripts/train.py` to remove CPU bottlenecks (commented `set_num_threads(2)`, `time.sleep(0.1)`, and increased `DataLoader` `num_workers` to 4). Added logic to unconditionally save `mir_siamese_latest.pth` at the end of every epoch.
+- **Why it changed**: To maximize training speed on the CPU and ensure no progress is lost if the script is interrupted.
+- **Next action**: Resume full-speed training on CPU when the user is ready.
+
+### Sept 24, 2026: Environment Recreation & GPU Unlock
+- **What changed**: Recreated `.venv` using Python 3.12 via `uv` instead of Python 3.14, and successfully installed the CUDA 12.1 PyTorch wheels.
+- **Why it changed**: Python 3.14 lacks CUDA PyTorch wheels, forcing CPU-only training. Downgrading to Python 3.12 unlocks the GTX 1650 GPU for massive training speedups.
+- **Next action**: Run `scripts/train.py` on the GPU.
+
+### Sept 24, 2026: Successful 20-Epoch GPU Training
+- **What changed**: Ran full model training script (`scripts/train.py`) utilizing the GTX 1650 GPU to completion (20 Epochs).
+- **Why it changed**: Core requirement to produce the actual baseline metric-learning model. GPU acceleration made it feasible to train without taking days.
+- **Evidence/results**: Training completed in just over an hour. The best validation loss achieved was **0.0002** during Epoch 16. The best checkpoint was saved to `models/checkpoints/mir_siamese_best.pth` and the final progress was saved to `mir_siamese_latest.pth`.
+- **Next action**: Evaluate this new model on the test split / user queries using the inference server.
+
+### Sept 25, 2026: Custom Data Ingestion & Model Failure
+- **What changed**: Ingested 1,940 custom smartphone/headphone images (`scripts/ingest_custom.py`), fixed `start_epoch=0` bug in `train.py`, and retrained the model for 20 epochs.
+- **Why it changed**: User provided extra datasets to augment minority classes. 
+- **Evidence/results**: The model finished training, but `test_inference.py` on a headphone query incorrectly retrieved `cellular_telephone` and `handbag` with high confidence.
+- **Next action**: Address data noise/clutter causing inaccurate feature learning.
+
+### Sept 25, 2026: Dataset De-cluttering (Faster R-CNN)
+- **What changed**: Implemented and ran `scripts/filter_clutter.py` which utilized a pre-trained `fasterrcnn_mobilenet_v3` to detect and delete any manifest records where "person" or "food" classes were detected with >0.6 confidence. Rebuilt data splits.
+- **Why it changed**: User identified that the model was learning irrelevant features (people, food) instead of the lost objects.
+- **Next action**: Wait for user to provide clean, isolated headphone data, ingest it, and train the model one final time.
+
+### Sept 25, 2026: Ingesting Custom Headphones and Earphones
+- **What changed**: Extracted user-provided dataset zip files (overcoming Windows 260-char path limits via a custom python script), modified `scripts/ingest_custom.py` to support `earphones` in addition to headphones and smartphones, ingested the new images, and successfully rebuilt the instance-disjoint train/val/test splits.
+- **Why it changed**: User provided custom zip files to provide clean, isolated data for headphones and earphones to improve the model's accuracy on those classes after de-cluttering the PACO dataset.
+- **Evidence/results**: Extracted and successfully ingested 7,590 headphones, 1,260 smartphones, and 324 earphones. Rebuilt `train_split.jsonl` containing 9,693 clean, disjoint records.
+- **Next action**: Retrain the model on the new dataset splits.
