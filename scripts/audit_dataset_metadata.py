@@ -5,7 +5,7 @@ from pathlib import Path
 from collections import defaultdict
 
 OBJECTRON_CATEGORIES = ['book', 'bottle', 'cup', 'laptop', 'shoe', 'camera']
-PACO_CATEGORIES = ['book', 'bottle', 'cup', 'mug', 'laptop_computer', 'shoe', 'cellular_telephone', 'handbag', 'wallet', 'earphone', 'calculator']
+PACO_CATEGORIES = ['book', 'bottle', 'cup', 'mug', 'laptop_computer', 'shoe', 'cellular_telephone', 'handbag', 'wallet', 'earphone', 'calculator', 'watch', 'camera']
 
 def count_objectron_instances(repo_index_dir):
     counts = {}

@@ -494,3 +494,56 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 - **Why it changed**: To bake the final production model weights over the new de-cluttered dataset for the final pipeline integration.
 - **Evidence/results**: Training successfully completed all 20 Epochs on the GPU. The new `mir_siamese_best.pth` achieved a stellar Validation Loss of **0.0001** (at Epoch 11).
 - **Next action**: Connect the trained model with Coworker 2's backend and frontend integration for full end-to-end functionality.
+
+### 2026-09-28 01:58 — M0 (Repository + contracts frozen)
+
+**Change:** Audited the existing ResNet50 Siamese Network implementation and established the new architectural constraints based on the `MASTER_PLAN.md`. Generated the required M0 architectural reports and removed redundant handover documents.
+
+**Files changed:** `reports/architecture/current_ml_architecture.md`, `reports/architecture/ml_design_decisions.md`, deleted `docs/antigravity_ml_master_handover.md`.
+
+**Reason:** Fulfilled the exit gate requirements for Milestone 0 to map the gap between the current state and the new DINOv2 / Grounding DINO architecture.
+
+**Evidence/results:** The existing pipeline successfully trains a Siamese network, but it needs to be fully transitioned to the `MASTER_PLAN.md` paradigm (Instance Embeddings + Category Gates).
+
+**Decision:** The project repository is frozen in its current state. We will now proceed with the new execution roadmap.
+
+**Risks/issues:** Migrating from the legacy Siamese structure to the new DINOv2 architecture will require a significant rewrite of the `src/models/` and `scripts/train.py` logic.
+
+**Next action:** Execute M1: Data selection + 5–6 GB corpus.
+
+### 2026-09-28 02:04 — M1 (Data selection + 5–6 GB corpus)
+
+**Change:** Updated `audit_dataset_metadata.py` and `estimate_storage.py` to map all Tier A categories (including camera, watch, shoe, calculator). Re-ran the download pipeline to fetch the exact Tier A subset from PACO-LVIS while enforcing strict capacity limits, and combined it with the custom datasets. Rebuilt the instance-disjoint train/val/test splits.
+
+**Files changed:** `scripts/audit_dataset_metadata.py`, `scripts/estimate_storage.py`, `scripts/download_selected_data.py`, `reports/data_selection/storage_estimate.md`, `data/processed/*_split.jsonl`
+
+**Reason:** Fulfilled the exit gate requirements for Milestone 1 to establish the exact dataset subset and prove it complies with the strict 6 GB maximum payload cap.
+
+**Evidence/results:** 
+1. Storage estimate verified mathematically at 5.27 GB.
+2. A balanced multi-category manifest combining PACO-LVIS and custom imagery was created.
+3. Train (7187), Val (1540), and Test (1541) splits generated successfully passing instance leakage checks.
+
+**Decision:** We are proceeding with this ~10,000 instance dataset representing Tier A classes (laptops, phones, bags, etc.).
+
+**Risks/issues:** None.
+
+**Next action:** Execute M2: Perception benchmark or M3: DINOv2 frozen baseline.
+
+### 2026-09-28 02:22 — M3 / Step 5 — DINOv2 Frozen Baseline
+
+**Change:** Implemented frozen `Dinov2ImageEncoder` (ViT-S/14) and `scripts/run_m3_baseline.py` to evaluate frozen ResNet50 against frozen DINOv2 on our 1,541-image test split.
+
+**Files changed:** `src/embeddings/dinov2_model.py`, `scripts/run_m3_baseline.py`, `reports/experiments/dinov2_frozen_baseline.md`
+
+**Reason:** To establish a clean, reproducible visual retrieval baseline and scientifically evaluate the pretrained visual representation of DINOv2 before fine-tuning.
+
+**Evidence/results:** 
+- Both models scored exactly 0.0000 on Recall@1, Recall@5, Recall@10, MRR, and mAP across every single category.
+- Investigation revealed this is due to a fatal flaw in the M1 dataset: there is exactly 1 image per instance in the test split (and the entire dataset). Because the evaluation correctly filters out the query image, there are no valid positive matches in the gallery.
+
+**Decision:** investigate why before proceeding. We CANNOT officially adopt DINOv2 or proceed to M4 (metric learning) until the dataset contains positive pairs. SupCon loss will fail if there are no positive pairs to pull together.
+
+**Risks/issues:** The M1 dataset construction (specifically dropping Objectron and treating every PACO/custom image as a unique instance) broke the instance retrieval problem definition.
+
+**Next action:** Revisit M1. We must introduce multi-view data (e.g., Objectron) or redefine instance IDs so that positive pairs exist before we can execute M4.

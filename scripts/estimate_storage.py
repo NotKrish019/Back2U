@@ -14,7 +14,7 @@ def estimate_storage():
     # 5 frames per instance.
     # Total instances = 25,000 / 5 = 5,000 instances.
     # We will sample these 5,000 instances across the 6 available categories.
-    objectron_cats = {'book': 1000, 'bottle': 1000, 'cup': 1000, 'laptop': 1000, 'shoe': 1000}
+    objectron_cats = {'book': 1000, 'bottle': 1000, 'cup': 1000, 'laptop': 1000, 'shoe': 1000, 'camera': 800}
     obj_views_per_instance = 5
     
     obj_total_images = sum(objectron_cats.values()) * obj_views_per_instance
@@ -25,7 +25,7 @@ def estimate_storage():
     # PACO has ~10 core categories. We will aim for ~1000 to 2000 instances per category from the Train+Val splits.
     # PACO provides 1 view per instance.
     paco_cats = {'book': 1500, 'bottle': 1500, 'cup': 1500, 'mug': 500, 'laptop_computer': 2000, 
-                 'shoe': 2000, 'cellular_telephone': 2000, 'handbag': 2000, 'wallet': 1000, 'earphone': 1000, 'calculator': 500}
+                 'shoe': 2000, 'cellular_telephone': 2000, 'handbag': 2000, 'wallet': 1000, 'earphone': 1000, 'calculator': 500, 'watch': 1500, 'camera': 500}
     
     paco_total_images = sum(paco_cats.values())
     paco_storage_kb = paco_total_images * AVG_PACO_IMAGE_KB

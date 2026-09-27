@@ -20,6 +20,7 @@
 | bottle | 110 |
 | book | 84 |
 | handbag | 84 |
+| watch | 87 |
 | cup | 81 |
 | earphone | 28 |
 | wallet | 4 |

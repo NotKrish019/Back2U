@@ -7,10 +7,11 @@ from concurrent.futures import ThreadPoolExecutor
 def download_image(url, dest_path):
     try:
         if not os.path.exists(dest_path):
+            import socket
+            urllib.request.urlopen(url, timeout=10) # Just checking if it works first
             urllib.request.urlretrieve(url, dest_path)
         return True
     except Exception as e:
-        print(f"Error downloading {url}: {e}")
         return False
 
 def download_paco_subset(max_images=10000):
@@ -27,7 +28,7 @@ def download_paco_subset(max_images=10000):
         data = json.load(f)
         
     # Categories to target
-    target_cats = ['earphone', 'laptop_computer', 'cellular_telephone', 'handbag', 'wallet', 'bottle', 'cup', 'book']
+    target_cats = ['earphone', 'laptop_computer', 'cellular_telephone', 'handbag', 'wallet', 'bottle', 'cup', 'mug', 'book', 'shoe', 'calculator', 'watch', 'camera']
     
     cat_name_to_id = {c['name']: c['id'] for c in data['categories']}
     valid_cat_ids = {cat_name_to_id[c]: c for c in target_cats if c in cat_name_to_id}
@@ -46,9 +47,9 @@ def download_paco_subset(max_images=10000):
             images_by_cat[cat_id].append(img)
             
     sampled_images = []
-    # Sample up to 1500 per category to balance the dataset
+    # Sample up to 100 per category to provide enough diverse data for DINOv2 while keeping download fast
     for cat_id, imgs in images_by_cat.items():
-        sampled_imgs = random.sample(imgs, min(1500, len(imgs)))
+        sampled_imgs = random.sample(imgs, min(100, len(imgs)))
         sampled_images.extend(sampled_imgs)
         
     downloaded_records = []
@@ -72,8 +73,10 @@ def download_paco_subset(max_images=10000):
             })
             
     with ThreadPoolExecutor(max_workers=32) as executor:
-        executor.map(dl, sampled_images)
-        
+        for i, _ in enumerate(executor.map(dl, sampled_images)):
+            if (i+1) % 50 == 0:
+                print(f"Processed {i+1}/{len(sampled_images)} images...")
+                
     print(f"Successfully downloaded {len(downloaded_records)} PACO images to {out_dir}")
     return downloaded_records
 
