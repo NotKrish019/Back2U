@@ -5,8 +5,6 @@ from src.api.auth import get_current_user
 from src.api.models import User
 from src.api.database import SessionLocal
 
-client = TestClient(app)
-
 def mock_get_current_user():
     db = SessionLocal()
     user = db.query(User).filter(User.id == "test_user_id").first()
@@ -20,38 +18,41 @@ def mock_get_current_user():
 
 app.dependency_overrides[get_current_user] = mock_get_current_user
 
-def test_read_main():
+def test_read_main(client):
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": f"Welcome to {settings.PROJECT_NAME} API"}
 
-def test_search_retrieval():
+def test_search_retrieval(client):
     response = client.post(
         f"{settings.API_V1_STR}/retrieval/search",
-        json={"text": "black backpack", "top_k": 3}
+        json={"text": "black backpack", "top_k": 3},
+        headers={"Authorization": "Bearer TEST_TOKEN_123"}
     )
     assert response.status_code == 200
     data = response.json()
     assert data["model_version"] == "ml-pending"
     assert len(data["results"]) == 0
 
-def test_search_retrieval_invalid():
+def test_search_retrieval_invalid(client):
     response = client.post(
         f"{settings.API_V1_STR}/retrieval/search",
-        json={"top_k": 3}
+        json={"top_k": 3},
+        headers={"Authorization": "Bearer TEST_TOKEN_123"}
     )
     assert response.status_code == 400
     data = response.json()
     assert data["detail"] == "A query image or text is required."
 
-def test_create_report():
+def test_create_report(client):
     response = client.post(
         f"{settings.API_V1_STR}/reports",
         json={
             "report_type": "lost",
             "item_category": "backpack",
             "description": "A black backpack lost in library"
-        }
+        },
+        headers={"Authorization": "Bearer TEST_TOKEN_123"}
     )
     assert response.status_code == 201
     data = response.json()

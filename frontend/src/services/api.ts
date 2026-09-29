@@ -106,6 +106,65 @@ export const api = {
     });
     if (!res.ok) throw new Error(await res.text());
     return res.json();
+  },
+  
+  // Admin endpoints
+  getAdminOverview: async () => {
+    const headers = await getHeaders();
+    const res = await fetch(`${API_BASE}/admin/overview`, { method: 'GET', headers });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+  getAdminClaims: async (status?: string) => {
+    const headers = await getHeaders();
+    const url = status ? `${API_BASE}/admin/claims?status=${status}` : `${API_BASE}/admin/claims`;
+    const res = await fetch(url, { method: 'GET', headers });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+  updateAdminClaim: async (id: string, status: string) => {
+    const headers = await getHeaders();
+    const res = await fetch(`${API_BASE}/admin/claims/${id}`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ status })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+  getAdminCandidates: async (status?: string, uncertain?: boolean) => {
+    const headers = await getHeaders();
+    let url = `${API_BASE}/admin/candidates?`;
+    if (status) url += `status=${status}&`;
+    if (uncertain) url += `uncertain=true`;
+    const res = await fetch(url, { method: 'GET', headers });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+  updateAdminCandidate: async (id: string, status: string) => {
+    const headers = await getHeaders();
+    const res = await fetch(`${API_BASE}/admin/candidates/${id}`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ status })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+  getAdminReports: async (type?: string) => {
+    const headers = await getHeaders();
+    const url = type ? `${API_BASE}/admin/reports?report_type=${type}` : `${API_BASE}/admin/reports`;
+    const res = await fetch(url, { method: 'GET', headers });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+  getAdminItems: async (resolved?: boolean) => {
+    const headers = await getHeaders();
+    let url = `${API_BASE}/admin/items`;
+    if (resolved !== undefined) url += `?resolved=${resolved}`;
+    const res = await fetch(url, { method: 'GET', headers });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
   }
 };
 

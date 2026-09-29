@@ -19,7 +19,7 @@ function SearchLens({ onClick }: { onClick: () => void }) {
     <div ref={ref} className={`search-lens ${hovered ? "lens-hovered" : ""}`} onMouseMove={onMove} onMouseLeave={() => { setOffset({ x: 0, y: 0 }); setHovered(false); }} onMouseEnter={() => setHovered(true)} onClick={onClick} role="button" tabIndex={0} onKeyDown={(e) => e.key === "Enter" && onClick()}>
       <div className="lens-paper" style={{ transform: `translate3d(${offset.x}px, ${offset.y}px, 0)` }}>
         <span className="lens-kicker">SEARCH LENS <i>•</i> 01</span>
-        <div className="lens-center-copy"><span>FIND</span><strong>A MATCH</strong></div>
+        <div className="lens-center-copy"><span>POSSIBLE</span><strong>MATCH</strong></div>
         <div className="lens-ring ring-one" /><div className="lens-ring ring-two" />
         <span className="lens-tag tag-photo">PHOTO <ImagePlus size={12} /></span>
         <span className="lens-tag tag-description">DESCRIPTION <MessageCircle size={12} /></span>
@@ -101,17 +101,41 @@ export default function Home() {
   return (
     <div className="home-page">
       <section className="hero-section">
-        <div className="hero-copy">
-          <SectionLabel>Campus lost & found <span className="label-chip">EST. 2026</span></SectionLabel>
-          <h1>Lost something?<br /><em>Let’s find it.</em></h1>
-          <p>Find what belongs to you — or help return what someone else lost.</p>
-          <div className="hero-actions">
-            <Button onClick={() => router.push("/search")} variant="solid" icon={<ArrowRight size={17} />}>Find an item</Button>
-            <Button onClick={() => router.push("/report?type=found")} variant="outline" icon={<ArrowUpRight size={16} />}>Report found</Button>
-          </div>
-          <AnimatedHeroFootnote />
-        </div>
-        <SearchLens onClick={() => router.push("/search")} />
+        <motion.div 
+          className="hero-copy"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+          }}
+        >
+          <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }}>
+            <SectionLabel>Campus lost & found <span className="label-chip">EST. 2026</span></SectionLabel>
+          </motion.div>
+          <motion.h1 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }}>
+            LOST<br />SOMETHING?<br />
+            <span style={{ display: 'block', marginTop: '0.3em' }}><em>LET'S GET<br />IT BACK2U.</em></span>
+          </motion.h1>
+          <motion.p variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }}>
+            Find what belongs to you — or help return what someone else lost.
+          </motion.p>
+          <motion.div className="hero-actions" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }}>
+            <Button onClick={() => router.push("/search")} variant="solid" icon={<ArrowRight size={17} />}>I LOST SOMETHING</Button>
+            <Button onClick={() => router.push("/report?type=found")} variant="outline" icon={<ArrowUpRight size={16} />}>I FOUND SOMETHING</Button>
+          </motion.div>
+          <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }}>
+            <AnimatedHeroFootnote />
+          </motion.div>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <SearchLens onClick={() => router.push("/search")} />
+        </motion.div>
         <div className="hero-side-note"><span>SCROLL TO EXPLORE</span><ArrowDownRight size={20} /></div>
       </section>
 
@@ -125,18 +149,18 @@ export default function Home() {
           <button className="choice-row choice-row-coral" onClick={() => router.push("/search")}>
             <span className="choice-number">01</span>
             <div>
-              <h3>I lost something</h3>
-              <p>Search campus reports with a photo, a description, or both.</p>
+              <h3>I LOST SOMETHING</h3>
+              <p>Find it</p>
             </div>
-            <ArrowUpRight className="choice-arrow" size={22} />
+            <ArrowRight className="choice-arrow" size={22} />
           </button>
           <button className="choice-row choice-row-yellow" onClick={() => router.push("/report?type=found")}>
             <span className="choice-number">02</span>
             <div>
-              <h3>I found something</h3>
-              <p>Tell us where it is so the right person can find their way back to it.</p>
+              <h3>I FOUND SOMETHING</h3>
+              <p>Help return it</p>
             </div>
-            <ArrowUpRight className="choice-arrow" size={22} />
+            <ArrowRight className="choice-arrow" size={22} />
           </button>
         </div>
       </section>
@@ -161,18 +185,33 @@ export default function Home() {
         <div className="steps-layout">
           <div className="steps-rail">
             {["SHOW US THE ITEM", "TELL US WHAT YOU REMEMBER", "REVIEW POSSIBLE MATCHES"].map((s, i) => (
-              <button key={s} className={activeStep === i ? "step-active" : ""} onClick={() => handleStepClick(i)}>
+              <button key={s} className={activeStep === i ? "step-active" : ""} onClick={() => {
+                document.getElementById(`step-${i}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }}>
                 <span>0{i + 1}</span><b>{s}</b><i />
               </button>
             ))}
           </div>
-          <div className="step-feature">
-            <img src={["/mocks/step1.jpg", "/mocks/step2.jpg", "/mocks/step3.jpg"][activeStep]} alt="Campus discovery detail" />
-            <div className="step-feature-copy">
-              <span>0{activeStep + 1}</span>
-              <h3>{["Show us the item", "Tell us what you remember", "Review possible matches"][activeStep]}</h3>
-              <p>{["Start with a quick photo. It doesn’t have to be perfect.", "Add a place, a date, a colour — anything that helps.", "A short list of possible matches, explained like a human."][activeStep]}</p>
-            </div>
+          <div className="step-features">
+            {[0, 1, 2].map((i) => (
+              <motion.div 
+                key={i} 
+                id={`step-${i}`}
+                className="step-feature"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ margin: "-40% 0px -40% 0px" }}
+                onViewportEnter={() => setActiveStep(i)}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+              >
+                <img src={[`/mocks/step1.jpg`, `/mocks/step2.jpg`, `/mocks/step3.jpg`][i]} alt="Campus discovery detail" />
+                <div className="step-feature-copy">
+                  <span>0{i + 1}</span>
+                  <h3>{["Show us the item", "Tell us what you remember", "Review possible matches"][i]}</h3>
+                  <p>{["Start with a quick photo. It doesn’t have to be perfect.", "Add a place, a date, a colour — anything that helps.", "A short list of possible matches, explained like a human."][i]}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

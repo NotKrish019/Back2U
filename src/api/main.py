@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from src.api.routers import retrieval, reports, users, claims
+from src.api.routers import retrieval, reports, users, claims, admin
 from src.api.database import engine, get_db
 from sqlalchemy.orm import Session
 from sqlalchemy import text
@@ -40,6 +40,11 @@ app.include_router(
     claims.router,
     prefix=f"{settings.API_V1_STR}/claims",
     tags=["claims"]
+)
+
+app.include_router(
+    admin.router,
+    prefix=f"{settings.API_V1_STR}",
 )
 
 @app.get("/")
