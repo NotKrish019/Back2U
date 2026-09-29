@@ -14,6 +14,22 @@ mock_retrieval_service = MockRetrievalService()
 def get_retrieval_service() -> RetrievalService:
     return mock_retrieval_service
 
+@router.get("/health")
+def ml_health(service: RetrievalService = Depends(get_retrieval_service)):
+    # Simulating health check
+    if isinstance(service, MockRetrievalService):
+        return {
+            "status": "ready",
+            "model_version": "mock-v1.0",
+            "service": "mock"
+        }
+    else:
+        return {
+            "status": "ready",
+            "model_version": "mir-v0.4.0",
+            "service": "real"
+        }
+
 @router.post("/search", response_model=RetrievalResult)
 def search(
     query: RetrievalQuery, 

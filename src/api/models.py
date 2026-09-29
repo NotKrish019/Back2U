@@ -11,6 +11,7 @@ class User(Base):
     firebase_uid = Column(String, unique=True, index=True, nullable=False)
     email = Column(String, nullable=True)
     display_name = Column(String, nullable=True)
+    is_admin = Column(String, default="false") # "true" or "false" to avoid boolean dialect issues with sqlite/postgres if we don't have migrations ready
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
