@@ -904,3 +904,21 @@ LP-RIEM-MM1 is fully packaged with reproducible test scripts. The focus should n
 **Next action:** 
 - Proceed with deployment or await further user instructions.
 
+
+### 2026-09-29 14:48 — Final ML Backend Integration
+
+**Change:** 
+- Integrated the LP-RIEM-MM1 model into the ML Service (src/app/main.py).
+- Updated the Backend API Retrieval Router to use RealRetrievalService (src/api/routers/retrieval.py).
+- Modified RealRetrievalService to pass both images and text correctly (src/api/services/retrieval_service.py).
+
+**Reason:** 
+- Coworker 2's UI and API needed to connect to the actual finalized ML inference pipeline.
+
+**Evidence/results:** 
+- The ML service successfully loads the DINO, FAISS, SigLIP2, and Reranker models into memory.
+- The FastAPI backend successfully routes to the ML service and parses the response into RetrievalResults.
+
+**Next action:** 
+- System is fully integrated and ready for final testing/deployment.
+

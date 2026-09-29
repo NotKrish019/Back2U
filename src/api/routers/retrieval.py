@@ -2,17 +2,18 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from src.api.schemas import RetrievalQuery, RetrievalResult, RetrievalResultItem
-from src.api.services.retrieval_service import RetrievalService, MockRetrievalService
+from src.api.services.retrieval_service import RetrievalService, MockRetrievalService, RealRetrievalService
 from src.api.database import get_db
 from src.api.auth import get_current_user
 from src.api.models import User, Report, CandidateMatch
 
 router = APIRouter()
 
-mock_retrieval_service = MockRetrievalService()
+# Instantiate the RealRetrievalService which connects to ML_SERVICE_URL
+real_retrieval_service = RealRetrievalService()
 
 def get_retrieval_service() -> RetrievalService:
-    return mock_retrieval_service
+    return real_retrieval_service
 
 @router.get("/health")
 def ml_health(service: RetrievalService = Depends(get_retrieval_service)):

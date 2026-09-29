@@ -33,14 +33,15 @@ class RealRetrievalService(RetrievalService):
             header, encoded = query.image.split(",", 1)
             img_data = base64.b64decode(encoded)
             files["file"] = ("query_image.jpg", io.BytesIO(img_data), "image/jpeg")
-        else:
-            # If no image is provided, we might send an empty file or rely on text (though ML service currently expects a file)
-            # We'll send a dummy payload or just omit 'file' and let the ML service handle it if it supported text.
-            # But the current ML service requires `file: UploadFile`.
-            raise ValueError("RealRetrievalService currently requires an image.")
+        data = {}
+        if query.text:
+            data["text"] = query.text
+            
+        if not files and not data:
+            raise ValueError("RealRetrievalService requires an image or text query.")
 
         try:
-            resp = requests.post(f"{self.ml_url}/api/search", files=files, timeout=10)
+            resp = requests.post(f"{self.ml_url}/api/search", files=files, data=data, timeout=60)
             resp.raise_for_status()
             ml_data = resp.json()
         except Exception as e:
