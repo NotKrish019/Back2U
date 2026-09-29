@@ -29,7 +29,7 @@ def evaluate_model(model_name, embeddings, records, index, top_k=11):
     for i, query_record in enumerate(records):
         query_emb = embeddings[i]
         ground_truth_id = query_record.get("item_instance_id") or query_record.get("instance_id")
-        cat = query_record["project_category"]
+        cat = query_record.get("item_category") or query_record.get("project_category")
         
         raw_results = index.search(query_emb, top_k=top_k)
         # Filter out the query image itself

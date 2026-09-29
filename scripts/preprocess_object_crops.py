@@ -18,16 +18,24 @@ def preprocess_images():
         for line in f:
             if not line.strip(): continue
             rec = json.loads(line)
-            src_path = rec["source_path"]
+            src_path = rec.get("image_path")
             
-            # Since we mocked the image generation, we just resize to 224x224
             # In production, we'd use bounding box coordinates to crop first
-            if os.path.exists(src_path):
+            if src_path and os.path.exists(src_path):
+
                 try:
                     img = Image.open(src_path).convert("RGB")
+                    
+                    if rec.get("bbox") is not None:
+                        # bbox format: [xmin, ymin, xmax, ymax]
+                        bbox = rec["bbox"]
+                        img = img.crop((bbox[0], bbox[1], bbox[2], bbox[3]))
+                    
                     img = img.resize((224, 224))
                     
-                    crop_filename = f"{rec['instance_id']}_{rec['image_id']}.jpg"
+                    # For PACO it's 'instance_id'_'image_id'. Objectron doesn't have image_id, use split instead
+                    img_id_suffix = rec.get('image_id', rec['split'])
+                    crop_filename = f"{rec['item_instance_id']}_{img_id_suffix}_{os.path.basename(src_path)}"
                     crop_path = os.path.join(out_dir, crop_filename)
                     img.save(crop_path)
                     
