@@ -3,7 +3,7 @@
 import { useAuth } from '@/lib/firebase/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { SectionLabel, ContainerWide } from '@/components/ManusUI';
+import { SectionLabel } from '@/components/ManusUI';
 import { usePathname } from 'next/navigation';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

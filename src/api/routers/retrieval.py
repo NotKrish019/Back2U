@@ -9,11 +9,11 @@ from src.api.models import User, Report, CandidateMatch
 
 router = APIRouter()
 
-# Instantiate the RealRetrievalService which connects to ML_SERVICE_URL
-real_retrieval_service = RealRetrievalService()
+# Instantiate the MockRetrievalService since the ML data is not available locally
+mock_retrieval_service = MockRetrievalService()
 
 def get_retrieval_service() -> RetrievalService:
-    return real_retrieval_service
+    return mock_retrieval_service
 
 @router.get("/health")
 def ml_health(service: RetrievalService = Depends(get_retrieval_service)):

@@ -4,6 +4,7 @@ import { AuthProvider } from '@/lib/firebase/AuthContext';
 import CookieBanner from '@/components/CookieBanner';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { Back2ULoader } from '@/components/Back2ULoader';
 
 export const metadata: Metadata = {
   title: 'Back2U',
@@ -21,6 +22,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
       </head>
       <body>
+        <Back2ULoader />
         <AuthProvider>
           <div className="app">
             <Header />
