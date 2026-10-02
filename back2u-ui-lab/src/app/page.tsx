@@ -1,25 +1,9 @@
 import Back2UHero from "@/components/Back2UHero";
-import FlashlightTextReveal from "@/components/ui/flashlight-text-reveal";
-import Back2UIntroText from "@/components/ui/back2u-intro-text";
-
 export default function Home() {
   return (
     <main className="min-h-screen w-full bg-white text-black">
       {/* 100vh Hero Section */}
       <Back2UHero />
-
-      {/* Section 02 - Intro Text Interlude */}
-      <Back2UIntroText />
-
-      {/* Section 03 - Discovery */}
-      <section id="discovery" className="relative w-full h-[100svh]">
-        <FlashlightTextReveal
-          text={`FIND WHAT\nMATTERS`}
-          colors={["#0A0403", "#150A06", "#241811"]}
-          textColor="#F3EDE9"
-          wander={true}
-        />
-      </section>
 
       {/* Placeholder Sections */}
       <section className="flex min-h-[50vh] flex-col items-center justify-center border-t border-black/10 px-6 py-24 text-center">
