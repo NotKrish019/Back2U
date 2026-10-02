@@ -24,13 +24,13 @@ export default function GlobalMeshBackground() {
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Vibrant Pink/Lavender/White palette matching BACK2U but with higher contrast
+    // Softened Pastel Pink/Lavender/White palette matching BACK2U
     const blobs = [
       { color: '255, 255, 255',   x: 0.67, y: 0.45, size: 0.8, pX: 1.2, pY: 3.4 },
-      { color: '255, 110, 160',   x: 0.35, y: 0.65, size: 0.6, pX: 4.1, pY: 1.8 }, // Vibrant Pink
-      { color: '170, 130, 240',   x: 0.48, y: 0.20, size: 0.7, pX: 2.5, pY: 5.2 }, // Vibrant Lavender
-      { color: '255, 110, 160',   x: 0.80, y: 0.88, size: 0.6, pX: 0.9, pY: 2.1 }, // Vibrant Pink
-      { color: '170, 130, 240',   x: 0.15, y: 0.15, size: 0.7, pX: 5.5, pY: 0.4 }, // Vibrant Lavender
+      { color: '248, 135, 172',   x: 0.35, y: 0.65, size: 0.6, pX: 4.1, pY: 1.8 }, // Soft Pastel Pink
+      { color: '185, 155, 235',   x: 0.48, y: 0.20, size: 0.7, pX: 2.5, pY: 5.2 }, // Soft Pastel Lavender
+      { color: '248, 135, 172',   x: 0.80, y: 0.88, size: 0.6, pX: 0.9, pY: 2.1 }, // Soft Pastel Pink
+      { color: '185, 155, 235',   x: 0.15, y: 0.15, size: 0.7, pX: 5.5, pY: 0.4 }, // Soft Pastel Lavender
       { color: '255, 255, 255',   x: 0.50, y: 0.50, size: 0.9, pX: 3.2, pY: 4.4 }, // large central white glow
     ];
 
@@ -59,9 +59,9 @@ export default function GlobalMeshBackground() {
         const radius = blob.size * Math.max(w, h);
 
         const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        // Stronger opacity stops for more contrast
-        grad.addColorStop(0, `rgba(${blob.color}, 0.95)`);
-        grad.addColorStop(0.5, `rgba(${blob.color}, 0.6)`);
+        // Softer opacity stops for reduced contrast
+        grad.addColorStop(0, `rgba(${blob.color}, 0.8)`);
+        grad.addColorStop(0.5, `rgba(${blob.color}, 0.45)`);
         grad.addColorStop(1, `rgba(${blob.color}, 0)`);
 
         ctx.fillStyle = grad;
