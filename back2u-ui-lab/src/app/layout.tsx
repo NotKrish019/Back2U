@@ -20,7 +20,7 @@ export default function RootLayout({
       <body>
         <Back2ULoader />
         <Navigation />
-        <main>{children}</main>
+        <main className="min-h-[calc(100dvh-64px)] flex flex-col">{children}</main>
       </body>
     </html>
   );

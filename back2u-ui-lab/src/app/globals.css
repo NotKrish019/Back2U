@@ -7,7 +7,28 @@
   --color-white: #FFFFFF;
   --color-dark-text: #202124;
   --color-accent-pink: #F29BB2;
+  
+  --animate-ripple: ripple 2s ease calc(var(--i, 0) * 0.2s) infinite;
+  --animate-orbit: orbit calc(var(--duration) * 1s) linear infinite;
 }
+
+@keyframes ripple {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(0.9); }
+}
+
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateY(calc(var(--radius) * 1px)) rotate(0deg); }
+  100% { transform: rotate(360deg) translateY(calc(var(--radius) * 1px)) rotate(-360deg); }
+}
+
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
 
 :root {
   --sky: #A7D8F5;
@@ -16,6 +37,7 @@
   --white: #FFFFFF;
   --dark-text: #202124;
   --accent-pink: #F29BB2;
+  --skeleton: #E0E0E0;
 }
 
 body {

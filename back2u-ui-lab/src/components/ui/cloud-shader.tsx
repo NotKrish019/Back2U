@@ -228,9 +228,9 @@ export const CloudShader = ({
   children,
   speed = 1,
   count = 6,
-  cloudColor = "#FFFFFF",
-  skyTopColor = "#C5B5E8",
-  skyBottomColor = "#A7D8F5",
+  cloudColor = "#fbf8f2",
+  skyTopColor = "#3876ba",
+  skyBottomColor = "#8cbfe8",
 }: CloudShaderProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const paramsRef = useRef({
