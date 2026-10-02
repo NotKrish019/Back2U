@@ -1,13 +1,18 @@
 @import "tailwindcss";
 
 @theme {
+  --color-deep-plum: #332653;
+  --color-mid-plum: #4A3B73;
+  --color-dark-plum: #241C3D;
+  --color-accent-pink: #F27D9B;
+  --color-soft-pink: #EFA0B5;
+  --color-periwinkle: #788BD8;
   --color-sky: #A7D8F5;
   --color-lavender: #C5B5E8;
   --color-deep-purple: #3D315B;
-  --color-white: #FFFFFF;
-  --color-dark-text: #202124;
-  --color-accent-pink: #F29BB2;
-  
+  --color-white: #FFF9FC;
+  --color-cream: #FFF9F3;
+  --color-body-text: #293052;
   --animate-ripple: ripple 2s ease calc(var(--i, 0) * 0.2s) infinite;
   --animate-orbit: orbit calc(var(--duration) * 1s) linear infinite;
 }
@@ -31,18 +36,24 @@
 
 
 :root {
+  --deep-plum: #332653;
+  --mid-plum: #4A3B73;
+  --dark-plum: #241C3D;
+  --accent-pink: #F27D9B;
+  --soft-pink: #EFA0B5;
+  --periwinkle: #788BD8;
   --sky: #A7D8F5;
   --lavender: #C5B5E8;
   --deep-purple: #3D315B;
-  --white: #FFFFFF;
-  --dark-text: #202124;
-  --accent-pink: #F29BB2;
+  --white: #FFF9FC;
+  --cream: #FFF9F3;
+  --body-text: #293052;
   --skeleton: #E0E0E0;
 }
 
 body {
   background-color: var(--sky);
-  color: var(--dark-text);
+  color: var(--body-text);
   font-family: "DM Sans", sans-serif;
 }
 
