@@ -38,19 +38,11 @@ export default function Back2UHero() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=1200", // Scroll distance
+          end: "+=700", // Reduced scroll distance for faster transition
           pin: true,
           scrub: 0.5, // Smooth scrubbing
         }
       });
-
-      // 2. Crowd blurs out at the very end of the scroll (85% to 100%)
-      // Do not reduce opacity, just blur
-      tl.to(crowdRef.current, {
-        filter: "blur(12px)",
-        duration: 0.15,
-        ease: "power1.inOut",
-      }, 0.85);
 
     }, containerRef);
 
@@ -71,8 +63,8 @@ export default function Back2UHero() {
         />
       </div>
 
-      {/* HAZE */}
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-sky/60 to-transparent pointer-events-none z-10" />
+      {/* HAZE & SEAMLESS TRANSITION */}
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#F7F2F7] via-sky/50 to-transparent pointer-events-none z-10" />
 
       {/* CROWD CANVAS LAYER (Z-20) */}
       <div ref={crowdRef} className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-hidden">

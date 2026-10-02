@@ -1,15 +1,18 @@
 import Back2UHero from "@/components/Back2UHero";
+import ChoiceSection from "@/components/ChoiceSection";
+import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
+
 export default function Home() {
   return (
-    <main className="min-h-screen w-full bg-white text-black">
+    <main className="min-h-screen w-full text-black overflow-x-hidden relative">
+      {/* Global Background for the lower sections */}
+      <GlobalMeshBackground />
+
       {/* 100vh Hero Section */}
       <Back2UHero />
 
-      {/* Placeholder Sections */}
-      <section className="flex min-h-[50vh] flex-col items-center justify-center border-t border-black/10 px-6 py-24 text-center">
-        <h2 className="text-xs font-semibold tracking-widest text-black/40 uppercase mb-2">SECTION 01</h2>
-        <h3 className="text-3xl font-light tracking-tight">SEARCH</h3>
-      </section>
+      {/* Choice Section (Two Paths) */}
+      <ChoiceSection />
 
       <section className="flex min-h-[50vh] flex-col items-center justify-center border-t border-black/10 px-6 py-24 text-center">
         <h2 className="text-xs font-semibold tracking-widest text-black/40 uppercase mb-2">SECTION 02</h2>
