@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CrowdCanvas } from "@/components/ui/skiper39";
 import { CloudShader } from "@/components/ui/cloud-shader";
+import CloudTransition from "@/components/ui/CloudTransition";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -32,21 +33,7 @@ export default function Back2UHero() {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
-    const ctx = gsap.context(() => {
-      // 1. Create the ScrollTrigger Timeline to pin the hero
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "+=700", // Reduced scroll distance for faster transition
-          pin: true,
-          scrub: 0.5, // Smooth scrubbing
-        }
-      });
-
-    }, containerRef);
-
-    return () => ctx.revert();
+    // No scroll trigger needed, we will use native sticky scrolling for the overlap.
   }, []);
 
   return (
@@ -63,8 +50,8 @@ export default function Back2UHero() {
         />
       </div>
 
-      {/* HAZE & SEAMLESS TRANSITION */}
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#F7F2F7] via-sky/50 to-transparent pointer-events-none z-10" />
+      {/* ORGANIC CLOUD TRANSITION */}
+      <CloudTransition />
 
       {/* CROWD CANVAS LAYER (Z-20) */}
       <div ref={crowdRef} className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-hidden">

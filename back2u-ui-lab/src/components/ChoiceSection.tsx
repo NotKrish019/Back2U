@@ -1,10 +1,9 @@
-'use client';
 import { ArrowRight } from 'lucide-react';
 
 export default function ChoiceSection() {
   return (
-    <section className="w-full relative px-6 py-24 md:py-32 bg-white/50 backdrop-blur-[18px] backdrop-saturate-[1.15] shadow-[0_20px_60px_rgba(61,49,91,0.06)] border-t border-white/40">
-      <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-8 items-start">
+    <section className="w-full relative px-6 py-24 md:py-32 bg-white/50 backdrop-blur-[18px] backdrop-saturate-[1.15] shadow-[0_20px_60px_rgba(61,49,91,0.06)] border-t border-transparent z-0">
+      <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-8 items-start relative z-10">
         
         {/* LEFT COLUMN: INTRO */}
         <div className="flex flex-col pr-0 md:pr-12">
