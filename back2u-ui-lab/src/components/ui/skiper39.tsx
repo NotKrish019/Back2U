@@ -43,13 +43,14 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
       }
       
       let scale = 1;
-      let offsetY = randomRange(5, 12); // Pushed DOWN slightly so the flat bottom is always hidden
+      // Push all rows down slightly so the flat crop is hidden, but NOT enough to cut off their bodies
+      let offsetY = randomRange(5, 12); 
       
       if (row === 0) {
-        scale = randomRange(0.95, 1.10);
+        scale = randomRange(0.85, 1.0);
         peep.anchorY = 100; // Force Front Row to render last (on top)
       } else if (row === 1) {
-        scale = randomRange(0.75, 0.90);
+        scale = randomRange(0.70, 0.85);
         peep.anchorY = 50;  // Force Middle Row to render between
       } else {
         scale = randomRange(0.55, 0.70);
@@ -79,7 +80,6 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
 
       peep.x = startX;
       peep.y = startY;
-      // Note: anchorY is already set by row assignment for perfect depth sorting
 
       return {
         startX,
@@ -91,7 +91,7 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
     const normalWalk = ({ peep, props }: { peep: any; props: any }) => {
       const { startX, startY, endX } = props;
       const xDuration = 10;
-      const yDuration = 0.3; 
+      const yDuration = 0.25;
 
       const tl = gsap.timeline();
       tl.timeScale(randomRange(0.8, 1.2));
@@ -120,6 +120,7 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
 
     const walks = [normalWalk];
 
+    // TYPES
     type Peep = {
       image: HTMLImageElement;
       rect: number[];
@@ -136,6 +137,7 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
       render: (ctx: CanvasRenderingContext2D) => void;
     };
 
+    // FACTORY FUNCTIONS
     const createPeep = ({
       image,
       rect,
@@ -184,13 +186,14 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
       return peep;
     };
 
+    // MAIN
     const stage = {
       width: 0,
       height: 0,
     };
     
-    // Increased to 1.1 to ensure characters occupy ~25% of the hero section
-    const globalScale = 1.1;
+    // Scale everything down so it fits reasonably in the bottom 25% on Retina displays
+    const globalScale = 0.7;
 
     const allPeeps: Peep[] = [];
     const availablePeeps: Peep[] = [];
@@ -198,8 +201,8 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
 
     const createPeeps = (loadedImages: HTMLImageElement[]) => {
       loadedImages.forEach((img) => {
-        // Create 1 or 2 instances (avg ~1.75) to reduce density by ~10-15% from previous 2x
-        const instances = Math.random() < 0.75 ? 2 : 1;
+        // Create 2 to 3 instances to ensure high density (increased by 15-20%)
+        const instances = Math.random() < 0.5 ? 3 : 2;
         for (let i = 0; i < instances; i++) {
           allPeeps.push(
             createPeep({
@@ -269,9 +272,6 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
 
       crowd.length = 0;
       availablePeeps.length = 0;
-      
-      // Fix: We must not push the same object references multiple times.
-      // We will push the allPeeps, and if we want more density, we create more instances.
       availablePeeps.push(...allPeeps);
 
       initCrowd();
@@ -310,28 +310,8 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
     };
   }, []);
   return (
-    <canvas ref={canvasRef} className="absolute bottom-0 h-[90vh] w-full" />
+    <canvas ref={canvasRef} className="absolute bottom-0 h-[90vh] w-full pointer-events-none" />
   );
 };
 
-const Skiper39 = () => {
-  return (
-    <div className="relative h-full w-full bg-white text-black">
-      <div className="absolute top-22 left-1/2 grid -translate-x-1/2 content-start justify-items-center gap-6 text-center text-black">
-        <span className="relative max-w-[12ch] text-xs uppercase leading-tight opacity-40 after:absolute after:left-1/2 after:top-full after:h-16 after:w-px after:bg-gradient-to-b after:from-white after:to-black after:content-['']">
-          BACK2U / CAMPUS CROWD
-        </span>
-      </div>
-      <div className="absolute bottom-0 h-full w-screen">
-        <CrowdCanvas
-          src="/assets/crowd-sprite.png"
-          rows={15}
-          cols={7}
-        />
-      </div>
-    </div>
-  );
-};
-
-export { CrowdCanvas, Skiper39 };
-export default Skiper39;
+export { CrowdCanvas };
