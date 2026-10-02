@@ -24,13 +24,13 @@ export default function GlobalMeshBackground() {
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Soft Pink/Lavender/White palette matching BACK2U
+    // Vibrant Pink/Lavender/White palette matching BACK2U but with higher contrast
     const blobs = [
       { color: '255, 255, 255',   x: 0.67, y: 0.45, size: 0.8, pX: 1.2, pY: 3.4 },
-      { color: '242, 155, 178',   x: 0.35, y: 0.65, size: 0.6, pX: 4.1, pY: 1.8 },
-      { color: '197, 181, 232',   x: 0.48, y: 0.20, size: 0.7, pX: 2.5, pY: 5.2 },
-      { color: '242, 155, 178',   x: 0.80, y: 0.88, size: 0.6, pX: 0.9, pY: 2.1 },
-      { color: '197, 181, 232',   x: 0.15, y: 0.15, size: 0.7, pX: 5.5, pY: 0.4 },
+      { color: '255, 110, 160',   x: 0.35, y: 0.65, size: 0.6, pX: 4.1, pY: 1.8 }, // Vibrant Pink
+      { color: '170, 130, 240',   x: 0.48, y: 0.20, size: 0.7, pX: 2.5, pY: 5.2 }, // Vibrant Lavender
+      { color: '255, 110, 160',   x: 0.80, y: 0.88, size: 0.6, pX: 0.9, pY: 2.1 }, // Vibrant Pink
+      { color: '170, 130, 240',   x: 0.15, y: 0.15, size: 0.7, pX: 5.5, pY: 0.4 }, // Vibrant Lavender
       { color: '255, 255, 255',   x: 0.50, y: 0.50, size: 0.9, pX: 3.2, pY: 4.4 }, // large central white glow
     ];
 
@@ -43,25 +43,25 @@ export default function GlobalMeshBackground() {
       }
       
       const t = (time - startT) / 1000;
-      const ph = t * 0.15; // Very slow, ambient movement
+      const ph = t * 0.45; // Increased speed from 0.15 for more observable movement
       
       // Base background color
-      ctx.fillStyle = '#F7F2F7';
+      ctx.fillStyle = '#F4EEF4'; // Slightly darker neutral to make colors pop
       ctx.fillRect(0, 0, w, h);
 
       for (const blob of blobs) {
         // EXACT zero at t=0: (sin(ph + p) - sin(p))
-        const modX = (Math.sin(ph * 0.55 + blob.pX) - Math.sin(blob.pX)) * 0.18;
-        const modY = (Math.sin(ph * 0.43 + blob.pY) - Math.sin(blob.pY)) * 0.18;
+        const modX = (Math.sin(ph * 0.55 + blob.pX) - Math.sin(blob.pX)) * 0.25; // Increased movement range
+        const modY = (Math.sin(ph * 0.43 + blob.pY) - Math.sin(blob.pY)) * 0.25;
         
         const cx = (blob.x + modX) * w;
         const cy = (blob.y + modY) * h;
         const radius = blob.size * Math.max(w, h);
 
         const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        // Soft envelope
-        grad.addColorStop(0, `rgba(${blob.color}, 0.8)`);
-        grad.addColorStop(0.4, `rgba(${blob.color}, 0.4)`);
+        // Stronger opacity stops for more contrast
+        grad.addColorStop(0, `rgba(${blob.color}, 0.95)`);
+        grad.addColorStop(0.5, `rgba(${blob.color}, 0.6)`);
         grad.addColorStop(1, `rgba(${blob.color}, 0)`);
 
         ctx.fillStyle = grad;

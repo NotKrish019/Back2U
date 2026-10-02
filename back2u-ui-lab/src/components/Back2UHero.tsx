@@ -5,7 +5,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CrowdCanvas } from "@/components/ui/skiper39";
 import { CloudShader } from "@/components/ui/cloud-shader";
-import CloudTransition from "@/components/ui/CloudTransition";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -26,6 +25,7 @@ export default function Back2UHero() {
     }, 2500);
     return () => clearInterval(interval);
   }, []);
+  
   useEffect(() => {
     if (!containerRef.current || !titleContainerRef.current) return;
 
@@ -37,7 +37,14 @@ export default function Back2UHero() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[100svh] bg-sky">
+    <div 
+      ref={containerRef} 
+      className="relative w-full h-[100svh] bg-sky"
+      style={{
+        WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)",
+        maskImage: "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)"
+      }}
+    >
       {/* ATMOSPHERIC SKY (needs overflow-hidden so shader doesn't bleed) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <CloudShader
@@ -49,9 +56,6 @@ export default function Back2UHero() {
           skyBottomColor="#A7D8F5"
         />
       </div>
-
-      {/* ORGANIC CLOUD TRANSITION */}
-      <CloudTransition />
 
       {/* CROWD CANVAS LAYER (Z-20) */}
       <div ref={crowdRef} className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-hidden">
