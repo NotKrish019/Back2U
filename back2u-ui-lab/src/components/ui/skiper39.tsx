@@ -11,6 +11,7 @@ interface CrowdCanvasProps {
 
 const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const reflectionRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -256,6 +257,15 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
       });
 
       ctx.restore();
+
+      // Copy frame to reflection
+      if (reflectionRef.current) {
+        const refCtx = reflectionRef.current.getContext("2d");
+        if (refCtx) {
+          refCtx.clearRect(0, 0, reflectionRef.current.width, reflectionRef.current.height);
+          refCtx.drawImage(canvas, 0, 0);
+        }
+      }
     };
 
     const resize = () => {
@@ -264,6 +274,11 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
       stage.height = canvas.clientHeight;
       canvas.width = canvas.clientWidth * devicePixelRatio;
       canvas.height = canvas.clientHeight * devicePixelRatio;
+
+      if (reflectionRef.current) {
+        reflectionRef.current.width = canvas.width;
+        reflectionRef.current.height = canvas.height;
+      }
 
       crowd.forEach((peep) => {
         peep.walk.kill();
@@ -309,7 +324,17 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
     };
   }, []);
   return (
-    <canvas ref={canvasRef} className="absolute bottom-0 h-[90vh] w-full pointer-events-none" />
+    <>
+      <canvas ref={canvasRef} className="absolute bottom-0 w-full h-[90vh] object-cover pointer-events-none z-10" />
+      <canvas 
+        ref={reflectionRef} 
+        className="absolute bottom-0 w-full h-[90vh] object-cover pointer-events-none z-0 opacity-70 blur-[10px] md:blur-[16px] origin-bottom scale-y-[-1]"
+        style={{
+          maskImage: "linear-gradient(to top, black 0%, transparent 45%)",
+          WebkitMaskImage: "linear-gradient(to top, black 0%, transparent 45%)"
+        }}
+      />
+    </>
   );
 };
 
