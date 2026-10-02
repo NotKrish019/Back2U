@@ -47,20 +47,21 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
       let offsetY = randomRange(5, 12); 
       
       if (row === 0) {
-        scale = randomRange(0.85, 1.0);
+        scale = randomRange(0.95, 1.10) * 1.1;
         peep.anchorY = 100; // Force Front Row to render last (on top)
       } else if (row === 1) {
-        scale = randomRange(0.70, 0.85);
+        scale = randomRange(0.75, 0.90) * 1.1;
         peep.anchorY = 50;  // Force Middle Row to render between
       } else {
-        scale = randomRange(0.55, 0.70);
+        scale = randomRange(0.55, 0.70) * 1.1;
         peep.anchorY = 0;   // Force Back Row to render first (behind)
       }
       
       peep.scale = scale;
 
       // Base Y Calculation - Align BOTTOM of scaled character precisely with bottom of screen
-      const startY = stage.height - (peep.height * scale) + offsetY;
+      // Add a slightly larger offset to ensure it's firmly stuck to the bottom across all zoom levels
+      const startY = stage.height - (peep.height * scale) + offsetY + 2;
       
       let startX: number;
       let endX: number;
@@ -191,9 +192,7 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
       width: 0,
       height: 0,
     };
-    
-    // Scale everything down so it fits reasonably in the bottom 25% on Retina displays
-    const globalScale = 0.7;
+
 
     const allPeeps: Peep[] = [];
     const availablePeeps: Peep[] = [];
@@ -250,7 +249,7 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
       if (!canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.save();
-      ctx.scale(devicePixelRatio * globalScale, devicePixelRatio * globalScale);
+      ctx.scale(devicePixelRatio, devicePixelRatio);
 
       crowd.forEach((peep) => {
         peep.render(ctx);
@@ -261,8 +260,8 @@ const CrowdCanvas = ({ dir = "/assets/peeps/", count = 95 }: CrowdCanvasProps) =
 
     const resize = () => {
       if (!canvas) return;
-      stage.width = canvas.clientWidth / globalScale;
-      stage.height = canvas.clientHeight / globalScale;
+      stage.width = canvas.clientWidth;
+      stage.height = canvas.clientHeight;
       canvas.width = canvas.clientWidth * devicePixelRatio;
       canvas.height = canvas.clientHeight * devicePixelRatio;
 

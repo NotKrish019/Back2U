@@ -24,7 +24,7 @@ export default function Back2UHero() {
 
       {/* CROWD CANVAS LAYER (MIDGROUND) */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-20">
-        <CrowdCanvas />
+        <CrowdCanvas count={35} />
       </div>
 
       {/* SIMPLE BACK2U BRANDING (FOREGROUND) */}
