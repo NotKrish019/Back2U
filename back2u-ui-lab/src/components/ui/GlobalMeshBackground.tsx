@@ -24,13 +24,13 @@ export default function GlobalMeshBackground() {
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Softened Pastel Pink/Lavender/White palette matching BACK2U
+    // Soft Pink/Lavender/White palette matching BACK2U
     const blobs = [
       { color: '255, 255, 255',   x: 0.67, y: 0.45, size: 0.8, pX: 1.2, pY: 3.4 },
-      { color: '248, 135, 172',   x: 0.35, y: 0.65, size: 0.6, pX: 4.1, pY: 1.8 }, // Soft Pastel Pink
-      { color: '185, 155, 235',   x: 0.48, y: 0.20, size: 0.7, pX: 2.5, pY: 5.2 }, // Soft Pastel Lavender
-      { color: '248, 135, 172',   x: 0.80, y: 0.88, size: 0.6, pX: 0.9, pY: 2.1 }, // Soft Pastel Pink
-      { color: '185, 155, 235',   x: 0.15, y: 0.15, size: 0.7, pX: 5.5, pY: 0.4 }, // Soft Pastel Lavender
+      { color: '242, 155, 178',   x: 0.35, y: 0.65, size: 0.6, pX: 4.1, pY: 1.8 },
+      { color: '197, 181, 232',   x: 0.48, y: 0.20, size: 0.7, pX: 2.5, pY: 5.2 },
+      { color: '242, 155, 178',   x: 0.80, y: 0.88, size: 0.6, pX: 0.9, pY: 2.1 },
+      { color: '197, 181, 232',   x: 0.15, y: 0.15, size: 0.7, pX: 5.5, pY: 0.4 },
       { color: '255, 255, 255',   x: 0.50, y: 0.50, size: 0.9, pX: 3.2, pY: 4.4 }, // large central white glow
     ];
 
@@ -46,7 +46,7 @@ export default function GlobalMeshBackground() {
       const ph = t * 0.45; // Increased speed from 0.15 for more observable movement
       
       // Base background color
-      ctx.fillStyle = '#F4EEF4'; // Slightly darker neutral to make colors pop
+      ctx.fillStyle = '#F7F2F7';
       ctx.fillRect(0, 0, w, h);
 
       for (const blob of blobs) {
@@ -59,9 +59,9 @@ export default function GlobalMeshBackground() {
         const radius = blob.size * Math.max(w, h);
 
         const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        // Softer opacity stops for reduced contrast
+        // Soft envelope
         grad.addColorStop(0, `rgba(${blob.color}, 0.8)`);
-        grad.addColorStop(0.5, `rgba(${blob.color}, 0.45)`);
+        grad.addColorStop(0.4, `rgba(${blob.color}, 0.4)`);
         grad.addColorStop(1, `rgba(${blob.color}, 0)`);
 
         ctx.fillStyle = grad;
