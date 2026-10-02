@@ -1,6 +1,7 @@
 import Back2UHero from "@/components/Back2UHero";
 import ChoiceSection from "@/components/ChoiceSection";
 import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
+import { ScrollStripTransition } from "@/components/ui/scroll-strip-transition";
 
 export default function Home() {
   return (
@@ -8,11 +9,12 @@ export default function Home() {
       {/* Global Background for the lower sections */}
       <GlobalMeshBackground />
 
-      {/* 100vh Hero Section */}
-      <Back2UHero />
-
-      {/* Choice Section (Two Paths) */}
-      <ChoiceSection />
+      <ScrollStripTransition
+        outgoing={<Back2UHero />}
+        incoming={<ChoiceSection />}
+        stripsCount={24}
+        scrollDistance={800}
+      />
 
       <section className="flex min-h-[50vh] flex-col items-center justify-center border-t border-black/10 px-6 py-24 text-center">
         <h2 className="text-xs font-semibold tracking-widest text-black/40 uppercase mb-2">SECTION 02</h2>
