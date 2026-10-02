@@ -40,10 +40,6 @@ export default function Back2UHero() {
     <div 
       ref={containerRef} 
       className="relative w-full h-[100svh] bg-sky"
-      style={{
-        WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)",
-        maskImage: "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)"
-      }}
     >
       {/* ATMOSPHERIC SKY (needs overflow-hidden so shader doesn't bleed) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
