@@ -96,7 +96,7 @@ export const CursorFollower = () => {
   if (typeof window === "undefined" || !isVisible) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[100] overflow-hidden mix-blend-difference">
+    <div className="pointer-events-none fixed inset-0 z-[100] overflow-hidden">
       <div
         className="absolute rounded-full bg-[var(--color-hot-pink)]"
         style={{
