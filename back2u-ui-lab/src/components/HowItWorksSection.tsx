@@ -100,14 +100,15 @@ export default function HowItWorksSection() {
           </div>
 
           {/* Right Panels - Scrollable Content */}
-          <div className="lg:col-span-7 flex flex-col gap-6">
+          <div className="lg:col-span-7 flex flex-col gap-16 lg:gap-32 lg:py-16">
             {steps.map((step, idx) => (
               <motion.div
                 key={idx}
-                className={`${step.bgColor} border-2 border-[var(--color-retro-border)] p-6 shadow-[4px_4px_0px_#1A1A1A] transition-all duration-300 relative`}
+                onClick={() => setActiveStep(idx)}
+                className={`cursor-pointer ${step.bgColor} border-2 border-[var(--color-retro-border)] p-6 md:p-10 lg:min-h-[40vh] flex flex-col justify-center shadow-[4px_4px_0px_#1A1A1A] transition-all duration-300 relative`}
                 initial={{ opacity: 0.8, x: 0 }}
                 whileInView={{ opacity: 1, x: -4 }}
-                viewport={{ margin: "-40% 0px -40% 0px", once: false }}
+                viewport={{ amount: 0.5, once: false }}
                 onViewportEnter={() => setActiveStep(idx)}
                 style={{
                   transform: activeStep === idx ? 'translateX(-8px)' : 'translateX(0)',
