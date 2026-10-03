@@ -2,6 +2,7 @@ import Back2UHero from "@/components/Back2UHero";
 import ChoiceSection from "@/components/ChoiceSection";
 import Back2UInteractiveSection from "@/components/Back2UInteractiveSection";
 import AboutSection from "@/components/AboutSection";
+import HowItWorksSection from "@/components/HowItWorksSection";
 import ResearchSection from "@/components/ResearchSection";
 import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
 import TicketStubFooter from "@/components/ui/ticket-stub-footer";
@@ -19,6 +20,9 @@ export default function Home() {
 
       {/* The new Stitch-inspired Section 4 */}
       <AboutSection />
+
+      {/* Workflow Section */}
+      <HowItWorksSection />
 
       {/* The new Research Grid Section 5 */}
       <ResearchSection />
