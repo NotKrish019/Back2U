@@ -31,6 +31,11 @@ export function Back2ULoader() {
   });
 
   useEffect(() => {
+    if (typeof window !== "undefined" && sessionStorage.getItem("back2u-loader-played") === "true") {
+      setStage("done");
+      return;
+    }
+
     // Check for reduced motion
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     stateRef.current.reducedMotion = mediaQuery.matches;
@@ -59,6 +64,9 @@ export function Back2ULoader() {
 
     doneTimer = setTimeout(() => {
       setStage("done");
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("back2u-loader-played", "true");
+      }
     }, totalTime);
 
     return () => {
