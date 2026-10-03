@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { UserRound, FileText, Check } from 'lucide-react';
 import { SectionLabel, PageTop, Button } from '../report/lost/ManusUILab';
 import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
-import TicketStubFooter from "@/components/ui/ticket-stub-footer";
 import Navigation from "@/components/Navigation";
 import "../report/lost/report.css";
 
@@ -180,12 +179,6 @@ export default function SettingsPage() {
       </main>
 
       <div className="relative z-10">
-        <TicketStubFooter 
-          brand="BACK2U"
-          wordmark="BACK2U"
-          company="BACK2U"
-          eyebrow={["LOST TODAY. BACK TO YOU TOMORROW.", "FIND \u00b7 REUNITE \u00b7 BELONG", "PHOTO \u00b7 DESCRIPTION \u00b7 LOCATION \u2192 POSSIBLE MATCH", "ONE PLACE FOR LOST & FOUND", "BUILT FOR CAMPUS LIFE"]}
-        />
       </div>
     </div>
   );

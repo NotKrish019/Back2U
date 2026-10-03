@@ -2,6 +2,8 @@ import "./globals.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Navigation from "@/components/Navigation";
 
+import TicketStubFooter from "@/components/ui/ticket-stub-footer";
+
 export const metadata = {
   title: "Back2U | UI Lab",
   description: "Minimal Wireframe",
@@ -21,6 +23,47 @@ export default function RootLayout({
       <body>
         <Navigation />
         <main className="pt-[100px] min-h-screen flex flex-col">{children}</main>
+        <TicketStubFooter 
+          brand="BACK2U"
+          wordmark="BACK2U"
+          company="BACK2U"
+          eyebrow={[
+            "LOST TODAY. BACK TO YOU TOMORROW.",
+            "FIND \u00b7 REUNITE \u00b7 BELONG",
+            "PHOTO \u00b7 DESCRIPTION \u00b7 LOCATION \u2192 POSSIBLE MATCH",
+            "ONE PLACE FOR LOST & FOUND",
+            "BUILT FOR CAMPUS LIFE"
+          ]}
+          headline={["WHAT'S LOST CAN FIND", "ITS WAY BACK2U."]}
+          description="Search by photo, description, place, or whatever you remember."
+          cta={{ label: "I LOST SOMETHING", href: "/report/lost" }}
+          sections={[
+            { label: "FIND" },
+            { label: "MATCH" },
+            { label: "VERIFY" },
+            { label: "REUNITE" },
+            { label: "BELONG" }
+          ]}
+          linkGroups={[
+            {
+              title: "FIND & RECOVER",
+              links: [
+                { label: "Report Lost", href: "/report/lost" },
+                { label: "Report Found", href: "/report/found" }
+              ],
+            },
+            {
+              title: "BACK2U",
+              links: [
+                { label: "My Reports", href: "/reports" },
+                { label: "Support", href: "/support" },
+                { label: "Privacy", href: "/privacy" },
+                { label: "Terms", href: "/terms" }
+              ],
+            },
+          ]}
+          blurb="Back2U combines image understanding, textual description and contextual signals to retrieve and rank possible matches for the same physical item."
+        />
       </body>
     </html>
   );
