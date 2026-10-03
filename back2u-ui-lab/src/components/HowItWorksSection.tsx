@@ -13,7 +13,7 @@ export default function HowItWorksSection() {
       description: "Start with a quick photo. It doesn't have to be perfect.",
       badge: "[REPORT]",
       bgColor: "bg-[#E4DDF7]", // pastel-lavender
-      image: "/mocks/step1.jpg"
+      image: "/mocks/workflow_step1.jpg"
     },
     {
       label: "STEP 02",
@@ -21,7 +21,7 @@ export default function HowItWorksSection() {
       description: "Add a place, a date, a colour — anything that helps.",
       badge: "[IMAGE + TEXT]",
       bgColor: "bg-[#FFD6BE]", // pastel-peach
-      image: "/mocks/step2.jpg"
+      image: "/mocks/workflow_step2.jpg"
     },
     {
       label: "STEP 03",
@@ -29,7 +29,7 @@ export default function HowItWorksSection() {
       description: "A short list of possible matches, explained like a human.",
       badge: "[REVIEW]",
       bgColor: "bg-[#C4EED0]", // pastel-mint
-      image: "/mocks/step3.jpg"
+      image: "/mocks/workflow_step3.jpg"
     }
   ];
 
@@ -100,19 +100,37 @@ export default function HowItWorksSection() {
           </div>
 
           {/* Right Panels - Scrollable Content */}
-          <div className="lg:col-span-7 flex flex-col">
+          <div className="lg:col-span-7 flex flex-col relative z-0">
             {steps.map((step, idx) => (
-              <div key={idx} className="min-h-[70vh] flex flex-col justify-center py-12 lg:py-0">
-                <motion.div
-                  onClick={() => setActiveStep(idx)}
-                  className={`cursor-pointer ${step.bgColor} border-2 border-[var(--color-retro-border)] p-6 shadow-[4px_4px_0px_#1A1A1A] transition-all duration-300 relative`}
-                  initial={{ opacity: 0.8, x: 0 }}
-                  whileInView={{ opacity: 1, x: -4 }}
-                  viewport={{ amount: 0.5, once: false }}
-                  onViewportEnter={() => setActiveStep(idx)}
+              <motion.div
+                key={idx}
+                id={`workflow-step-${idx}`}
+                className="min-h-[65vh] flex flex-col justify-center py-12"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ margin: "-40% 0px -40% 0px", amount: "some" }}
+                onViewportEnter={() => setActiveStep(idx)}
+              >
+                <div
+                  onClick={() => {
+                    setActiveStep(idx);
+                    document.getElementById(`workflow-step-${idx}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setActiveStep(idx);
+                      document.getElementById(`workflow-step-${idx}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                  }}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Activate workflow step ${idx + 1}`}
+                  className={`${step.bgColor} border-2 border-[var(--color-retro-border)] p-6 shadow-[4px_4px_0px_#1A1A1A] transition-all duration-300 relative cursor-pointer outline-none focus-visible:ring-4 focus-visible:ring-[#FF3E72]`}
                   style={{
                     transform: activeStep === idx ? 'translateX(-8px)' : 'translateX(0)',
                     boxShadow: activeStep === idx ? '6px 6px 0px #1A1A1A' : '4px 4px 0px #1A1A1A',
+                    opacity: activeStep === idx ? 1 : 0.6,
                   }}
                 >
                 
@@ -137,8 +155,8 @@ export default function HowItWorksSection() {
                 <p className="font-['Work_Sans'] text-[16px] text-[var(--color-retro-charcoal)] leading-relaxed font-medium max-w-lg">
                   {step.description}
                 </p>
+                </div>
               </motion.div>
-            </div>
             ))}
           </div>
           
