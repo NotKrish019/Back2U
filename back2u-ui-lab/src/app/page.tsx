@@ -7,11 +7,15 @@ import ResearchSection from "@/components/ResearchSection";
 import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
 import TicketStubFooter from "@/components/ui/ticket-stub-footer";
 import { Back2ULoader } from "@/components/Back2ULoader";
+import { cookies } from "next/headers";
 
 export default function Home() {
+  const cookieStore = cookies();
+  const loaderPlayed = cookieStore.get("back2u-loader-played")?.value === "true";
+
   return (
     <main className="min-h-screen w-full text-black overflow-x-hidden relative">
-      <Back2ULoader />
+      {!loaderPlayed && <Back2ULoader />}
       {/* Global Background for the lower sections */}
       <GlobalMeshBackground />
 

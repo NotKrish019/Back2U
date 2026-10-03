@@ -31,9 +31,13 @@ export function Back2ULoader() {
   });
 
   useEffect(() => {
-    if (typeof window !== "undefined" && sessionStorage.getItem("back2u-loader-played") === "true") {
-      setStage("done");
-      return;
+    try {
+      if (typeof window !== "undefined" && sessionStorage.getItem("back2u-loader-played") === "true") {
+        setStage("done");
+        return;
+      }
+    } catch (error) {
+      console.warn("sessionStorage is not accessible", error);
     }
 
     // Check for reduced motion
@@ -64,8 +68,13 @@ export function Back2ULoader() {
 
     doneTimer = setTimeout(() => {
       setStage("done");
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("back2u-loader-played", "true");
+      try {
+        if (typeof window !== "undefined") {
+          document.cookie = "back2u-loader-played=true; path=/";
+          sessionStorage.setItem("back2u-loader-played", "true");
+        }
+      } catch (error) {
+        console.warn("storage set failed", error);
       }
     }, totalTime);
 
