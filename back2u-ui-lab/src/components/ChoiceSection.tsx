@@ -113,19 +113,21 @@ export default function ChoiceSection() {
             <div className="relative overflow-hidden border border-[var(--color-retro-border)] aspect-[16/10] bg-sky/30">
               <style jsx>{`
                 @keyframes atmospheric-shift {
-                  0%, 100% { filter: brightness(1) opacity(1); }
-                  50% { filter: brightness(1.02) opacity(0.97); }
+                  0%, 100% { filter: brightness(1) opacity(1); transform: scale(1.05) translate(0px, 0px); }
+                  25% { transform: scale(1.05) translate(-1%, 1%); }
+                  50% { filter: brightness(1.02) opacity(0.97); transform: scale(1.05) translate(1%, -1%); }
+                  75% { transform: scale(1.05) translate(0.5%, -0.5%); }
                 }
                 .animate-atmospheric {
-                  animation: atmospheric-shift 12s ease-in-out infinite;
+                  animation: atmospheric-shift 20s ease-in-out infinite;
                 }
                 @media (prefers-reduced-motion: reduce) {
-                  .animate-atmospheric { animation: none; }
+                  .animate-atmospheric { animation: none; transform: scale(1); }
                 }
               `}</style>
               <img 
                 alt="Back2U Campus and Lost Objects Visual" 
-                className="w-full h-full object-cover animate-atmospheric transition-transform duration-1000 ease-out group-hover:scale-[1.01] motion-reduce:transition-none motion-reduce:group-hover:scale-100" 
+                className="w-full h-full object-cover animate-atmospheric transition-transform duration-1000 ease-out group-hover:scale-[1.08] motion-reduce:transition-none motion-reduce:group-hover:scale-100" 
                 src="/wide_dreamy_pixelated_mosaic_styled_surreal_illu.png"
               />
               {/* Scanline layer overlay */}
