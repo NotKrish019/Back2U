@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 export default function HowItWorksSection() {
@@ -33,8 +33,75 @@ export default function HowItWorksSection() {
     }
   ];
 
+  const [isManualScroll, setIsManualScroll] = useState(false);
+  const manualScrollTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isManualScroll) return;
+
+      const focusLine = window.innerHeight * 0.4; // 40% from top
+      let closestIdx = activeStep;
+      let minDistance = Infinity;
+
+      steps.forEach((_, idx) => {
+        const el = document.getElementById(`workflow-step-${idx}`);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          // Calculate distance from the center of the element to the focus line
+          const elCenter = rect.top + rect.height / 2;
+          const distance = Math.abs(elCenter - focusLine);
+          
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestIdx = idx;
+          }
+        }
+      });
+
+      if (closestIdx !== activeStep) {
+        setActiveStep(closestIdx);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Trigger once on mount
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [activeStep, isManualScroll, steps.length]);
+
+  const handleStepClick = (idx: number) => {
+    setActiveStep(idx);
+    setIsManualScroll(true);
+    
+    if (manualScrollTimeout.current) {
+      clearTimeout(manualScrollTimeout.current);
+    }
+    
+    // Clear manual scroll lock after animation finishes
+    manualScrollTimeout.current = setTimeout(() => {
+      setIsManualScroll(false);
+    }, 800);
+
+    const el = document.getElementById(`workflow-step-${idx}`);
+    if (el) {
+      // Calculate position to center the element near the focus line (40% from top)
+      const rect = el.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const targetY = scrollTop + rect.top - (window.innerHeight * 0.4) + (rect.height / 2);
+      
+      window.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
-    <section className="w-full bg-[#FBF9F5] py-20 border-b-2 border-[var(--color-retro-border)]">
+    <section className="w-full bg-[#FBF9F5] py-20 border-b-2 border-[var(--color-retro-border)] relative">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-12">
           <div className="font-['Space_Mono'] text-[11px] text-[#b90a5a] uppercase font-bold tracking-[0.08em] mb-3">
@@ -94,27 +161,22 @@ export default function HowItWorksSection() {
           </div>
 
           {/* Right Panels - Scrollable Content */}
-          <div className="lg:col-span-7 flex flex-col relative z-0">
+          <div className="lg:col-span-7 flex flex-col gap-6 relative z-0">
             {steps.map((step, idx) => (
               <motion.div
                 key={idx}
                 id={`workflow-step-${idx}`}
-                className="min-h-[65vh] flex flex-col justify-center py-12"
+                className="relative"
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ margin: "-40% 0px -40% 0px", amount: "some" }}
-                onViewportEnter={() => setActiveStep(idx)}
+                viewport={{ margin: "-20% 0px -20% 0px", amount: "some" }}
               >
                 <div
-                  onClick={() => {
-                    setActiveStep(idx);
-                    document.getElementById(`workflow-step-${idx}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  }}
+                  onClick={() => handleStepClick(idx)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      setActiveStep(idx);
-                      document.getElementById(`workflow-step-${idx}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      handleStepClick(idx);
                     }
                   }}
                   tabIndex={0}
