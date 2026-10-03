@@ -143,7 +143,10 @@ export default function HowItWorksSection() {
                   />
                 ))}
                 
-
+                {/* Floating HUD Tags */}
+                <div className="absolute bottom-3 right-3 bg-[#FBF9F5] px-2.5 py-1 font-['Space_Mono'] text-[10px] text-[var(--color-retro-charcoal)] border border-[var(--color-retro-border)] shadow-[1px_1px_0px_#1A1A1A] tracking-widest uppercase">
+                  PROCESS: {steps[activeStep].badge}
+                </div>
               </div>
               
               <div className="mt-4 p-3 bg-[#FBF9F5] border border-[var(--color-retro-border)]">
