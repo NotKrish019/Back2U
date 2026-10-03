@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useRef, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 
 const useContainerDimensions = (ref: React.RefObject<HTMLElement | null>) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -89,7 +90,9 @@ const LostFoundOrbitDisplay = ({ scale = 1 }: { scale?: number }) => {
 
       <div className="z-[5] flex flex-col items-center justify-center select-none pointer-events-none mt-2">
         <h2 className="font-[Syne] font-[800] text-[#3D315B] tracking-[-0.09em] flex items-center gap-[1px]" style={{ fontSize: 'clamp(32px, 5vw, 72px)', margin: 0, lineHeight: 1 }}>
-          BACK<span className="align-super font-extrabold text-[#F29BB2]" style={{ fontSize: '0.6em', marginTop: '-0.3em', transform: 'rotate(-8deg)', display: 'inline-block' }}>2</span>U
+          <span>BACK</span>
+          <span className="text-[#F29BB2] -rotate-8 -translate-y-1 inline-block relative z-10" style={{ fontSize: '1.1em' }}>2</span>
+          <span>U</span>
         </h2>
         <span className="font-[DM Mono] uppercase tracking-[0.15em] text-[#202124]/70 mt-2 font-semibold" style={{ fontSize: 'clamp(9px, 1.5vw, 12px)' }}>
           Find What Matters
@@ -135,8 +138,22 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const leftPanelRef = useRef<HTMLDivElement>(null);
   const { width, height } = useContainerDimensions(leftPanelRef);
+  const router = useRouter();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    localStorage.setItem('demo_logged_in', 'true');
+    window.dispatchEvent(new Event('demo_auth_change'));
+    router.push('/');
+  };
 
   // Scale orbits so the largest (325px radius = 650px diameter) never exceeds 82% of the panel's min dimension.
   const minDimension = Math.min(width, height);
@@ -145,8 +162,8 @@ export default function LoginPage() {
 
   return (
     <section 
-      className='flex flex-col lg:flex-row w-full font-[DM Sans] overflow-hidden bg-white box-border' 
-      style={{ height: '100dvh', paddingTop: '76px' }}
+      className='flex-1 flex flex-col lg:flex-row w-full font-[DM Sans] overflow-hidden bg-white box-border' 
+      style={{ height: 'calc(100dvh - 100px)' }}
     >
       
       {/* Left Side - Hero Section */}
@@ -181,7 +198,7 @@ export default function LoginPage() {
           </div>
 
           {/* Form */}
-          <form className='flex flex-col gap-5' onSubmit={(e) => e.preventDefault()}>
+          <form className='flex flex-col gap-5' onSubmit={handleLogin}>
             <div className='flex flex-col gap-2'>
               <label className='text-[#202124] text-[13px] font-medium'>Email</label>
               <input
@@ -190,6 +207,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className='h-[48px] rounded-[10px] bg-[#A7D8F5]/15 border border-[#C5B5E8] px-4 text-[#202124] text-[15px] placeholder:text-[#202124]/40 focus:outline-none focus:border-[#3D315B] focus:ring-2 focus:ring-[#C5B5E8]/30 transition-all'
+                required
               />
             </div>
             
@@ -202,6 +220,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className='h-[48px] w-full rounded-[10px] bg-[#A7D8F5]/15 border border-[#C5B5E8] pl-4 pr-11 text-[#202124] text-[15px] placeholder:text-[#202124]/40 focus:outline-none focus:border-[#3D315B] focus:ring-2 focus:ring-[#C5B5E8]/30 transition-all'
+                  required
                 />
                 <button
                   type="button"
@@ -221,9 +240,10 @@ export default function LoginPage() {
 
             <button
               type='submit'
-              className='h-[48px] mt-2 rounded-[10px] bg-[#3D315B] text-white font-medium text-[15px] transition-all hover:bg-[#F29BB2] hover:-translate-y-[1px] hover:shadow-lg focus:ring-2 focus:ring-[#F29BB2] flex items-center justify-center gap-2'
+              disabled={loading}
+              className='h-[48px] mt-2 rounded-[10px] bg-[#3D315B] text-white font-medium text-[15px] transition-all hover:bg-[#F29BB2] hover:-translate-y-[1px] hover:shadow-lg focus:ring-2 focus:ring-[#F29BB2] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed'
             >
-              Sign in
+              {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
 
