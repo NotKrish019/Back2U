@@ -100,21 +100,21 @@ export default function HowItWorksSection() {
           </div>
 
           {/* Right Panels - Scrollable Content */}
-          <div className="lg:col-span-7 flex flex-col gap-16 lg:gap-32 lg:py-16">
+          <div className="lg:col-span-7 flex flex-col">
             {steps.map((step, idx) => (
-              <motion.div
-                key={idx}
-                onClick={() => setActiveStep(idx)}
-                className={`cursor-pointer ${step.bgColor} border-2 border-[var(--color-retro-border)] p-6 md:p-10 lg:min-h-[40vh] flex flex-col justify-center shadow-[4px_4px_0px_#1A1A1A] transition-all duration-300 relative`}
-                initial={{ opacity: 0.8, x: 0 }}
-                whileInView={{ opacity: 1, x: -4 }}
-                viewport={{ amount: 0.5, once: false }}
-                onViewportEnter={() => setActiveStep(idx)}
-                style={{
-                  transform: activeStep === idx ? 'translateX(-8px)' : 'translateX(0)',
-                  boxShadow: activeStep === idx ? '6px 6px 0px #1A1A1A' : '4px 4px 0px #1A1A1A',
-                }}
-              >
+              <div key={idx} className="min-h-[70vh] flex flex-col justify-center py-12 lg:py-0">
+                <motion.div
+                  onClick={() => setActiveStep(idx)}
+                  className={`cursor-pointer ${step.bgColor} border-2 border-[var(--color-retro-border)] p-6 shadow-[4px_4px_0px_#1A1A1A] transition-all duration-300 relative`}
+                  initial={{ opacity: 0.8, x: 0 }}
+                  whileInView={{ opacity: 1, x: -4 }}
+                  viewport={{ amount: 0.5, once: false }}
+                  onViewportEnter={() => setActiveStep(idx)}
+                  style={{
+                    transform: activeStep === idx ? 'translateX(-8px)' : 'translateX(0)',
+                    boxShadow: activeStep === idx ? '6px 6px 0px #1A1A1A' : '4px 4px 0px #1A1A1A',
+                  }}
+                >
                 
                 {/* Mobile inline image (hidden on desktop) */}
                 <div className="lg:hidden mb-6 relative border-2 border-[var(--color-retro-border)] aspect-video overflow-hidden">
@@ -138,6 +138,7 @@ export default function HowItWorksSection() {
                   {step.description}
                 </p>
               </motion.div>
+            </div>
             ))}
           </div>
           
