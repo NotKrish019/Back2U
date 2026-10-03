@@ -17,7 +17,7 @@ export default function TermsAndConditionsPage() {
         className="fixed inset-0 z-0 overflow-hidden pointer-events-none opacity-40"
         style={{ 
           maskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)', 
-          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)' 
+          webkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)' 
         }}
       >
         <CloudShader

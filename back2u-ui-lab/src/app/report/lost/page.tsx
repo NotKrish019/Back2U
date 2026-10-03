@@ -126,7 +126,7 @@ function ReportContent() {
             aria-hidden="true"
             style={{ 
               maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)', 
-              WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' 
+              webkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' 
             }}
           >
             <div className="report-bg-sky"></div>

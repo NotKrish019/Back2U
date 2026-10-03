@@ -47,7 +47,7 @@ export default function Back2UHero() {
         className="absolute inset-0 z-0 overflow-hidden pointer-events-none"
         style={{ 
           maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)', 
-          WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)' 
+          webkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)' 
         }}
       >
         <CloudShader
