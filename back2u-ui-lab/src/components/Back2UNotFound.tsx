@@ -164,7 +164,7 @@ export default function Back2UNotFound() {
               transition={{
                 duration: 12,
                 repeat: Infinity,
-                ease: "stepEnd",
+                ease: "linear",
                 times: [0, 0.15, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 1]
               }}
               style={{ clipPath: "inset(0 0 5% 0)" }}

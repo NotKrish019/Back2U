@@ -15,6 +15,17 @@
   --color-body-text: #293052;
   --animate-ripple: ripple 2s ease calc(var(--i, 0) * 0.2s) infinite;
   --animate-orbit: orbit calc(var(--duration) * 1s) linear infinite;
+
+  /* Stitch 1 Tokens */
+  --color-hot-magenta: #FF3366;
+  --color-retro-border: #1A1A1A;
+  --color-retro-charcoal: #140206;
+  --color-pastel-yellow: #FFF2B2;
+  --color-surface-canvas: #FBF9F5;
+  --color-on-surface-variant: #594046;
+  --color-on-surface: #1d1b17;
+  --color-hot-pink: #FF4D8D;
+  --color-on-primary: #ffffff;
 }
 
 @keyframes ripple {

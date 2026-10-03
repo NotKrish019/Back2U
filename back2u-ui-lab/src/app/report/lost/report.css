@@ -1,0 +1,455 @@
+.page-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.report-page {
+  --report-text-primary: #211C2B;
+  --report-text-secondary: #2A2140;
+  --report-text-body: #40384A;
+  --report-text-muted: #5A5261;
+  --report-accent: #FF3E72;
+  --report-btn-light: #FFF9F4;
+
+  position: relative;
+  z-index: 1;
+  color: var(--report-text-body);
+}
+
+.report-page h1,
+.report-page h2,
+.report-page .font-\[\'Syne\'\] {
+  color: var(--report-text-primary) !important;
+  font-weight: 800 !important;
+}
+
+.report-page p.text-\[var\(--color-on-surface-variant\)\] {
+  color: var(--report-text-secondary) !important;
+  font-weight: 500 !important;
+}
+
+.report-page .font-mono.text-\[11px\]:not(button) {
+  color: var(--report-text-primary) !important;
+  font-weight: 700 !important;
+}
+
+.report-page .bg-\[var\(--color-retro-charcoal\)\] {
+  background-color: var(--report-text-primary) !important;
+  color: var(--report-btn-light) !important;
+}
+
+.report-bg-wrapper {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #B4AFF2; /* soft lavender fallback */
+}
+
+.report-bg-sky {
+  position: absolute;
+  top: -2%; left: -2%; right: -2%; bottom: -2%;
+  background: linear-gradient(180deg, #9C9BDB 0%, #B1ADEC 40%, #D8C4E8 100%);
+  animation: bgSkyDrift 45s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.report-bg-clouds {
+  position: absolute;
+  top: -2%; left: -2%; right: -2%; bottom: -2%;
+  background-image: url('/images/wide_dreamy_pastel_sky_cloud_abstract_background.jpg');
+  background-size: cover;
+  background-position: center top;
+  animation: bgCloudDrift 35s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.report-bg-foreground {
+  position: absolute;
+  top: -2%; left: -2%; right: -2%; bottom: -2%;
+  background-image: url('/images/wide_dreamy_pastel_sky_cloud_abstract_background.jpg');
+  background-size: cover;
+  background-position: center top;
+  mask-image: linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(0,0,0,1) 85%, rgba(0,0,0,1) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(0,0,0,1) 85%, rgba(0,0,0,1) 100%);
+  animation: bgFgDrift 25s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes bgSkyDrift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-1%, -1%) scale(1.02); }
+}
+@keyframes bgCloudDrift {
+  0% { transform: translate(-0.5%, 0) scale(1); }
+  100% { transform: translate(0.5%, 0.5%) scale(1.01); }
+}
+@keyframes bgFgDrift {
+  0% { transform: translate(0.5%, 0.5%) scale(1.01); }
+  100% { transform: translate(-0.5%, 0) scale(1); }
+}
+
+.report-page em {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--report-accent);
+}
+
+.container-wide {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+  .container-wide {
+    padding: 0 48px;
+  }
+}
+
+.report-flow { 
+  display: grid; 
+  grid-template-columns: 235px 1fr; 
+  gap: 115px; 
+  padding-top: 76px; 
+  padding-bottom: 96px;
+}
+
+.report-progress { 
+  display: flex; 
+  flex-direction: column; 
+  border-top: 1px solid rgba(0,0,0,0.1); 
+}
+
+.report-progress button { 
+  position: relative; 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  min-height: 61px; 
+  padding: 0; 
+  border-bottom: 1px solid rgba(42,33,64,0.1); 
+  background: transparent; 
+  color: var(--report-text-muted); 
+  font-family: "Space Mono", monospace; 
+  font-size: 10px; 
+  font-weight: 500;
+  letter-spacing: .08em; 
+  text-align: left; 
+  text-transform: uppercase; 
+  transition: color 0.3s ease;
+}
+
+.report-progress button span { 
+  color: var(--report-text-muted); 
+  transition: color 0.3s ease;
+}
+
+.report-progress button i { 
+  width: 5px; 
+  height: 5px; 
+  margin-left: auto; 
+  border-radius: 50%; 
+  background: currentColor; 
+  opacity: 0; 
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.report-progress button.progress-active { 
+  color: var(--report-text-primary); 
+  font-weight: 600;
+}
+
+.report-progress button.progress-active span { 
+  color: var(--report-accent); 
+}
+
+.report-progress button.progress-active i { 
+  opacity: 1; 
+  background: var(--report-accent); 
+}
+
+.report-form { 
+  max-width: 650px; 
+  width: 100%;
+}
+
+.report-form h2 { 
+  margin-bottom: 15px; 
+  font-family: 'Syne', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--report-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.form-intro { 
+  margin: 0 0 45px; 
+  color: var(--report-text-body); 
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.5; 
+}
+
+.report-form label { 
+  display: block;
+  margin-bottom: 37px; 
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--report-text-primary);
+}
+
+.report-form label span {
+  float: right;
+  opacity: 0.8;
+  color: var(--report-text-muted);
+}
+
+.report-form input:not([type="file"]), .report-form textarea, .report-form select { 
+  width: 100%;
+  font-size: 19px; 
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--report-text-primary);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(42,33,64,0.3);
+  padding: 16px 0;
+  outline: none;
+  transition: border-color 0.3s ease;
+  margin-top: 8px;
+}
+
+.report-form input:focus, .report-form textarea:focus {
+  border-color: var(--report-accent);
+}
+
+.report-form input::placeholder, .report-form textarea::placeholder {
+  opacity: 0.5;
+  color: var(--report-text-muted);
+  font-style: normal;
+}
+
+.report-form textarea { 
+  min-height: 160px; 
+  resize: vertical; 
+  border: 1px solid rgba(42,33,64,0.3);
+  padding: 16px;
+}
+
+.field-error {
+  color: var(--report-accent);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: -20px;
+  margin-bottom: 37px;
+}
+
+.report-upload { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  min-height: 260px; 
+  gap: 10px; 
+  border: 1px solid rgba(42,33,64,0.2); 
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: blur(4px);
+  color: var(--report-text-primary); 
+  cursor: pointer; 
+  transition: border-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.report-upload:hover {
+  border-color: var(--report-accent);
+}
+
+.report-upload:hover b, .report-upload:hover svg {
+  color: var(--report-accent);
+}
+
+.report-upload b { 
+  font-family: "Syne", sans-serif; 
+  font-size: 22px; 
+  letter-spacing: -.05em; 
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+  color: var(--report-text-primary);
+}
+
+.report-upload span { 
+  color: var(--report-text-muted); 
+  font-family: "Space Mono", monospace;
+  font-size: 10px; 
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.report-upload.has-report-image { 
+  padding: 0; 
+  border-color: var(--report-accent);
+  width: fit-content;
+}
+
+.report-upload.has-report-image img { 
+  position: relative;
+  display: block;
+  max-width: 100%; 
+  max-height: 500px; 
+  width: auto;
+  height: auto;
+  object-fit: contain; 
+  mix-blend-mode: multiply;
+  opacity: 0.9;
+}
+
+.review-list { 
+  border-top: 1px solid rgba(0,0,0,0.1); 
+  margin-top: 28px; 
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: blur(4px);
+  padding: 24px;
+}
+
+.review-list div { 
+  display: grid; 
+  grid-template-columns: 150px 1fr; 
+  gap: 20px; 
+  padding: 16px 0; 
+  border-bottom: 1px solid rgba(0,0,0,0.1); 
+}
+
+.review-list div:last-child {
+  border-bottom: none;
+}
+
+.review-list span { 
+  color: var(--report-text-muted); 
+  font-family: "Space Mono", monospace; 
+  font-size: 10px; 
+  font-weight: 500;
+  letter-spacing: .1em; 
+  text-transform: uppercase;
+}
+
+.review-list b { 
+  font-family: 'Syne', sans-serif;
+  font-size: 16px; 
+  color: var(--report-text-primary);
+  font-weight: 600; 
+  white-space: pre-wrap;
+}
+
+.report-actions { 
+  display: flex; 
+  justify-content: flex-end; 
+  align-items: center; 
+  gap: 20px; 
+  margin-top: 45px; 
+  padding-top: 20px; 
+  border-top: 1px solid rgba(0,0,0,0.1); 
+}
+
+.success-page { 
+  display: flex; 
+  min-height: 690px; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  padding: 80px 20px; 
+  text-align: center; 
+}
+
+.success-mark { 
+  display: grid; 
+  width: 77px; 
+  height: 77px; 
+  place-items: center; 
+  margin-bottom: 28px; 
+  border-radius: 50%; 
+  background: var(--color-hot-magenta); 
+  color: white; 
+  box-shadow: 0 10px 30px rgba(255,0,102,0.2);
+}
+
+.success-page h1 { 
+  max-width: 650px; 
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: clamp(40px, 6vw, 64px); 
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.success-page p { 
+  max-width: 425px; 
+  margin: 0; 
+  color: rgba(0,0,0,0.6); 
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.6; 
+}
+
+.success-actions { 
+  display: flex; 
+  gap: 11px; 
+  margin-top: 45px; 
+}
+
+@media (max-width: 900px) {
+  .report-flow { grid-template-columns: 1fr; gap: 42px; padding-top: 43px; }
+  .report-progress { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 0; }
+  .report-progress button { flex-direction: column; align-items: flex-start; gap: 4px; min-height: 55px; padding: 0 5px 8px 0; border-bottom: 2px solid rgba(0,0,0,0.1); font-size: 8px; }
+  .report-progress button i { display: none; }
+  .report-progress button.progress-active { border-color: var(--report-accent); }
+  .report-form h2 { font-size: 32px; }
+  .report-form input, .report-form textarea, .report-form select { font-size: 17px; }
+  .review-list div { grid-template-columns: 92px 1fr; }
+  .report-actions { justify-content: space-between; }
+  .report-actions .button { flex: 1; }
+}
+
+/* Animations */
+.animate-step {
+  animation: slideFadeIn 0.5s ease-out forwards;
+}
+
+@keyframes slideFadeIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* React DatePicker Overrides for UI Lab */
+.react-datepicker__current-month {
+  font-family: "Syne", sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  letter-spacing: normal !important;
+  color: var(--report-text-primary) !important;
+  text-transform: uppercase !important;
+  padding: 8px 0 !important;
+}
+
+.react-datepicker__navigation {
+  top: 10px !important;
+}

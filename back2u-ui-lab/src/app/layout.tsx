@@ -1,4 +1,5 @@
 import "./globals.css";
+import "react-datepicker/dist/react-datepicker.css";
 import Navigation from "@/components/Navigation";
 import { Back2ULoader } from "@/components/Back2ULoader";
 
@@ -16,11 +17,12 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
       </head>
       <body>
         <Back2ULoader />
         <Navigation />
-        <main className="min-h-[calc(100dvh-64px)] flex flex-col">{children}</main>
+        <main className="pt-[100px] min-h-screen flex flex-col">{children}</main>
       </body>
     </html>
   );
