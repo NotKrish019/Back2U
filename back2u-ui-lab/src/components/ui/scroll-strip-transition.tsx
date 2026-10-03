@@ -75,23 +75,23 @@ export function ScrollStripTransition({
       }
 
       // Apply to incoming
-      incomingRef.current!.style.WebkitMaskImage = incomingMasks.join(", ");
+      incomingRef.current!.style.webkitMaskImage = incomingMasks.join(", ");
       incomingRef.current!.style.maskImage = incomingMasks.join(", ");
-      incomingRef.current!.style.WebkitMaskPosition = incomingPositions.join(", ");
+      incomingRef.current!.style.webkitMaskPosition = incomingPositions.join(", ");
       incomingRef.current!.style.maskPosition = incomingPositions.join(", ");
-      incomingRef.current!.style.WebkitMaskSize = incomingSizes.join(", ");
+      incomingRef.current!.style.webkitMaskSize = incomingSizes.join(", ");
       incomingRef.current!.style.maskSize = incomingSizes.join(", ");
-      incomingRef.current!.style.WebkitMaskRepeat = "no-repeat";
+      incomingRef.current!.style.webkitMaskRepeat = "no-repeat";
       incomingRef.current!.style.maskRepeat = "no-repeat";
 
       // Apply to outgoing
-      outgoingRef.current!.style.WebkitMaskImage = outgoingMasks.join(", ");
+      outgoingRef.current!.style.webkitMaskImage = outgoingMasks.join(", ");
       outgoingRef.current!.style.maskImage = outgoingMasks.join(", ");
-      outgoingRef.current!.style.WebkitMaskPosition = outgoingPositions.join(", ");
+      outgoingRef.current!.style.webkitMaskPosition = outgoingPositions.join(", ");
       outgoingRef.current!.style.maskPosition = outgoingPositions.join(", ");
-      outgoingRef.current!.style.WebkitMaskSize = outgoingSizes.join(", ");
+      outgoingRef.current!.style.webkitMaskSize = outgoingSizes.join(", ");
       outgoingRef.current!.style.maskSize = outgoingSizes.join(", ");
-      outgoingRef.current!.style.WebkitMaskRepeat = "no-repeat";
+      outgoingRef.current!.style.webkitMaskRepeat = "no-repeat";
       outgoingRef.current!.style.maskRepeat = "no-repeat";
     };
 

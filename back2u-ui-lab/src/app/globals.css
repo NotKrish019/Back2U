@@ -26,6 +26,19 @@
   --color-on-surface: #1d1b17;
   --color-hot-pink: #FF4D8D;
   --color-on-primary: #ffffff;
+  
+  --color-pastel-lavender: #E4DDF7;
+  --color-pastel-peach: #FFD6BE;
+  --color-pastel-yellow-gold: #F7C85B;
+  --color-surface-warm-grey: #EAE5DE;
+  --color-primary: #b90a5a;
+  --color-pastel-sky: #CDE4FE;
+  --color-pastel-mint: #C4EED0;
+  --color-surface: #fef9f1;
+  --color-background: #fef9f1;
+  --color-surface-sand: #F5F2EB;
+  --color-window-bar-gray: #E2DDD5;
+  --color-outline: #8d7076;
 }
 
 @keyframes ripple {

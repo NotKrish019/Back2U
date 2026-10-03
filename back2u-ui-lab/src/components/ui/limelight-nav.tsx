@@ -82,7 +82,7 @@ export const LimelightNav = ({
           <Link
             key={id}
             href={href}
-            ref={(el) => (navItemRefs.current[index] = el)}
+            ref={(el) => { navItemRefs.current[index] = el; }}
             className={cn(
               "relative z-20 flex cursor-pointer items-center justify-center gap-2 px-4 py-3 transition-colors duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deep-purple focus-visible:ring-offset-2 focus-visible:ring-offset-white",
               isActive ? "text-deep-purple" : "text-deep-purple/60 hover:text-deep-purple",
