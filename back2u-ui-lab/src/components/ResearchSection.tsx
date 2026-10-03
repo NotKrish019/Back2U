@@ -9,6 +9,7 @@ export default function ResearchSection() {
       description: "Robust visual features,\nlearned without labels",
       body: "DINOv2 provides general-purpose visual representations that can capture useful image features across different images and visual conditions, making it a strong foundation for comparing lost and found item photographs.",
       reference: "REFERENCE: OQUAB ET AL. · 2023",
+      citationUrl: "https://arxiv.org/abs/2304.07193?utm_source=chatgpt.com",
       icon: <Image size={20} className="text-[var(--color-retro-charcoal)]" />,
       bgColor: "bg-[#fef9f1]",
       iconBg: "bg-[#E4DDF7]" // pastel-lavender
@@ -20,6 +21,7 @@ export default function ResearchSection() {
       description: "Learning from multiple\nviews of objects",
       body: "Objectron provides object-centric video data with pose annotations and multiple views, giving Back2U a research foundation for understanding how the same physical object can appear differently across photographs.",
       reference: "REFERENCE: AHMADYAN ET AL. · CVPR 2021",
+      citationUrl: "https://openaccess.thecvf.com/content/CVPR2021/html/Ahmadyan_Objectron_A_Large_Scale_Dataset_of_Object-Centric_Videos_in_the_CVPR_2021_paper.html?utm_source=chatgpt.com",
       icon: <Box size={20} className="text-[var(--color-retro-charcoal)]" />,
       bgColor: "bg-[#C4EED0]/30", // pastel-mint/30
       iconBg: "bg-[#C4EED0]"
@@ -31,6 +33,7 @@ export default function ResearchSection() {
       description: "Finding objects from\nvisual and textual cues",
       body: "Grounding DINO combines vision and language for open-set object detection, allowing objects to be identified using category names or referring expressions rather than relying only on a fixed set of predefined classes.",
       reference: "REFERENCE: LIU ET AL. · 2023",
+      citationUrl: "https://arxiv.org/abs/2303.05499?utm_source=chatgpt.com",
       icon: <Target size={20} className="text-[var(--color-retro-charcoal)]" />,
       bgColor: "bg-[#fef9f1]",
       iconBg: "bg-[#CDE4FE]" // pastel-sky
@@ -42,6 +45,7 @@ export default function ResearchSection() {
       description: "Pull similar instances\ntogether, push different ones apart",
       body: "Supervised contrastive learning uses label information to organize representations so that related samples move closer in embedding space while different samples are separated, supporting the fine-grained retrieval objective behind Back2U.",
       reference: "REFERENCE: KHOSLA ET AL. · NEURIPS 2020",
+      citationUrl: "https://papers.neurips.cc/paper_files/paper/2020/hash/d89a66c7c80a29b1bdbab0f2a1a94af8-Abstract.html?utm_source=chatgpt.com",
       icon: <Network size={20} className="text-[var(--color-retro-charcoal)]" />,
       bgColor: "bg-[#fef9f1]",
       iconBg: "bg-[#FFD6BE]" // pastel-peach
@@ -53,6 +57,7 @@ export default function ResearchSection() {
       description: "Connecting what users see\nwith what they describe",
       body: "SigLIP 2 extends vision-language representation learning and reports improvements in image-text retrieval, localization, and semantic understanding, making it relevant to Back2U's planned image + vague-text retrieval workflow.",
       reference: "REFERENCE: TSCHANNEN ET AL. · 2025",
+      citationUrl: "https://arxiv.org/abs/2502.14786?utm_source=chatgpt.com",
       icon: <MessageSquare size={20} className="text-[var(--color-retro-charcoal)]" />,
       bgColor: "bg-[#FFF2B2]/30", // pastel-yellow/30
       iconBg: "bg-[#FFF2B2]"
@@ -64,6 +69,7 @@ export default function ResearchSection() {
       description: "Know when a match\nshould not be trusted",
       body: "Open-set recognition addresses the problem of systems encountering objects or classes they were not trained to recognize. This is relevant to Back2U because the retrieval system should not blindly treat every candidate as a valid match.",
       reference: "REFERENCE: BENDALE & BOULT · CVPR 2016",
+      citationUrl: "https://openaccess.thecvf.com/content_cvpr_2016/html/Bendale_Towards_Open_Set_CVPR_2016_paper.html?utm_source=chatgpt.com",
       icon: <ShieldAlert size={20} className="text-[var(--color-retro-charcoal)]" />,
       bgColor: "bg-[#fef9f1]",
       iconBg: "bg-[#E4DDF7]" // pastel-lavender
@@ -113,9 +119,16 @@ export default function ResearchSection() {
                   </p>
                 </div>
               </div>
-              <div className="px-6 py-3 bg-[#F5F2EB]/80 border-t border-[var(--color-retro-border)] font-['Space_Mono'] text-[10px] font-bold tracking-[0.02em] text-[#594046]">
-                {card.reference}
-              </div>
+              <a 
+                href={card.citationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group px-6 py-3 bg-[#F5F2EB]/80 border-t border-[var(--color-retro-border)] font-['Space_Mono'] text-[10px] font-bold tracking-[0.02em] text-[#594046] hover:bg-[#EBE7DF] hover:text-[#FF3E72] focus:outline-none focus:ring-2 focus:ring-[#FF3E72] focus:ring-inset transition-colors flex items-center justify-between cursor-pointer"
+                aria-label={`Read research paper: ${card.title}`}
+              >
+                <span>{card.reference}</span>
+                <span className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform -translate-x-2 group-hover:translate-x-0" aria-hidden="true">→</span>
+              </a>
             </div>
           ))}
         </div>
