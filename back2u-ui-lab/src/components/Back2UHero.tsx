@@ -120,6 +120,26 @@ export default function Back2UHero() {
           Reuniting you with your <span className="text-[var(--color-hot-pink)] font-bold transition-all duration-300">{footnoteItem}</span>
         </div>
       </div>
+
+      {/* RIGHT SIDE FLOATING PHONE (Z-30) */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes floatPhone {
+          0%, 100% { transform: translateY(0px) rotate(-12deg); }
+          50% { transform: translateY(-16px) rotate(-10deg); }
+        }
+      `}} />
+      <div className="absolute top-[50%] sm:top-[45%] md:top-[35%] left-[50%] md:left-auto md:right-[2%] lg:right-[5%] xl:right-[8%] -translate-x-1/2 md:-translate-x-0 -translate-y-1/2 md:-translate-y-1/2 w-[40%] sm:w-[30%] md:w-[25%] lg:w-[20%] max-w-[180px] md:max-w-[200px] z-30 pointer-events-none flex items-center justify-center">
+         <div 
+           className="relative w-full aspect-[261/531] rounded-[15%] md:rounded-[36px] shadow-[-20px_35px_60px_rgba(33,28,43,0.45)] overflow-hidden bg-[#211C2B]" 
+           style={{ animation: "floatPhone 8s ease-in-out infinite" }}
+         >
+             <img 
+               src="/mobile.gif" 
+               alt="Back2U Mobile Interface" 
+               className="absolute w-[306.51%] h-[112.99%] top-[-6.40%] left-[-103.06%] object-fill max-w-none" 
+             />
+         </div>
+      </div>
     </div>
   );
 }
