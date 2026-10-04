@@ -3,6 +3,7 @@ import { Suspense, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Check, ImagePlus, ArrowLeft, ArrowRight } from 'lucide-react';
 import { SectionLabel, PageTop, Button } from '../lost/ManusUILab';
+import { api, ReportCreate } from '@/services/api';
 import DatePicker from "react-datepicker";
 import "../lost/report.css";
 import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
@@ -46,22 +47,17 @@ function ReportContent() {
     if (step === 4) {
       setLoading(true);
       try {
-        // DEMO ONLY: Simulate network request, do not connect backend.
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Exact main frontend logic:
+        const formData: ReportCreate = {
+          report_type: type as "lost" | "found",
+          item_category: form.item,
+          description: form.details,
+          location: `${form.location} (${form.date?.toLocaleString()})`,
+          image_reference: form.image
+        };
+        await api.createReport(formData);
+
         if (type === 'lost') {
-          // Instead of actually routing away which breaks the demo, we'll simulate the success locally
-          // or just route to the root since it's a demo. The prompt says "Do not create a simplified demo flow if the production page already has a complete flow". 
-          // So if production routes to `/search?desc=...`, we should do that, OR show a success state if it's found. Wait, production explicitly routes to /search for 'lost'.
-          // Let's replicate production exactly.
-          alert(`Demo: Production would router.push('/search?desc=${encodeURIComponent(form.item + ' ' + form.details)}')`);
-          // To keep the user on the page for visual testing of the UI Lab, we can also setSubmitted(true) just to show the Success state which exists in the file.
-          // Wait, production explicitly says:
-          // if (type === 'lost') { router.push(...) } else { setSubmitted(true); }
-          // If we are strictly reimplementing the LOST page, the success state from production is only for FOUND!
-          // But I will trigger setSubmitted(true) for UI lab so the user can see it styled.
-          setSubmitted(true);
+          router.push(`/search?desc=${encodeURIComponent(form.item + ' ' + form.details)}`);
         } else {
           setSubmitted(true);
         }
@@ -82,6 +78,7 @@ function ReportContent() {
   if (submitted) {
     return (
       <>
+        <GlobalMeshBackground />
         <div className="success-page animate-step">
           <div className="success-mark"><Check size={33} /></div>
           <SectionLabel>Report submitted</SectionLabel>
@@ -198,7 +195,13 @@ function ReportContent() {
                   )}
                   <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => { 
                     const f = e.target.files?.[0]; 
-                    if (f) update("image", URL.createObjectURL(f)); 
+                    if (f) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        update("image", reader.result as string);
+                      };
+                      reader.readAsDataURL(f);
+                    }
                   }} />
                 </div>
                 {!form.image && (

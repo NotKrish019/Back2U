@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -13,6 +13,7 @@
     "@studio-freight/lenis": "^1.0.42",
     "@types/react-datepicker": "^6.2.0",
     "clsx": "^2.1.1",
+    "firebase": "^12.19.0",
     "framer-motion": "^13.5.1",
     "gsap": "^3.15.0",
     "lucide-react": "^1.49.0",

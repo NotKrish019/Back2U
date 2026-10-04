@@ -2,12 +2,35 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { CloudShader } from "@/components/ui/cloud-shader";
 import { GradientBackground } from "@/components/ui/oceanic-shimmer";
 
 export default function ChoiceSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+
+  // Parallax motion values
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+  
+  const springConfig = { damping: 25, stiffness: 150 };
+  const springX = useSpring(mouseX, springConfig);
+  const springY = useSpring(mouseY, springConfig);
+  
+  const xOffset = useTransform(springX, [0, 1], ["-2.5%", "2.5%"]);
+  const yOffset = useTransform(springY, [0, 1], ["-2.5%", "2.5%"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width);
+    mouseY.set((e.clientY - rect.top) / rect.height);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0.5);
+    mouseY.set(0.5);
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -109,29 +132,38 @@ export default function ChoiceSection() {
           </div>
           
           {/* Window Viewport */}
-          <div className="relative bg-[#F4F1EB] p-2 sm:p-4 group">
+          <div 
+            className="relative bg-[#F4F1EB] p-2 sm:p-4 group cursor-crosshair"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
             <div className="relative overflow-hidden border border-[var(--color-retro-border)] aspect-[16/10] bg-sky/30">
               <style jsx>{`
-                @keyframes atmospheric-shift {
-                  0%, 100% { filter: brightness(1) opacity(1); transform: scale(1.05) translate(0px, 0px); }
-                  25% { transform: scale(1.05) translate(-1%, 1%); }
-                  50% { filter: brightness(1.02) opacity(0.97); transform: scale(1.05) translate(1%, -1%); }
-                  75% { transform: scale(1.05) translate(0.5%, -0.5%); }
+                @keyframes scanline-scroll {
+                  0% { background-position: 0 0; }
+                  100% { background-position: 0 400px; }
                 }
-                .animate-atmospheric {
-                  animation: atmospheric-shift 20s ease-in-out infinite;
-                }
-                @media (prefers-reduced-motion: reduce) {
-                  .animate-atmospheric { animation: none; transform: scale(1); }
+                .animate-scanlines {
+                  animation: scanline-scroll 10s linear infinite;
                 }
               `}</style>
-              <img 
-                alt="Back2U Campus and Lost Objects Visual" 
-                className="w-full h-full object-cover animate-atmospheric transition-transform duration-1000 ease-out group-hover:scale-[1.08] motion-reduce:transition-none motion-reduce:group-hover:scale-100" 
-                src="/wide_dreamy_pixelated_mosaic_styled_surreal_illu.png"
-              />
+              
+              <motion.div 
+                className="w-full h-full scale-[1.07]"
+                style={{ x: xOffset, y: yOffset }}
+              >
+                <img 
+                  alt="Back2U Campus and Lost Objects Visual" 
+                  className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.03]" 
+                  src="/wide_dreamy_pixelated_mosaic_styled_surreal_illu.png"
+                />
+              </motion.div>
+              
               {/* Scanline layer overlay */}
-              <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.18)_50%)] bg-[length:100%_4px] mix-blend-overlay opacity-60"></div>
+              <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.18)_50%)] bg-[length:100%_4px] mix-blend-overlay opacity-50 animate-scanlines"></div>
+              
+              {/* Screen Vignette Overlay */}
+              <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_60px_rgba(0,0,0,0.4)] mix-blend-multiply"></div>
             </div>
           </div>
           

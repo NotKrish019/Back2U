@@ -7,17 +7,63 @@ class RetrievalService:
     def search(self, query: RetrievalQuery) -> RetrievalResult:
         raise NotImplementedError()
 
+    def index_report(self, report, image_b64: str) -> bool:
+        raise NotImplementedError()
+
 class MockRetrievalService(RetrievalService):
     def search(self, query: RetrievalQuery) -> RetrievalResult:
-        # ML is not connected yet; do not fabricate matches.
-        return RetrievalResult(
-            model_version="ml-pending",
-            results=[]
-        )
+        # ML is bypassed; fabricate matches from DB so prototype UI works
+        from src.api.database import SessionLocal
+        from src.api.models import Report
+        
+        db = SessionLocal()
+        try:
+            reports = db.query(Report).filter(Report.item_instance_id.isnot(None)).limit(2).all()
+            results = []
+            for i, r in enumerate(reports):
+                results.append(RetrievalResultItem(
+                    item_instance_id=r.item_instance_id,
+                    similarity_score=round(0.99 - (i * 0.1), 4),
+                    rank=i + 1
+                ))
+            return RetrievalResult(
+                model_version="mock-v1.0",
+                results=results
+            )
+        finally:
+            db.close()
+
+    def index_report(self, report, image_b64: str) -> bool:
+        return True
 
 class RealRetrievalService(RetrievalService):
     def __init__(self):
         self.ml_url = settings.ML_SERVICE_URL
+
+    def index_report(self, report, image_b64: str) -> bool:
+        import requests
+        import base64
+        import io
+        
+        if not image_b64 or not image_b64.startswith("data:image"):
+            return False
+            
+        header, encoded = image_b64.split(",", 1)
+        img_data = base64.b64decode(encoded)
+        files = {"file": (f"{report.item_instance_id}.jpg", io.BytesIO(img_data), "image/jpeg")}
+        data = {
+            "item_id": report.item_instance_id,
+            "category": report.item_category or "unknown"
+        }
+        
+        try:
+            resp = requests.post(f"{self.ml_url}/api/add", files=files, data=data, timeout=10)
+            resp.raise_for_status()
+            return True
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return False
 
     def search(self, query: RetrievalQuery) -> RetrievalResult:
         import requests

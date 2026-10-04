@@ -9,7 +9,6 @@ class ReportBase(BaseModel):
     image_reference: Optional[str] = None
     attributes: Optional[Dict[str, Any]] = None
     location: Optional[str] = None
-    user_id: Optional[str] = None
 
 class ReportCreate(ReportBase):
     pass
@@ -19,6 +18,7 @@ class ReportOut(ReportBase):
     item_instance_id: Optional[str] = None
     status: str
     created_at: datetime
+    match_count: int = 0
     
     class Config:
         orm_mode = True

@@ -21,9 +21,9 @@ This project runs explicitly on **http://localhost:3001** to avoid conflicting w
 ## Mock Data Only Nature
 This is strictly a frontend/design prototype. 
 - NO REAL BACKEND
-- NO REAL DATABASE
-- NO REAL ML
-- NO SUPABASE / FIREBASE CONNECTION
+- **CONNECTED TO REAL DATABASE (PostgreSQL)**
+- **CONNECTED TO REAL BACKEND (FastAPI)**
+- **CONNECTED TO REAL AUTH (Firebase)**
 
 The mock service layer and all static mock data are located in `src/data/mockData.ts`.
 
@@ -40,10 +40,9 @@ The mock service layer and all static mock data are located in `src/data/mockDat
 - **Profile** (`/profile`)
 - **Support / FAQ** (`/support`)
 
-## Future Integration Notes
-The eventual plan is to integrate this UI with the main Back2U application backend, database, and ML inference engines.
-When doing so:
-- Replace `src/data/mockData.ts` functions with actual API calls.
-- Integrate real user authentication (e.g., Firebase).
-- Feed real model inferences into the Candidate Match states.
-- Connect form submissions to the real PostgreSQL/Supabase database.
+## Migration Notes
+This frontend has successfully been migrated and is now integrated with the main Back2U application backend, database, and authentication systems.
+
+- The original `src/data/mockData.ts` has been removed and replaced with actual API calls in `src/services/api.ts`.
+- Real Firebase authentication is fully integrated (`src/lib/firebase`).
+- Claim submission, search, and staff dashboards operate against the live PostgreSQL database.

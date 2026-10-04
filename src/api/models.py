@@ -44,7 +44,7 @@ class Report(Base):
 
     owner = relationship("User", back_populates="reports")
     item_instance = relationship("ItemInstance", back_populates="reports")
-    claims = relationship("Claim", back_populates="report")
+    claims = relationship("Claim", back_populates="report", cascade="all, delete-orphan")
     
     lost_matches = relationship("CandidateMatch", foreign_keys="CandidateMatch.lost_report_id", back_populates="lost_report")
     found_matches = relationship("CandidateMatch", foreign_keys="CandidateMatch.found_report_id", back_populates="found_report")
@@ -53,8 +53,8 @@ class CandidateMatch(Base):
     __tablename__ = "candidate_matches"
 
     match_id = Column(String, primary_key=True, index=True, default=lambda: f"match_{uuid.uuid4().hex[:8]}")
-    lost_report_id = Column(String, ForeignKey("reports.report_id"), index=True, nullable=False)
-    found_report_id = Column(String, ForeignKey("reports.report_id"), index=True, nullable=False)
+    lost_report_id = Column(String, ForeignKey("reports.report_id", ondelete="SET NULL"), index=True, nullable=True)
+    found_report_id = Column(String, ForeignKey("reports.report_id", ondelete="SET NULL"), index=True, nullable=True)
     similarity_score = Column(Float, nullable=False)
     status = Column(String, default="pending") # pending, accepted, rejected
     created_at = Column(DateTime(timezone=True), server_default=func.now())

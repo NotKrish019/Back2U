@@ -18,22 +18,31 @@ echo "Starting ML Inference Service (Port 8001)..."
 uvicorn src.app.main:app --host 0.0.0.0 --port 8001 --reload &
 ML_PID=$!
 
-echo "Starting Frontend (Port 3000)..."
+echo "Starting Classic Frontend Fallback (Port 3001)..."
 cd frontend
 npm install
 npm run dev &
-FRONTEND_PID=$!
+CLASSIC_PID=$!
+cd ..
+
+echo "Starting UI Lab Primary Frontend (Port 3000)..."
+cd back2u-ui-lab
+npm install
+npm run dev &
+LAB_PID=$!
+cd ..
 
 echo "=========================================="
 echo "All services are starting up!"
 echo "Backend API: http://localhost:8000"
 echo "ML Service: http://localhost:8001"
-echo "Frontend: http://localhost:3000"
+echo "UI Lab Frontend (Primary): http://localhost:3000"
+echo "Classic Frontend (Fallback): http://localhost:3001"
 echo "=========================================="
 echo "Running in background... (Logs will be printed here)"
 
 # Trap termination signals to kill all child processes
-trap "echo 'Shutting down services...'; kill $API_PID $ML_PID $FRONTEND_PID; exit" INT TERM EXIT
+trap "echo 'Shutting down services...'; kill $API_PID $ML_PID $CLASSIC_PID $LAB_PID; exit" INT TERM EXIT
 
 # Wait for all background processes
 wait

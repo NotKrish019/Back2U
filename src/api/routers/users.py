@@ -22,4 +22,9 @@ def get_current_user_profile(current_user: models.User = Depends(get_current_use
 def get_user_reports(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     """Retrieve all reports owned by the currently authenticated user."""
     reports = db.query(models.Report).filter(models.Report.user_id == current_user.id).all()
+    for r in reports:
+        if r.report_type == 'lost':
+            r.match_count = len([m for m in r.lost_matches if m.status == 'pending'])
+        else:
+            r.match_count = len([m for m in r.found_matches if m.status == 'pending'])
     return reports

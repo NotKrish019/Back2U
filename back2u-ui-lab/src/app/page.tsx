@@ -14,7 +14,7 @@ export default function Home() {
   const loaderPlayed = cookieStore.get("back2u-loader-played")?.value === "true";
 
   return (
-    <main className="min-h-screen w-full text-black overflow-x-hidden relative">
+    <main className="min-h-screen w-full text-black overflow-x-clip relative">
       {!loaderPlayed && <Back2ULoader />}
       {/* Global Background for the lower sections */}
       <GlobalMeshBackground />

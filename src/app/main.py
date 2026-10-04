@@ -58,3 +58,19 @@ async def api_search_lost_item(file: UploadFile = File(...), text: str = Form(No
             })
             
     return {"query_img": f"/data/uploads/{file.filename}", "results": mapped_results}
+
+@app.post("/api/add")
+async def api_add_to_index(item_id: str = Form(...), category: str = Form(...), file: UploadFile = File(...)):
+    upload_dir = project_root / "data" / "uploads"
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    file_path = upload_dir / file.filename
+    
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    os.chdir(str(project_root))
+    success = pipeline.add_to_gallery(str(file_path), item_id, category)
+    if success:
+        return {"status": "success", "message": f"Added item {item_id} to FAISS index."}
+    else:
+        return {"status": "error", "message": "Failed to embed and index image."}

@@ -7,6 +7,7 @@ from src.api.database import get_db
 from src.api.models import User
 import os
 import logging
+from src.api.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,7 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
     try:
         # For our integration testing without real Firebase
-        if token.startswith("TEST_TOKEN_"):
+        if token.startswith("TEST_TOKEN_") and settings.ENVIRONMENT == "test":
             return {"uid": token.replace("TEST_TOKEN_", "TEST_UID_"), "email": "test@example.com"}
 
         # If we have credentials, verify with Firebase
@@ -42,8 +43,9 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
             return decoded_token
         else:
             # Fallback for local development when GOOGLE_APPLICATION_CREDENTIALS is not set
+            if settings.ENVIRONMENT not in ["development", "test"]:
+                raise HTTPException(status_code=500, detail="Server misconfigured: missing Firebase credentials")
             # Decode without signature verification for local testing ONLY
-            # In production, GOOGLE_APPLICATION_CREDENTIALS must be set.
             decoded_token = jwt.decode(token, options={"verify_signature": False})
             project_id = os.getenv("FIREBASE_PROJECT_ID", "liveproject-12091")
             if decoded_token.get("aud") != project_id:

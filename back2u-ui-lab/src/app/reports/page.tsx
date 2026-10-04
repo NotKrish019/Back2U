@@ -1,55 +1,63 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
 import { X, ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
-
-const DEMO_REPORTS = [
-  {
-    id: "rep_901a",
-    type: "LOST",
-    badge: "#1 MATCH",
-    badgeColor: "bg-pastel-mint",
-    item: "Silver Chilly's Water Bottle",
-    description: "Has a 'Save the turtles' sticker on the bottom left. Dented cap.",
-    location: "Main Library, 2nd Floor",
-    date: "24 Oct 2026, 14:30",
-    status: "MATCHED",
-    statusColor: "text-primary",
-    image: "https://lh3.googleusercontent.com/aida/AEtjO1Wrl_DTtqJ02vHL12-wVbjmOkLmxwSkah1nviqHaNGCna4sEqkSlM_WFC-4FQxS59mGMKvKWpoOPSLNrQY-6pJRR8yGMQ9Hb9c-H_rh3exf6VZqmTTnsBVo-8fgANKOQWxFmp5aNzNMP4RSC6R-uxWhuW8x3r4DFkqu2LMz213dmKhHv1-NOd_WpsieBHayFJFOSkmMrIOKATRDLFDgRbd0AzkMj_ocIhpL93-cUcHgwfHTOk1iokj4FLkg"
-  },
-  {
-    id: "rep_432b",
-    type: "FOUND",
-    badge: "PENDING",
-    badgeColor: "bg-pastel-yellow",
-    item: "Black Canvas Backpack",
-    description: "North Face backpack with a red keychain. Contains a notebook.",
-    location: "Student Union, Cafe",
-    date: "23 Oct 2026, 09:15",
-    status: "OPEN",
-    statusColor: "text-retro-charcoal",
-    image: "https://lh3.googleusercontent.com/aida/AEtjO1UoZUwrxTd9H_myM7HcWn2wlLMrothIIQRSK5jaCxT45NXStTNQQ4VDHMtVuaPdqs9-lB6B7hD4E369Ddaue5SeAqluWh8CncSfWoGEpjLagkTQVYZwd9iwBa6REr4tBgkw62ebegHJulhUun7t5Ho_H8h0XYEIHiAy3DHzdYRP0n0V9gprcwfxslFZMQkQS0qy-Zoz5X7W6KkJ0OCEfTzcyJH9ySNlitYficjwZPUTwuj6MkxDvjyGmKBx"
-  },
-  {
-    id: "rep_112c",
-    type: "LOST",
-    badge: "RETURNED",
-    badgeColor: "bg-surface-sand",
-    item: "Apple AirPods Pro",
-    description: "In a blue silicone case. Right earbud is slightly scratched.",
-    location: "Engineering Building, Room 402",
-    date: "20 Oct 2026, 11:00",
-    status: "CLOSED",
-    statusColor: "text-on-surface-variant",
-    image: null
-  }
-];
+import { api, ReportOut } from '@/services/api';
+import { useRouter } from 'next/navigation';
 
 export default function MyReportsPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [reports, setReports] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const data = await api.getUserReports();
+        const formatted = data.map((r: ReportOut) => {
+          let badge = r.status === 'resolved' ? 'RESOLVED' : (r.match_count > 0 ? `${r.match_count} MATCH${r.match_count > 1 ? 'ES' : ''}` : (r.report_type === 'lost' ? 'SEARCHING' : 'HELD'));
+          let badgeColor = r.status === 'resolved' ? 'bg-[#98FF98]' : (r.match_count > 0 ? 'bg-[#98FF98]' : (r.report_type === 'lost' ? 'bg-[#FF3E72] text-white' : 'bg-[#FFD700]'));
+          
+          return {
+            id: r.report_id,
+            type: r.report_type.toUpperCase(),
+            badge: badge,
+            badgeColor: badgeColor,
+            item: r.item_category || "Untitled Item",
+            description: r.description || "No description provided.",
+            location: r.location?.split('(')[0]?.trim() || "Unknown Location",
+            date: new Date(r.created_at).toLocaleDateString(),
+            status: r.status.toUpperCase(),
+            statusColor: r.status === 'resolved' ? 'text-green-600' : 'text-[#FF3E72]',
+            image: r.image_reference ? (r.image_reference.match(/^(http|blob:|data:)/) ? r.image_reference : `http://127.0.0.1:8000${r.image_reference.startsWith('/') ? '' : '/'}${r.image_reference}`) : null,
+            matchCount: r.match_count || 0
+          };
+        });
+        setReports(formatted);
+      } catch (err: any) {
+        console.error("Failed to load reports:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReports();
+  }, []);
+
+  const handleDelete = async (reportId: string) => {
+    if (confirm("Are you sure you want to delete this report? This action cannot be undone.")) {
+      try {
+        await api.deleteReport(reportId);
+        setReports(prev => prev.filter(r => r.id !== reportId));
+        setSelectedId(null);
+      } catch (err: any) {
+        alert(err.message || "Failed to delete report.");
+      }
+    }
+  };
 
   return (
     <>
@@ -77,7 +85,9 @@ export default function MyReportsPage() {
 
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-mono">
-            {DEMO_REPORTS.map((report) => (
+            {loading ? (
+              <div className="w-full col-span-full py-12 text-center text-retro-charcoal font-mono uppercase tracking-widest">[ Fetching DB_RECORDS... ]</div>
+            ) : reports.map((report) => (
               <motion.div
                 key={report.id}
                 layoutId={`card-${report.id}`}
@@ -118,11 +128,15 @@ export default function MyReportsPage() {
             ))}
           </div>
 
-          {DEMO_REPORTS.length === 0 && (
+          {!loading && reports.length === 0 && (
             <div className="w-full bg-surface-canvas border-2 border-retro-border p-12 text-center shadow-[4px_4px_0px_#1A1A1A]">
               <div className="text-primary mb-4 font-mono uppercase tracking-widest font-bold text-sm">[ DB_EMPTY ]</div>
               <h2 className="text-3xl font-bold font-mono text-retro-charcoal mb-4">Nothing on the radar.</h2>
               <p className="text-on-surface-variant font-mono mb-8">Lost something or found an item? Start a report to track it here.</p>
+              <div className="flex justify-center gap-4">
+                <button onClick={() => router.push('/report/lost')} className="px-6 py-3 bg-[#FF3E72] text-white border-[2px] border-[#211C2B] font-bold text-[12px] uppercase tracking-widest shadow-[2px_2px_0px_#211C2B] hover:-translate-y-0.5 transition-transform">Report Lost</button>
+                <button onClick={() => router.push('/report/found')} className="px-6 py-3 bg-surface-sand text-retro-charcoal border-[2px] border-[#211C2B] font-bold text-[12px] uppercase tracking-widest shadow-[2px_2px_0px_#211C2B] hover:-translate-y-0.5 transition-transform">Report Found</button>
+              </div>
             </div>
           )}
         </div>
@@ -140,7 +154,7 @@ export default function MyReportsPage() {
               className="absolute inset-0 bg-retro-charcoal/40 backdrop-blur-sm"
             />
             
-            {DEMO_REPORTS.filter(r => r.id === selectedId).map(report => (
+            {reports.filter(r => r.id === selectedId).map(report => (
               <motion.div
                 key="modal"
                 layoutId={`card-${report.id}`}
@@ -211,13 +225,30 @@ export default function MyReportsPage() {
                       </div>
                     </div>
                     
-                    <div className="mt-8 pt-6 border-t-2 border-retro-border/30 flex justify-end gap-4">
-                      <button className="px-5 py-2.5 bg-surface-sand text-retro-charcoal border-2 border-retro-border font-bold text-[12px] uppercase tracking-widest shadow-[2px_2px_0px_#1A1A1A] hover:bg-surface-warm-grey transition-colors cursor-pointer">
-                        Edit Report
+                    <div className="mt-8 pt-6 border-t-2 border-retro-border/30 flex justify-between gap-4">
+                      <button 
+                        className="px-4 py-2.5 bg-surface text-retro-charcoal border-2 border-transparent font-bold text-[12px] uppercase tracking-widest hover:border-retro-border hover:shadow-[2px_2px_0px_#1A1A1A] transition-all cursor-pointer opacity-70 hover:opacity-100 hover:text-[#FF3E72]"
+                        onClick={() => handleDelete(report.id)}
+                      >
+                        Delete
                       </button>
-                      <button className="px-5 py-2.5 bg-hot-pink text-white border-2 border-retro-border font-bold text-[12px] uppercase tracking-widest shadow-[2px_2px_0px_#1A1A1A] hover:-translate-y-0.5 transition-transform cursor-pointer">
-                        Take Action
-                      </button>
+                      <div className="flex gap-4">
+                        <button className="px-5 py-2.5 bg-surface-sand text-retro-charcoal border-2 border-retro-border font-bold text-[12px] uppercase tracking-widest shadow-[2px_2px_0px_#1A1A1A] hover:bg-surface-warm-grey transition-colors cursor-pointer">
+                          Edit Report
+                        </button>
+                        {report.matchCount > 0 ? (
+                          <button 
+                            className="px-5 py-2.5 bg-[#98FF98] text-black border-2 border-retro-border font-bold text-[12px] uppercase tracking-widest shadow-[2px_2px_0px_#1A1A1A] hover:-translate-y-0.5 transition-transform cursor-pointer"
+                            onClick={() => router.push(`/matches?report_id=${report.id}`)}
+                          >
+                            View Matches
+                          </button>
+                        ) : (
+                          <button className="px-5 py-2.5 bg-hot-pink text-white border-2 border-retro-border font-bold text-[12px] uppercase tracking-widest shadow-[2px_2px_0px_#1A1A1A] hover:-translate-y-0.5 transition-transform cursor-pointer">
+                            Take Action
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
 

@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, Settings } from 'lucide-react';
+import { auth } from '@/lib/firebase/config';
+import { onAuthStateChanged, signOut, User } from 'firebase/auth';
 
 export default function AccountMenu() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -11,25 +13,19 @@ export default function AccountMenu() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // Read auth state on mount and subscribe to storage changes
+  const [user, setUser] = useState<User | null>(null);
+
+  // Read auth state on mount and subscribe to auth changes
   useEffect(() => {
-    setIsLoggedIn(localStorage.getItem('demo_logged_in') === 'true');
-    const handleStorageChange = () => {
-      setIsLoggedIn(localStorage.getItem('demo_logged_in') === 'true');
-    };
-    window.addEventListener('storage', handleStorageChange);
-    // Custom event for same-window updates
-    window.addEventListener('demo_auth_change', handleStorageChange);
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('demo_auth_change', handleStorageChange);
-    };
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setIsLoggedIn(!!currentUser);
+    });
+    return () => unsubscribe();
   }, []);
 
-  const handleSignOut = () => {
-    localStorage.removeItem('demo_logged_in');
-    window.dispatchEvent(new Event('demo_auth_change'));
-    setIsLoggedIn(false);
+  const handleSignOut = async () => {
+    await signOut(auth);
     setDropdownOpen(false);
     router.push('/');
   };
@@ -94,10 +90,9 @@ export default function AccountMenu() {
             transition={{ duration: 0.15, ease: 'easeOut' }}
             className="absolute top-[calc(100%+8px)] right-0 bg-[#FFF9F4] border-[2px] border-[#211C2B] shadow-[4px_4px_0px_#211C2B] min-w-[220px] rounded-sm overflow-hidden z-50 text-[#211C2B] font-sans"
           >
-            {/* Header */}
             <div className="p-4 border-b-[2px] border-[#211C2B] bg-[#FFF9F4]">
-              <div className="font-bold text-[14px]">Campus User</div>
-              <div className="text-[11px] text-[#5A5261] font-mono break-all mt-1">demo@university.edu</div>
+              <div className="font-bold text-[14px]">{user?.displayName || "User"}</div>
+              <div className="text-[11px] text-[#5A5261] font-mono break-all mt-1">{user?.email || ""}</div>
             </div>
             
             {/* Links */}

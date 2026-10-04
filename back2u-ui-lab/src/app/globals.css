@@ -77,6 +77,19 @@
   --cream: #FFF9F3;
   --body-text: #293052;
   --skeleton: #E0E0E0;
+
+  /* UI Lab Search/Matches specific variables */
+  --coral: #E96D59;
+  --coral-dark: #D45440;
+  --yellow: #F4D068;
+  --blue: #8AB4F8;
+  --ink: #121010;
+  --ink-soft: #383434;
+  --ink-faint: #756D6D;
+  --paper: #FAF8F5;
+  --cream-deep: #F0EBE1;
+  --line: rgba(36, 32, 57, 0.15);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 body {

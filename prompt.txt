@@ -1,0 +1,2784 @@
+<USER_REQUEST>
+run the ui lab on 3001
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T14:47:18+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/app/privacy/page.tsx (LANGUAGE_TSX)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/components/ui/ticket-stub-footer.tsx (LANGUAGE_TSX)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/app/page.tsx (LANGUAGE_TSX)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/app/globals.css (LANGUAGE_CSS)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/app/login/page.tsx (LANGUAGE_TSX)
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from None to Gemini 3.1 Pro (High). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
+<USER_REQUEST>
+i cannot see the preloader when i open the home page
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T14:50:29+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/app/privacy/page.tsx (LANGUAGE_TSX)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/components/ui/ticket-stub-footer.tsx (LANGUAGE_TSX)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/app/page.tsx (LANGUAGE_TSX)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/app/globals.css (LANGUAGE_CSS)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/app/login/page.tsx (LANGUAGE_TSX)
+</ADDITIONAL_METADATA>
+<USER_REQUEST>
+i want it whenever i redirect to my home page
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T14:54:18+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/components/ui/ticket-stub-footer.tsx (LANGUAGE_TSX)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/app/page.tsx (LANGUAGE_TSX)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/app/globals.css (LANGUAGE_CSS)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/app/login/page.tsx (LANGUAGE_TSX)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/src/app/report/lost/page.tsx (LANGUAGE_TSX)
+</ADDITIONAL_METADATA>
+<USER_REQUEST>
+ANTIGRAVITY / INTEGRITY — BACK2U MASTER PRODUCTION MIGRATION
+
+PROMOTE THE UI LAB FROM DEMO UI TO THE PRIMARY REAL BACK2U APPLICATION
+
+IMPORTANT: READ THIS ENTIRE PROMPT BEFORE MAKING ANY CHANGES.
+
+============================================================
+PROJECT
+============================================================
+
+PROJECT NAME:
+Back2U
+
+PROJECT TYPE:
+University Lost & Found Platform
+
+CURRENT STATE:
+
+We currently have TWO frontend experiences:
+
+1. ORIGINAL MAIN FRONTEND
+2. UI LAB / DEMO UI
+
+The UI Lab has now become the preferred and approved visual design.
+
+I now want to make the UI Lab the PRIMARY REAL APPLICATION.
+
+The UI Lab must become fully connected to the existing:
+
+- Backend
+- API
+- Database
+- Authentication
+- User system
+- Reports
+- Search
+- ML / Retrieval
+- Profile
+- Settings
+- Claims
+- Item details
+- Other already implemented real functionality
+
+At the same time:
+
+THE ORIGINAL MAIN FRONTEND MUST NOT BE DELETED.
+
+It must remain as a separate fallback / secondary UI.
+
+============================================================
+1. FINAL ARCHITECTURE
+============================================================
+
+The final architecture should conceptually be:
+
+                    BACK2U
+                      |
+          +-----------+-----------+
+          |                       |
+          v                       v
+      UI LAB                  ORIGINAL UI
+    PRIMARY UI               FALLBACK UI
+          |                       |
+          +-----------+-----------+
+                      |
+                      v
+                 SHARED API
+                      |
+                      v
+                   FASTAPI
+                      |
+          +-----------+-----------+
+          |           |           |
+          v           v           v
+        AUTH       DATABASE       ML
+      Firebase    PostgreSQL   Retrieval
+                   / DB
+
+There must be:
+
+ONE backend
+ONE database
+ONE authentication system
+ONE ML/retrieval system
+
+There may be:
+
+TWO frontend presentations.
+
+============================================================
+2. MOST IMPORTANT RULE
+============================================================
+
+DO NOT THINK OF THIS AS:
+
+"Connect a demo website to the backend."
+
+THINK OF THIS AS:
+
+"PROMOTE THE APPROVED UI LAB INTO THE PRIMARY PRODUCTION FRONTEND."
+
+The UI Lab is no longer just a demo.
+
+It becomes the actual Back2U user-facing application.
+
+The original frontend remains available as a fallback.
+
+============================================================
+3. ORIGINAL MAIN FRONTEND MUST BE PRESERVED
+============================================================
+
+DO NOT DELETE THE ORIGINAL MAIN FRONTEND.
+
+DO NOT OVERWRITE IT.
+
+DO NOT DESTROY IT.
+
+DO NOT convert it destructively into the UI Lab.
+
+Before making major changes:
+
+CREATE A SAFE ROLLBACK / PRESERVATION POINT.
+
+If Git is available, preferably create a branch or tag such as:
+
+pre-ui-lab-production-migration
+
+or:
+
+classic-ui-preserved
+
+The exact mechanism should follow the repository's existing structure.
+
+I MUST ALWAYS be able to return to the original frontend.
+
+============================================================
+4. ORIGINAL MAIN FRONTEND BECOMES THE FALLBACK UI
+============================================================
+
+The original frontend should remain independently accessible.
+
+The exact architecture may use:
+
+- separate route
+- separate frontend entry
+- separate app
+- feature flag
+- environment variable
+- another clean mechanism
+
+Choose the simplest reliable architecture.
+
+The important result is:
+
+DEFAULT:
+UI LAB
+
+SECOND OPTION:
+ORIGINAL MAIN FRONTEND
+
+============================================================
+5. DO NOT MIX THE TWO UI IMPLEMENTATIONS
+============================================================
+
+The two frontend experiences should remain separate presentation layers.
+
+Do not allow:
+
+UI LAB styles
+to unintentionally modify the original frontend.
+
+Do not allow:
+
+Original frontend styles
+to unintentionally modify UI LAB.
+
+Do not unnecessarily share page components between the two.
+
+Shared infrastructure SHOULD include:
+
+- backend
+- APIs
+- database
+- authentication
+- domain types
+- business logic
+
+Shared infrastructure SHOULD NOT mean merging the visual implementations.
+
+============================================================
+6. FIRST STEP — COMPLETE REPOSITORY AUDIT
+============================================================
+
+DO NOT START CODING IMMEDIATELY.
+
+First inspect the entire repository.
+
+Audit:
+
+- UI Lab location
+- original frontend location
+- route structure
+- page structure
+- API client
+- backend
+- FastAPI routes
+- database
+- SQLAlchemy models
+- Alembic migrations
+- authentication
+- Firebase configuration
+- user management
+- report APIs
+- search APIs
+- retrieval/ML
+- profile
+- settings
+- claims
+- item detail
+- existing test suite
+- environment configuration
+- current mock/demo data
+- real database usage
+- current production configuration
+
+Determine what is actually implemented TODAY.
+
+Do not rely only on older documentation if current code differs.
+
+The current repository is the final authority.
+
+============================================================
+7. REPORT THE AUDIT BEFORE MIGRATION
+============================================================
+
+After auditing, report:
+
+1. Current frontend architecture
+2. Current UI Lab architecture
+3. Current backend architecture
+4. Current database architecture
+5. Current authentication architecture
+6. Current ML/retrieval architecture
+7. Current API contracts
+8. Current mock/demo data locations
+9. Current real data sources
+10. Current tests
+11. Safest fallback strategy
+12. Any risks or blockers
+
+THEN STOP.
+
+Do not proceed to migration until the audit phase is complete.
+
+============================================================
+8. CURRENT TECHNOLOGY CONTEXT
+============================================================
+
+Known application stack includes:
+
+FRONTEND:
+- Next.js 16.3.6
+- TypeScript
+- Tailwind/custom globals
+- Framer Motion 13
+- Lucide React
+- React Datepicker
+- Playwright
+
+BACKEND:
+- FastAPI
+- Python 3.11+
+- SQLAlchemy
+- Alembic
+- Pytest
+
+DATABASE:
+- PostgreSQL / configured local database
+- SQLite has also been used locally during development
+
+AUTHENTICATION:
+- Firebase Authentication
+
+DOMAIN DATA:
+- users
+- item_instances
+- reports
+- candidate_matches
+- claims
+- report_embeddings
+
+ML / RETRIEVAL:
+- PyTorch experiments
+- DINOv2
+- SigLIP
+- Siamese / dual encoder approaches
+- FAISS experiments
+- RetrievalService abstraction
+
+IMPORTANT:
+
+These are known project details.
+
+VERIFY THE CURRENT CODE BEFORE ASSUMING ANYTHING.
+
+============================================================
+9. UI LAB BECOMES THE DEFAULT APPLICATION
+============================================================
+
+After migration:
+
+OPEN BACK2U
+
+→ UI LAB
+
+The UI Lab should be the default frontend.
+
+Users should NOT need a hidden demo route to use the new UI.
+
+============================================================
+10. REMOVE UI LAB MOCK / DEMO APPLICATION DATA
+============================================================
+
+This is a MAJOR requirement.
+
+The UI Lab currently contains mock/demo data that was created only to make the visual prototype look populated.
+
+That data must now be removed from the PRIMARY UI.
+
+Remove mock/demo application data such as:
+
+- fake reports
+- fake report arrays
+- fake user records
+- demo user names
+- demo user emails
+- fake phone numbers
+- fake report counts
+- fake statuses
+- fake dates
+- fake locations
+- fake notifications
+- fake notification counts
+- fake search results
+- fake candidate matches
+- fake similarity values
+- fake confidence values
+- fake hotspot counts
+- fake activity
+- fake claims
+- fake item data
+- placeholder API responses
+- mock production response adapters
+
+The UI Lab should now use REAL DATA.
+
+============================================================
+11. VERY IMPORTANT — DO NOT DELETE DESIGN ASSETS
+============================================================
+
+Do NOT confuse application mock data with visual design assets.
+
+DO NOT delete approved UI Lab assets such as:
+
+- hero background
+- cloud background
+- hero phone asset
+- workflow image 01
+- workflow image 02
+- workflow image 03
+- research graphics
+- icons
+- illustrations
+- decorative visuals
+- approved images
+- logos
+- Stitch visual assets
+
+These are DESIGN ASSETS, not fake application records.
+
+Keep them.
+
+============================================================
+12. REMOVE MOCK DATA AT THE SOURCE
+============================================================
+
+Search the UI Lab codebase for:
+
+- demoData
+- mockData
+- sampleData
+- fakeData
+- fakeReports
+- mockReports
+- sampleReports
+- exampleReports
+- demoReports
+- fakeResults
+- mockResults
+- placeholderResults
+- exampleUser
+- demoUser
+- fakeUser
+- hardcodedReportArrays
+- staticCounters
+- fakeNotifications
+- hardcodedMatchScores
+
+Also inspect:
+
+- JSON files
+- constants
+- TypeScript objects
+- arrays
+- local state initialization
+- mock service files
+- fallback branches
+- fake API clients
+- example objects
+
+Remove these from the PRODUCTION UI LAB FLOW.
+
+============================================================
+13. IMPORTANT — DO NOT DELETE TEST FIXTURES
+============================================================
+
+Distinguish between:
+
+A. MOCK / DEMO PRODUCTION DATA
+
+and:
+
+B. AUTOMATED TEST FIXTURES
+
+Remove A.
+
+Keep B where needed for automated tests.
+
+Do not blindly delete test fixtures.
+
+============================================================
+14. NO FAKE FALLBACK WHEN API FAILS
+============================================================
+
+Do NOT implement:
+
+REAL API
+↓
+if failed
+↓
+show fake demo data
+
+This is NOT allowed.
+
+If API fails:
+
+show a real error state.
+
+If there are zero records:
+
+show a real empty state.
+
+If ML is unavailable:
+
+show a real unavailable state.
+
+Never silently switch to fake data.
+
+============================================================
+15. REAL DATA ONLY
+============================================================
+
+From now on, primary UI Lab production mode must use real data.
+
+Do NOT fabricate:
+
+- users
+- reports
+- counts
+- matches
+- notifications
+- hotspots
+- claims
+- statuses
+- dates
+- locations
+- ML results
+
+If the database is empty:
+
+show empty.
+
+If retrieval is unavailable:
+
+show unavailable.
+
+If the server fails:
+
+show error.
+
+============================================================
+16. SHARED BACKEND
+============================================================
+
+Use the existing FastAPI backend.
+
+DO NOT create another backend for UI Lab.
+
+DO NOT duplicate business logic.
+
+Inspect the current backend and use its real endpoint contracts.
+
+Known endpoint concepts include:
+
+GET /api/v1/users/me
+
+GET /api/v1/users/me/reports
+
+POST /api/v1/reports
+
+GET /api/v1/reports
+
+GET /api/v1/reports/{id}
+
+PUT /api/v1/reports/{id}
+
+DELETE /api/v1/reports/{id}
+
+POST /api/v1/claims
+
+POST /api/v1/retrieval/search
+
+These are examples from the existing architecture.
+
+VERIFY THE ACTUAL CURRENT ENDPOINTS before wiring them.
+
+============================================================
+17. DO NOT REWRITE THE BACKEND JUST TO FIT THE UI
+============================================================
+
+The UI Lab should adapt to the real backend.
+
+Do not redesign working backend APIs merely because the UI Lab uses different visual components.
+
+Only change backend code if:
+
+- a real missing capability exists
+- a bug prevents integration
+- a security problem exists
+- an API contract must genuinely be corrected
+
+Avoid unnecessary backend rewrites.
+
+============================================================
+18. DATABASE
+============================================================
+
+Both frontends must use the SAME REAL DATABASE.
+
+Do NOT create:
+
+UI Lab database
+
+and:
+
+Classic UI database.
+
+One application database.
+
+One source of truth.
+
+UI Lab report creation:
+
+UI LAB
+↓
+API
+↓
+FASTAPI
+↓
+SQLALCHEMY
+↓
+DATABASE
+
+============================================================
+19. DATABASE SAFETY
+============================================================
+
+DO NOT:
+
+- drop database
+- drop tables
+- truncate data
+- delete users
+- delete real reports
+- reset the production database
+- recreate the schema destructively
+
+Before deleting any mock data from the database:
+
+determine whether each record is:
+
+REAL
+TEST
+MOCK/DEMO
+
+Delete ONLY MOCK/DEMO records created solely for the prototype.
+
+Do not guess.
+
+============================================================
+20. DATABASE MIGRATIONS
+============================================================
+
+If schema changes are actually needed:
+
+use the existing Alembic workflow.
+
+First inspect the current schema.
+
+Then create a safe migration.
+
+Do not make destructive migrations without necessity.
+
+============================================================
+21. REAL AUTHENTICATION
+============================================================
+
+The UI Lab must use the existing authentication system.
+
+The project uses Firebase Authentication.
+
+Do NOT create:
+
+- fake login
+- fake sessions
+- fake tokens
+- a second authentication provider
+- separate UI Lab users
+
+Use the same real authentication identity as the original frontend.
+
+============================================================
+22. LOGGED-OUT HEADER
+============================================================
+
+When the user is NOT logged in:
+
+SHOW:
+
+LOGIN
+
+Do NOT show:
+
+ME
+
+Do NOT show:
+
+profile avatar
+
+Do NOT show:
+
+account dropdown
+
+Login should navigate through the actual authentication flow.
+
+============================================================
+23. LOGGED-IN HEADER
+============================================================
+
+When the user IS logged in:
+
+SHOW:
+
+ME / PROFILE CONTROL
+
+Clicking it should open the account dropdown.
+
+The menu should use the actual menu structure from the main frontend.
+
+Possible actual entries may include:
+
+PROFILE
+SETTINGS
+MY REPORTS
+SIGN OUT
+
+ONLY include entries that actually exist in the current main frontend.
+
+============================================================
+24. PROFILE DROPDOWN
+============================================================
+
+The dropdown must use the MAIN FRONTEND functionality/content.
+
+The UI Lab controls its visual appearance.
+
+Preserve:
+
+- actual menu items
+- actual ordering
+- actual navigation
+- actual logout behavior
+
+Style using:
+
+- current UI Lab typography
+- current colors
+- current borders
+- current shadows
+- current animation
+
+============================================================
+25. PROFILE DROPDOWN BEHAVIOR
+============================================================
+
+The dropdown should:
+
+- open on click
+- close on outside click
+- close on Escape
+- support keyboard interaction
+- navigate correctly
+- sign out correctly
+
+Do not make it hover-dependent.
+
+============================================================
+26. REAL SIGN OUT
+============================================================
+
+Sign out must use the actual authentication system.
+
+After logout:
+
+ME
+→
+LOGIN
+
+The account dropdown disappears.
+
+Protected content becomes inaccessible.
+
+============================================================
+27. PROFILE PAGE
+============================================================
+
+Connect UI Lab Profile to REAL authenticated user information.
+
+Do not hardcode:
+
+- name
+- email
+- phone
+- report count
+- activity
+
+Use actual authenticated data.
+
+If information is missing:
+
+show an appropriate empty state.
+
+============================================================
+28. SETTINGS PAGE
+============================================================
+
+Connect the UI Lab Settings page to the actual backend.
+
+Preserve the main frontend's settings content and functionality.
+
+This can include, where actually implemented:
+
+- user metadata
+- phone information
+- notification settings
+- SMS preferences
+- account settings
+- update/save
+- validation
+- errors
+- success states
+
+Do not invent settings.
+
+============================================================
+29. REPORT LOST
+============================================================
+
+The UI Lab Report Lost page is already visually approved.
+
+Keep its UI unchanged.
+
+Connect it to the real report backend.
+
+Expected flow:
+
+USER
+↓
+UI LAB REPORT LOST
+↓
+VALIDATION
+↓
+REAL API
+↓
+FASTAPI
+↓
+DATABASE
+↓
+REAL REPORT CREATED
+
+Do not fake success.
+
+============================================================
+30. REPORT FOUND
+============================================================
+
+Same principle.
+
+Preserve the UI Lab Report Found visual implementation.
+
+Connect it to the real backend.
+
+Use the actual production report type:
+
+FOUND
+
+or whatever the current API contract specifies.
+
+============================================================
+31. IMAGE HANDLING
+============================================================
+
+Preserve the UI Lab image UX.
+
+Connect it to the actual backend-supported image format.
+
+Inspect the current implementation first.
+
+Do not invent a separate image storage system without need.
+
+Do not expose private storage credentials.
+
+============================================================
+32. DATE / TIME
+============================================================
+
+Preserve the existing UI Lab Report Lost / Report Found date/time UX.
+
+Connect values to the real backend schema.
+
+Do not change the visual interaction unnecessarily.
+
+============================================================
+33. MY REPORTS
+============================================================
+
+My Reports must now use REAL AUTHENTICATED DATA.
+
+Remove the demo report cards.
+
+Fetch:
+
+CURRENT USER'S REAL REPORTS
+
+from the actual backend.
+
+Do NOT hardcode report cards.
+
+Do NOT hardcode report counts.
+
+Do NOT hardcode statuses.
+
+Do NOT create fake records.
+
+============================================================
+34. MY REPORTS STITCH CARDS
+============================================================
+
+Preserve the approved Stitch-based card system.
+
+STITCH:
+- card layout
+- card geometry
+- border
+- shadow
+- information hierarchy
+- expansion interaction
+- animation
+
+REAL BACKEND:
+- item
+- image
+- report type
+- status
+- description
+- location
+- date
+- time
+- other permitted data
+
+============================================================
+35. MY REPORTS CARD EXPANSION
+============================================================
+
+Clicking a REAL report card:
+
+→ expand
+
+→ show the complete available report detail.
+
+Include only actual data.
+
+Do NOT fabricate:
+
+- similarity
+- confidence
+- percentages
+- match scores
+- fake metadata
+
+============================================================
+36. ITEM DETAIL
+============================================================
+
+Connect UI Lab item/report detail to real backend data.
+
+Preserve the approved UI Lab visual design.
+
+Show actual information such as:
+
+- item
+- image
+- status
+- location
+- date
+- time
+- description
+- timeline
+- possible matches
+- claims
+- user actions
+
+ONLY when the backend provides them and the user is authorized to see them.
+
+============================================================
+37. SEARCH
+============================================================
+
+Connect UI Lab Search to the real search/retrieval backend.
+
+Support actual available functionality such as:
+
+- text
+- image
+- multimodal input
+- location
+- time
+- category
+
+Use the actual current API contract.
+
+Do not use hardcoded results.
+
+============================================================
+38. ML / RETRIEVAL
+============================================================
+
+AUDIT THE CURRENT ML IMPLEMENTATION.
+
+The project has contained:
+
+RetrievalService
+MockRetrievalService
+RealRetrievalService
+
+Do NOT assume which is currently active.
+
+Inspect the current repository.
+
+Determine:
+
+- active retrieval service
+- model
+- inference flow
+- model loading
+- FAISS/vector search status
+- DINOv2/SigLIP status
+- response schema
+- image preprocessing
+- text preprocessing
+- multimodal fusion
+
+============================================================
+39. REAL ML ONLY
+============================================================
+
+If real retrieval is genuinely available:
+
+connect UI Lab to it.
+
+If RealRetrievalService exists but is not wired:
+
+wire it safely.
+
+If the real retrieval system is NOT functional:
+
+DO NOT FAKE IT.
+
+Show an accurate unavailable state.
+
+Never replace unavailable ML with demo matches.
+
+============================================================
+40. NO FAKE ML VALUES
+============================================================
+
+Never fabricate:
+
+- similarity score
+- confidence
+- matching percentage
+- candidate ranking
+- semantic explanation
+- “AI reasoning”
+- retrieval accuracy
+- ML success
+
+Only show data returned by the actual system.
+
+============================================================
+41. MULTIMODAL RETRIEVAL
+============================================================
+
+If the current system supports image + text:
+
+preserve that capability.
+
+Do not reduce the experience to text-only simply because integration is easier.
+
+The UI Lab should expose the real supported multimodal workflow.
+
+============================================================
+42. BROWSE
+============================================================
+
+Connect Browse to real permitted/public report data.
+
+No fake records.
+
+No demo cards.
+
+No fabricated images.
+
+Respect privacy.
+
+If there are no appropriate records:
+
+show a real empty state.
+
+============================================================
+43. HOTSPOTS
+============================================================
+
+If actual report aggregation exists:
+
+use real data.
+
+Do not fabricate:
+
+- hotspot counts
+- campus activity
+- location intensity
+- report density
+
+If insufficient data exists:
+
+show a quiet/empty state.
+
+============================================================
+44. NOTIFICATIONS
+============================================================
+
+Audit the existing notification implementation.
+
+If real notifications exist:
+
+connect them.
+
+If they do not exist:
+
+do not fabricate them.
+
+Do not display fake unread counts.
+
+============================================================
+45. CLAIMS
+============================================================
+
+If claim functionality exists:
+
+connect UI Lab to the real claims API.
+
+Respect actual authorization.
+
+Do not create fake ownership verification.
+
+Do not expose private claim evidence.
+
+============================================================
+46. PRIVACY
+============================================================
+
+Real user information must only appear where authorized.
+
+Do not expose:
+
+- private reports publicly
+- claimable images publicly
+- account data publicly
+- private user details in decorative UI
+
+UI Lab must respect backend authorization.
+
+============================================================
+47. GLOBAL NAVIGATION
+============================================================
+
+All UI Lab navigation should go to the REAL UI LAB routes.
+
+Examples:
+
+SEARCH
+→ UI Lab Search
+
+REPORT LOST
+→ UI Lab Report Lost
+
+REPORT FOUND
+→ UI Lab Report Found
+
+MY REPORTS
+→ UI Lab My Reports
+
+PROFILE
+→ UI Lab Profile
+
+SETTINGS
+→ UI Lab Settings
+
+PRIVACY
+→ UI Lab Privacy
+
+TERMS
+→ UI Lab Terms
+
+Do not accidentally redirect users into Classic UI.
+
+============================================================
+48. CLASSIC UI NAVIGATION
+============================================================
+
+The original frontend should remain separate.
+
+Do not accidentally make Classic UI dependent on UI Lab components.
+
+It should remain a fallback presentation layer.
+
+============================================================
+49. UI LAB DESIGN MUST BE PRESERVED
+============================================================
+
+THIS IS CRITICAL.
+
+Do not sacrifice the approved UI Lab design during backend integration.
+
+Preserve:
+
+- hero
+- background
+- cloud artwork
+- typography
+- colors
+- header
+- footer
+- Report Lost
+- Report Found
+- My Reports cards
+- workflow section
+- workflow animations
+- research section
+- profile/settings design
+- buttons
+- borders
+- shadows
+- 3D elements
+- transitions
+
+The goal is:
+
+REAL FUNCTIONALITY
+UNDER
+THE APPROVED UI LAB DESIGN.
+
+============================================================
+50. UI LAB COLOR PALETTE
+============================================================
+
+Keep the existing UI Lab palette.
+
+PRIMARY DARK:
+#211C2B
+
+DEEP PLUM:
+#2A2140
+
+SECONDARY:
+#40384A
+
+MUTED:
+#5A5261
+
+ACCENT:
+#FF3E72
+
+WARM OFF-WHITE:
+#FFF9F4
+
+Do not introduce a separate production palette.
+
+============================================================
+51. UI LAB TYPOGRAPHY
+============================================================
+
+Keep the existing UI Lab font.
+
+Do not replace it with the old frontend typography.
+
+Do not redesign pages because real data is dynamic.
+
+============================================================
+52. GLOBAL HEADER
+============================================================
+
+Keep the current UI Lab header exactly as designed.
+
+Only make its account state functional:
+
+LOGGED OUT:
+LOGIN
+
+LOGGED IN:
+ME / PROFILE
+
+Do not change unrelated header elements.
+
+============================================================
+53. GLOBAL FOOTER
+============================================================
+
+Keep the current UI Lab footer exactly as designed.
+
+Backend integration should not alter it.
+
+============================================================
+54. UI LAB BACKGROUND
+============================================================
+
+Keep the approved UI Lab background.
+
+Do not remove it simply because the application is becoming data-driven.
+
+The background remains decorative.
+
+============================================================
+55. NO PRODUCTION DESIGN REGRESSION
+============================================================
+
+Do NOT take the real backend and replace the beautiful UI Lab with the old frontend layout.
+
+The correct approach is:
+
+EXISTING UI LAB
++
+REAL DATA
++
+REAL API
++
+REAL AUTH
++
+REAL DATABASE
++
+REAL ML
+
+NOT:
+
+OLD MAIN FRONTEND
++
+UI LAB COLORS
+
+============================================================
+56. CLEAN SERVICE ARCHITECTURE
+============================================================
+
+Keep application responsibilities separate.
+
+PRESENTATION:
+UI Lab
+
+API:
+API/service layer
+
+AUTH:
+Firebase / existing auth abstraction
+
+DOMAIN:
+real types/models
+
+BACKEND:
+FastAPI
+
+DATABASE:
+PostgreSQL/configured DB
+
+ML:
+real RetrievalService
+
+Do not place arbitrary backend logic directly inside page components.
+
+============================================================
+57. REUSE EXISTING API CLIENT
+============================================================
+
+If the existing frontend already has an API service layer:
+
+reuse or extend it.
+
+Do not scatter raw API calls across UI components.
+
+Prefer a clean pattern such as:
+
+UI
+↓
+Service
+↓
+API
+↓
+Backend
+
+Do not create duplicate API clients unnecessarily.
+
+============================================================
+58. SHARED TYPES
+============================================================
+
+Reuse existing types where available.
+
+Keep API contracts strongly typed.
+
+Relevant concepts may include:
+
+User
+Report
+ItemInstance
+CandidateMatch
+Claim
+SearchResult
+Settings
+Notification
+
+Do not create duplicate conflicting models.
+
+============================================================
+59. LOADING STATES
+============================================================
+
+All live data pages need proper loading states.
+
+Examples:
+
+LOADING REPORTS
+
+LOADING PROFILE
+
+UPDATING SETTINGS
+
+SEARCHING CAMPUS RECORDS
+
+Only use language that reflects an actual operation.
+
+============================================================
+60. EMPTY STATES
+============================================================
+
+Empty data is valid.
+
+My Reports:
+
+NO REPORTS YET.
+
+Search:
+
+NO MATCHES FOUND.
+
+Notifications:
+
+ALL QUIET.
+
+Do not add fake records to make the UI appear populated.
+
+============================================================
+61. ERROR STATES
+============================================================
+
+Handle:
+
+- network failure
+- backend unavailable
+- unauthorized
+- forbidden
+- not found
+- validation failure
+- server error
+- ML unavailable
+
+Show clear Back2U-styled error states.
+
+Do not fake successful results.
+
+============================================================
+62. AUTH ERROR STATES
+============================================================
+
+Handle:
+
+- login failure
+- expired session
+- invalid token
+- unauthorized access
+- logout failure
+- account state mismatch
+
+Use the actual auth state.
+
+============================================================
+63. NO MOCK NETWORK RESPONSES
+============================================================
+
+Do not leave mock API interception in the production UI Lab.
+
+Remove mock production responses.
+
+Keep mock APIs only if strictly isolated for automated tests.
+
+============================================================
+64. ENVIRONMENT CONFIGURATION
+============================================================
+
+Audit and correctly configure:
+
+- API base URL
+- frontend origin
+- backend origin
+- Firebase config
+- ML service URL
+- database environment
+
+Do not hardcode development values into production.
+
+Do not expose secrets.
+
+============================================================
+65. SECURITY
+============================================================
+
+Never expose:
+
+- database credentials
+- Firebase server credentials
+- service account keys
+- API secrets
+- ML server secrets
+
+Client-side variables must only contain browser-safe values.
+
+============================================================
+66. CORS
+============================================================
+
+If UI Lab and backend use different origins:
+
+configure CORS properly.
+
+Do not blindly use:
+
+allow_origins=["*"]
+
+in production.
+
+Use appropriate allowed origins.
+
+============================================================
+67. AUTH TOKEN FLOW
+============================================================
+
+Preserve the existing authentication flow.
+
+Conceptually:
+
+LOGIN
+↓
+Firebase authentication
+↓
+ID token
+↓
+API authorization
+↓
+FastAPI validation
+↓
+authorized data
+
+Do not create a separate UI Lab token system.
+
+============================================================
+68. REAL USER IS THE SOURCE OF MY REPORTS
+============================================================
+
+For My Reports:
+
+do not request all reports and filter insecurely in the browser.
+
+Use the existing authorized:
+
+current user reports
+
+backend endpoint where available.
+
+Authorization should be enforced server-side.
+
+============================================================
+69. PROFILE DATA SECURITY
+============================================================
+
+Profile data must be fetched for the authenticated user.
+
+Do not allow one user to request another user's private profile through UI Lab.
+
+Backend authorization remains authoritative.
+
+============================================================
+70. REPORT OWNERSHIP
+============================================================
+
+My Reports should only expose the current authenticated user's permitted reports.
+
+Do not rely only on a frontend filter.
+
+============================================================
+71. PUBLIC REPORTS
+============================================================
+
+Browse/public pages should display only records permitted by current privacy rules.
+
+Do not expose claim-sensitive information.
+
+============================================================
+72. REAL REPORT CREATION TEST
+============================================================
+
+Test:
+
+LOGIN
+
+↓
+
+REPORT LOST
+
+↓
+
+fill actual form
+
+↓
+
+submit
+
+↓
+
+REAL API
+
+↓
+
+DATABASE
+
+↓
+
+MY REPORTS
+
+The new report must actually appear.
+
+============================================================
+73. REAL FOUND REPORT TEST
+============================================================
+
+Test:
+
+REPORT FOUND
+
+↓
+
+submit
+
+↓
+
+DATABASE
+
+↓
+
+MY REPORTS
+
+Verify the actual report is present.
+
+============================================================
+74. CROSS-FRONTEND DATA TEST
+============================================================
+
+Create a report through:
+
+UI LAB
+
+Then open:
+
+CLASSIC UI
+
+and verify that the SAME real report is visible according to its normal permissions.
+
+This proves both frontends share the same real backend/database.
+
+============================================================
+75. SETTINGS CROSS-FRONTEND TEST
+============================================================
+
+Change profile/settings in:
+
+UI LAB
+
+Then inspect:
+
+CLASSIC UI
+
+The updated value should appear there.
+
+Then make a change in:
+
+CLASSIC UI
+
+and verify:
+
+UI LAB sees it.
+
+============================================================
+76. AUTH CROSS-FRONTEND TEST
+============================================================
+
+Authenticate through one frontend.
+
+Verify that both frontends use the same real authentication identity according to the existing architecture.
+
+Do not create duplicate users.
+
+============================================================
+77. SEARCH TEST
+============================================================
+
+Test:
+
+- text search
+- image search
+- multimodal search if supported
+- empty search
+- no result
+- backend failure
+- ML unavailable
+- real result
+
+Do not fake a result when the system fails.
+
+============================================================
+78. MY REPORTS TEST
+============================================================
+
+Test:
+
+- zero reports
+- one report
+- multiple reports
+- lost report
+- found report
+- different statuses
+- missing image
+- long description
+- card expansion
+- mobile
+- desktop
+- unauthorized access
+
+============================================================
+79. PROFILE TEST
+============================================================
+
+Test:
+
+- authenticated user
+- real user data
+- missing optional data
+- profile loading
+- profile failure
+- navigation
+
+============================================================
+80. SETTINGS TEST
+============================================================
+
+Test:
+
+- load real settings
+- update settings
+- save success
+- save failure
+- validation
+- refresh persistence
+- logout
+- re-login
+
+============================================================
+81. HEADER AUTH STATE TEST
+============================================================
+
+TEST 1:
+
+Logged out
+
+Expected:
+
+LOGIN
+
+TEST 2:
+
+Logged in
+
+Expected:
+
+ME
+
+TEST 3:
+
+Click ME
+
+Expected:
+
+account dropdown
+
+TEST 4:
+
+Click Settings
+
+Expected:
+
+UI Lab Settings
+
+TEST 5:
+
+Click My Reports
+
+Expected:
+
+UI Lab My Reports
+
+TEST 6:
+
+Sign out
+
+Expected:
+
+LOGIN
+
+============================================================
+82. UI VISUAL REGRESSION TEST
+============================================================
+
+Compare UI Lab BEFORE migration with UI Lab AFTER migration.
+
+Verify that live integration did NOT change:
+
+- typography
+- colors
+- background
+- hero
+- header
+- footer
+- Report Lost
+- Report Found
+- My Reports
+- Workflow
+- Research
+- Profile
+- Settings
+- animations
+- Stitch components
+- card styling
+
+============================================================
+83. PERFORMANCE
+============================================================
+
+Do not allow live data to make the UI Lab slow.
+
+Use:
+
+- loading boundaries
+- efficient fetching
+- lazy images
+- caching where appropriate
+- memoization where useful
+- efficient animations
+- minimal unnecessary client code
+
+Do not rewrite visual animations unless performance testing proves necessary.
+
+============================================================
+84. IMAGE PERFORMANCE
+============================================================
+
+Real report images may be numerous.
+
+Use:
+
+- lazy loading
+- responsive images
+- sensible dimensions
+- placeholders
+- efficient rendering
+
+Do not load dozens of huge images simultaneously if they are off-screen.
+
+============================================================
+85. BACKGROUND / ANIMATION PERFORMANCE
+============================================================
+
+The existing UI Lab has visual animation.
+
+Keep it smooth.
+
+Do not allow live API integration to interfere with animation performance.
+
+Use transform/opacity-based animation where possible.
+
+============================================================
+86. ACCESSIBILITY
+============================================================
+
+Maintain:
+
+- semantic HTML
+- proper labels
+- keyboard navigation
+- visible focus
+- accessible menus
+- accessible dialogs
+- proper buttons/links
+- sufficient contrast
+- screen-reader-friendly states
+
+============================================================
+87. REDUCED MOTION
+============================================================
+
+Respect:
+
+prefers-reduced-motion: reduce
+
+Reduce:
+
+- parallax
+- 3D movement
+- card transitions
+- background motion
+- decorative animation
+
+Do not remove essential functionality.
+
+============================================================
+88. ADMIN PROTECTION
+============================================================
+
+Preserve existing admin authorization.
+
+Do not expose admin APIs or controls to normal users.
+
+Do not accidentally connect user UI to admin-only data.
+
+============================================================
+89. CLAIM / OWNERSHIP PROTECTION
+============================================================
+
+Do not expose:
+
+- claim answers
+- private evidence
+- internal moderation information
+- sensitive user details
+
+unless authorized by the actual application.
+
+============================================================
+90. DATABASE DATA CLASSIFICATION
+============================================================
+
+Before deleting anything from the database:
+
+classify records:
+
+REAL
+TEST
+MOCK
+
+Only remove records that are unquestionably MOCK/DEMO and were created only for the prototype.
+
+If uncertain:
+
+DO NOT DELETE.
+
+Report the ambiguity.
+
+============================================================
+91. MOCK DATA CLEANUP REPORT
+============================================================
+
+After cleanup, report:
+
+- what mock data was found
+- where it was found
+- what was removed
+- what was retained for testing
+- what visual assets were preserved
+- whether any database rows were deleted
+- why each deletion was safe
+
+============================================================
+92. NO DATA LOSS
+============================================================
+
+This migration must not cause data loss.
+
+Before changing:
+
+- DB
+- schemas
+- API
+- auth
+- frontend architecture
+
+make a safe backup/rollback point where practical.
+
+============================================================
+93. GIT / VERSION CONTROL
+============================================================
+
+If Git is available:
+
+preserve current state before migration.
+
+Suggested:
+
+pre-ui-lab-production-migration
+
+Then make migration changes in a controlled way.
+
+Do not rewrite Git history destructively.
+
+============================================================
+94. PHASED MIGRATION
+============================================================
+
+DO NOT COMPLETE EVERYTHING IN ONE STEP.
+
+Use the following phases.
+
+============================================================
+PHASE 0
+REPOSITORY AUDIT
+
+Inspect:
+
+- UI Lab
+- Classic UI
+- backend
+- DB
+- auth
+- ML
+- APIs
+- mock data
+- tests
+- environment
+
+DO NOT MODIFY.
+
+STOP.
+
+============================================================
+PHASE 1
+PRESERVE CLASSIC UI
+
+Create rollback point.
+
+Confirm original frontend is safe.
+
+STOP.
+
+============================================================
+PHASE 2
+PROMOTE UI LAB
+
+Make UI Lab the default frontend.
+
+Do not connect live services yet.
+
+Verify visual design remains intact.
+
+STOP.
+
+============================================================
+PHASE 3
+REMOVE UI LAB MOCK DATA
+
+Remove fake/demo application records and mock production data sources.
+
+Preserve design assets.
+
+Verify empty states.
+
+STOP.
+
+============================================================
+PHASE 4
+AUTHENTICATION
+
+Connect UI Lab to real Firebase authentication.
+
+Implement:
+
+LOGIN
+ME
+PROFILE DROPDOWN
+LOGOUT
+
+STOP.
+
+============================================================
+PHASE 5
+PROFILE + SETTINGS
+
+Connect real user data and settings.
+
+STOP.
+
+============================================================
+PHASE 6
+REPORT LOST
+
+Connect UI Lab Report Lost to real backend.
+
+STOP.
+
+============================================================
+PHASE 7
+REPORT FOUND
+
+Connect UI Lab Report Found to real backend.
+
+STOP.
+
+============================================================
+PHASE 8
+MY REPORTS
+
+Connect real current-user report data.
+
+STOP.
+
+============================================================
+PHASE 9
+ITEM DETAIL + CLAIMS
+
+Connect actual report/item detail and claim functionality.
+
+STOP.
+
+============================================================
+PHASE 10
+SEARCH
+
+Connect Search to actual backend.
+
+STOP.
+
+============================================================
+PHASE 11
+ML / RETRIEVAL
+
+Audit and connect real RetrievalService if functional.
+
+STOP.
+
+============================================================
+PHASE 12
+BROWSE + HOTSPOTS + OTHER REAL DATA
+
+Connect actual supported backend features.
+
+STOP.
+
+============================================================
+PHASE 13
+CROSS-FRONTEND TESTING
+
+Verify Classic UI and UI Lab operate against the same real infrastructure.
+
+STOP.
+
+============================================================
+PHASE 14
+SECURITY AUDIT
+
+Check:
+
+- authorization
+- private data
+- secrets
+- CORS
+- auth
+- admin access
+
+STOP.
+
+============================================================
+PHASE 15
+PERFORMANCE AUDIT
+
+Check:
+
+- loading
+- rendering
+- images
+- animations
+- API calls
+- client performance
+
+STOP.
+
+============================================================
+PHASE 16
+FULL END-TO-END TEST
+
+Test the entire application.
+
+STOP.
+
+============================================================
+95. STOP AFTER EVERY PHASE
+============================================================
+
+THIS IS MANDATORY.
+
+Do not automatically continue from one phase to another.
+
+After each phase, report:
+
+1. What was changed.
+2. Files changed.
+3. What was NOT changed.
+4. Tests performed.
+5. Problems found.
+6. Risks.
+7. Database changes.
+8. Mock data removed.
+9. API integration status.
+10. Whether Classic UI still works.
+
+Then STOP and wait for approval.
+
+============================================================
+96. DO NOT PERFORM DESTRUCTIVE ACTIONS WITHOUT CONFIRMATION
+============================================================
+
+Never automatically:
+
+- delete original frontend
+- delete real database records
+- drop tables
+- reset DB
+- delete users
+- replace auth
+- replace backend
+- remove Classic UI
+- disable working production systems
+
+The requested mock-data cleanup is limited to prototype/demo application data.
+
+============================================================
+97. FINAL PRODUCTION ARCHITECTURE
+============================================================
+
+PRIMARY:
+
+UI LAB
+
+SECONDARY:
+
+ORIGINAL MAIN FRONTEND
+
+SHARED:
+
+FASTAPI
+DATABASE
+AUTH
+ML
+API
+BUSINESS LOGIC
+
+============================================================
+98. FINAL USER EXPERIENCE
+============================================================
+
+A normal user should experience:
+
+OPEN BACK2U
+
+↓
+
+UI LAB
+
+↓
+
+NOT LOGGED IN:
+LOGIN
+
+↓
+
+LOGIN
+
+↓
+
+ME
+
+↓
+
+ACCOUNT DROPDOWN
+
+↓
+
+PROFILE
+SETTINGS
+MY REPORTS
+OTHER REAL ACCOUNT OPTIONS
+
+↓
+
+REPORT LOST
+REAL DATABASE
+
+↓
+
+REPORT FOUND
+REAL DATABASE
+
+↓
+
+MY REPORTS
+REAL USER REPORTS
+
+↓
+
+SEARCH
+REAL RETRIEVAL
+
+↓
+
+ITEM DETAIL
+REAL DATA
+
+Everything should be real.
+
+============================================================
+99. FINAL FALLBACK EXPERIENCE
+============================================================
+
+The original frontend remains accessible separately.
+
+If the UI Lab ever has a major problem:
+
+we can return to the original frontend.
+
+The original frontend must remain preserved.
+
+============================================================
+100. FINAL DATA RULE
+============================================================
+
+PRODUCTION UI LAB:
+
+NO FAKE DATA.
+
+NO DEMO REPORTS.
+
+NO FAKE USERS.
+
+NO FAKE COUNTERS.
+
+NO FAKE SEARCH RESULTS.
+
+NO FAKE MATCH SCORES.
+
+NO FAKE ML CONFIDENCE.
+
+NO FAKE NOTIFICATIONS.
+
+NO FAKE HOTSPOTS.
+
+NO FAKE CLAIMS.
+
+NO FAKE STATISTICS.
+
+REAL DATA ONLY.
+
+============================================================
+101. FINAL DESIGN RULE
+============================================================
+
+LIVE FUNCTIONALITY MUST NOT DESTROY THE UI LAB.
+
+Do not replace beautiful UI components with generic components just because real data is being connected.
+
+Adapt the data layer underneath the approved UI.
+
+The visual design remains:
+
+Back2U UI Lab.
+
+============================================================
+102. FINAL SOURCE-OF-TRUTH RULE
+============================================================
+
+MAIN FRONTEND:
+
+Source of truth for:
+- existing business functionality
+- existing content
+- API integration patterns
+- authentication behavior
+- data structure
+- existing working workflows
+
+UI LAB:
+
+Source of truth for:
+- visual design
+- typography
+- colors
+- backgrounds
+- animations
+- components
+- global shell
+
+STITCH:
+
+Source of truth for:
+- specific Stitch-derived components
+- My Reports cards
+- workflow section
+- expansion interactions
+- exact Stitch geometry where applicable
+
+BACKEND:
+
+Source of truth for:
+- actual data
+- business rules
+- authorization
+- persistence
+
+DATABASE:
+
+Source of truth for:
+- actual persistent records
+
+ML:
+
+Source of truth for:
+- actual retrieval results
+
+============================================================
+103. FINAL SUCCESS CRITERIA
+============================================================
+
+The migration is successful ONLY when:
+
+[ ] UI Lab is the default frontend.
+
+[ ] Original main frontend still exists.
+
+[ ] Original main frontend is independently accessible.
+
+[ ] UI Lab uses the real backend.
+
+[ ] UI Lab uses the real database.
+
+[ ] UI Lab uses the real authentication.
+
+[ ] UI Lab uses the real API.
+
+[ ] UI Lab uses the real ML/retrieval when actually available.
+
+[ ] Fake UI Lab application data has been removed.
+
+[ ] Real report creation works.
+
+[ ] Real found report creation works.
+
+[ ] Real My Reports works.
+
+[ ] Real Profile works.
+
+[ ] Real Settings works.
+
+[ ] Real Search works where backend/ML supports it.
+
+[ ] Real Item Detail works.
+
+[ ] Real Claims work where implemented.
+
+[ ] Login works.
+
+[ ] Logout works.
+
+[ ] Logged-out header shows LOGIN.
+
+[ ] Logged-in header shows ME.
+
+[ ] Account dropdown works.
+
+[ ] User data is properly authorized.
+
+[ ] No private data leaks.
+
+[ ] No fake data is used as an API fallback.
+
+[ ] UI Lab design remains visually intact.
+
+[ ] Header remains intact.
+
+[ ] Footer remains intact.
+
+[ ] Background remains intact.
+
+[ ] Typography remains intact.
+
+[ ] Stitch cards remain intact.
+
+[ ] Workflow section remains intact.
+
+[ ] Animations remain intact.
+
+[ ] Classic UI remains functional.
+
+[ ] No destructive database operation occurred.
+
+[ ] No secrets were exposed.
+
+[ ] Frontend tests pass.
+
+[ ] Backend tests pass.
+
+[ ] Integration tests pass.
+
+[ ] End-to-end tests pass.
+
+============================================================
+104. MOST IMPORTANT FINAL INSTRUCTION
+============================================================
+
+DO NOT DELETE THE ORIGINAL MAIN FRONTEND.
+
+DO NOT DESTROY THE FALLBACK.
+
+DO NOT DELETE REAL DATA.
+
+DO NOT DROP THE DATABASE.
+
+DO NOT CREATE A SECOND BACKEND.
+
+DO NOT CREATE A SECOND DATABASE.
+
+DO NOT CREATE A SECOND AUTH SYSTEM.
+
+DO NOT CREATE FAKE PRODUCTION DATA.
+
+DELETE ONLY THE MOCK/DEMO APPLICATION DATA CREATED FOR THE UI LAB PROTOTYPE.
+
+KEEP ALL APPROVED VISUAL/DESIGN ASSETS.
+
+MAKE UI LAB THE PRIMARY FRONTEND.
+
+CONNECT UI LAB TO THE EXISTING REAL:
+
+BACKEND
+DATABASE
+AUTHENTICATION
+API
+ML
+BUSINESS LOGIC
+
+KEEP THE ORIGINAL MAIN FRONTEND AS A SEPARATE FALLBACK UI.
+
+============================================================
+105. FINAL MENTAL MODEL
+============================================================
+
+THE OLD MAIN FRONTEND
+=
+THE FUNCTIONAL REFERENCE + FALLBACK UI
+
+THE UI LAB
+=
+THE NEW PRIMARY PRODUCTION UI
+
+THE BACKEND
+=
+SHARED REAL APPLICATION ENGINE
+
+THE DATABASE
+=
+SHARED REAL SOURCE OF TRUTH
+
+AUTHENTICATION
+=
+SHARED REAL IDENTITY
+
+ML
+=
+SHARED REAL RETRIEVAL
+
+MOCK UI DATA
+=
+REMOVE
+
+APPROVED UI LAB VISUAL ASSETS
+=
+KEEP
+
+============================================================
+106. START NOW
+============================================================
+
+START WITH:
+
+PHASE 0 — COMPLETE REPOSITORY AUDIT.
+
+DO NOT MODIFY ANYTHING DURING THE FIRST AUDIT.
+
+Find and report:
+
+1. UI Lab location.
+2. Original frontend location.
+3. Backend location.
+4. Database configuration.
+5. Authentication configuration.
+6. API routes.
+7. Current API client.
+8. ML/retrieval status.
+9. UI Lab mock data.
+10. Real data sources.
+11. Test fixtures.
+12. Existing environment configuration.
+13. Safest rollback strategy.
+14. Which UI Lab pages are ready for production integration.
+15. Which pages still require implementation.
+
+THEN STOP.
+
+WAIT FOR HUMAN VALIDATION.
+
+DO NOT PROCEED TO PHASE 1 UNTIL THE AUDIT HAS BEEN REVIEWED.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T16:24:19+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+- /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>
+<USER_REQUEST>
+move to phase 2
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T16:30:35+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+- /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>
+<USER_REQUEST>
+proceed
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T16:32:30+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+- /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>
+<USER_REQUEST>
+procees
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T16:34:12+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+</ADDITIONAL_METADATA>
+<USER_REQUEST>
+proceed with phase 4
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T16:36:31+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+- /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>
+<USER_REQUEST>
+proceed with phase 4
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T16:36:58+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+</ADDITIONAL_METADATA>
+<USER_REQUEST>
+proceed with phase 4
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T16:38:18+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+- /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>
+<USER_REQUEST>
+proceed with phase 5
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T16:39:17+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+- /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>
+<USER_REQUEST>
+proceed
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T16:40:38+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+- /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>
+<USER_REQUEST>
+proceed
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T16:41:44+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+- /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>
+<USER_REQUEST>
+proceed
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-04T16:46:28+05:30.
+
+The user's current state is as follows:
+Active Document: /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 1
+Other open documents:
+- /Users/anika/Desktop/LiveProject/LiveProject/back2u-ui-lab/README.md (LANGUAGE_MARKDOWN)
+- /Users/anika/Desktop/LiveProject/LiveProject/Back2U-Stitch-Experiment/.eslintrc.json (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>

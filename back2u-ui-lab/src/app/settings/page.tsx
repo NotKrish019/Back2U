@@ -3,6 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { UserRound, FileText, Check } from 'lucide-react';
+import { auth } from '@/lib/firebase/config';
+import { onAuthStateChanged, updateProfile, updateEmail, User } from 'firebase/auth';
 import { SectionLabel, PageTop, Button } from '../report/lost/ManusUILab';
 import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
 import Navigation from "@/components/Navigation";
@@ -15,34 +17,57 @@ export default function SettingsPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   
   // Interactive States
-  const [displayName, setDisplayName] = useState('Campus User');
-  const [email, setEmail] = useState('demo@university.edu');
-  const [emailAlerts, setEmailAlerts] = useState(true);
+  const [displayName, setDisplayName] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailAlerts, setEmailAlerts] = useState(false);
   const [newsletter, setNewsletter] = useState(false);
 
+  const [user, setUser] = useState<User | null>(null);
+
   useEffect(() => {
-    const checkAuth = () => {
-      const loggedIn = localStorage.getItem('demo_logged_in') === 'true';
-      setIsLoggedIn(loggedIn);
-      if (!loggedIn) {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setIsLoggedIn(!!currentUser);
+      if (!currentUser) {
         router.push('/login');
+      } else {
+        setDisplayName(currentUser.displayName || '');
+        const savedEmail = localStorage.getItem(`contactEmail_${currentUser.uid}`);
+        setEmail(currentUser.email || savedEmail || '');
+        
+        const savedEmailAlerts = localStorage.getItem(`emailAlerts_${currentUser.uid}`);
+        if (savedEmailAlerts !== null) setEmailAlerts(savedEmailAlerts === 'true');
+        
+        const savedNewsletter = localStorage.getItem(`newsletter_${currentUser.uid}`);
+        if (savedNewsletter !== null) setNewsletter(savedNewsletter === 'true');
+        
+        setUser(currentUser);
       }
-    };
+    });
     
-    checkAuth();
-    window.addEventListener('storage', checkAuth);
-    window.addEventListener('demo_auth_change', checkAuth);
-    return () => {
-      window.removeEventListener('storage', checkAuth);
-      window.removeEventListener('demo_auth_change', checkAuth);
-    };
+    return () => unsubscribe();
   }, [router]);
 
   const handleSaveProfile = async () => {
     setError(null);
     try {
-      // Demo save delay
-      await new Promise(resolve => setTimeout(resolve, 800));
+      if (user) {
+        if (displayName !== user.displayName) {
+          await updateProfile(user, { displayName });
+        }
+        
+        localStorage.setItem(`contactEmail_${user.uid}`, email);
+        
+        if (email !== user.email && email.trim() !== '') {
+          try {
+            await updateEmail(user, email);
+          } catch (err: any) {
+            console.warn("Firebase updateEmail failed:", err);
+          }
+        }
+        localStorage.setItem(`emailAlerts_${user.uid}`, emailAlerts.toString());
+        localStorage.setItem(`newsletter_${user.uid}`, newsletter.toString());
+      }
+      
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch {
@@ -120,15 +145,17 @@ export default function SettingsPage() {
                   />
                 </label>
 
-                <label className="flex flex-col gap-2 font-mono text-[11px] font-bold tracking-widest uppercase text-[#211C2B] opacity-60">
-                  Mobile number
-                  <input 
-                    value="+1 (555) 123-4567" 
-                    readOnly 
-                    disabled 
-                    className="w-full bg-[#211C2B]/5 border-[2px] border-[#211C2B]/20 p-4 text-[16px] font-sans font-medium text-[#211C2B] rounded-sm cursor-not-allowed"
-                  />
-                </label>
+                {user?.phoneNumber && (
+                  <label className="flex flex-col gap-2 font-mono text-[11px] font-bold tracking-widest uppercase text-[#211C2B] opacity-60">
+                    Mobile number
+                    <input 
+                      value={user.phoneNumber} 
+                      readOnly 
+                      disabled 
+                      className="w-full bg-[#211C2B]/5 border-[2px] border-[#211C2B]/20 p-4 text-[16px] font-sans font-medium text-[#211C2B] rounded-sm cursor-not-allowed"
+                    />
+                  </label>
+                )}
               </div>
             </div>
 

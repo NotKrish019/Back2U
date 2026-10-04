@@ -13,7 +13,9 @@ from transformers import AutoProcessor, AutoModelForZeroShotObjectDetection, Aut
 from src.embeddings.dinov2_model import Dinov2ImageEncoder
 from src.models.m4_projection import M4ProjectionHead
 import faiss
+import ssl
 
+ssl._create_default_https_context = ssl._create_unverified_context
 class FinalInferencePipeline:
     def __init__(self, device="cuda"):
         self.device = device if torch.cuda.is_available() else "cpu"
@@ -276,6 +278,35 @@ class FinalInferencePipeline:
             }
             
         return response
+
+    def add_to_gallery(self, image_path, item_id, item_cat):
+        try:
+            cls_token, _ = self.m4c_encoder.encode_image_with_patches(image_path)
+            cls_token = cls_token.unsqueeze(0).to(self.device)
+            with torch.no_grad():
+                emb = self.m4c_proj(cls_token)[0]
+                emb = emb / emb.norm(p=2, dim=-1)
+            visual_emb_np = emb.detach().cpu().numpy().reshape(1, -1)
+            
+            img = Image.open(image_path).convert("RGB")
+            inputs = self.siglip_proc(images=[img], text=["dummy"], return_tensors="pt", padding="max_length").to(self.device)
+            with torch.no_grad():
+                out = self.siglip(**inputs)
+                se = out.image_embeds[0]
+                se = se / se.norm(p=2, dim=-1)
+            siglip_emb = se.detach().cpu().unsqueeze(0)
+            
+            self.gallery.append({
+                "image_path": image_path,
+                "item_instance_id": item_id,
+                "item_category": item_cat
+            })
+            self.siglip_img_embeds = torch.cat([self.siglip_img_embeds, siglip_emb])
+            self.index.add(visual_emb_np)
+            return True
+        except Exception as e:
+            print(f"Error adding to gallery: {e}")
+            return False
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

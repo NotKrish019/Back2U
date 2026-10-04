@@ -41,6 +41,55 @@ def create_report(
     db.add(db_report)
     db.commit()
     db.refresh(db_report)
+    
+    # Auto-match logic using REAL ML MODEL
+    try:
+        from src.api.routers.retrieval import get_retrieval_service
+        from src.api.schemas import RetrievalQuery
+        
+        retrieval_service = get_retrieval_service()
+        
+        # Dynamically add the new report's image to the ML model's FAISS index
+        if report.image_reference and report.image_reference.startswith("data:image"):
+            retrieval_service.index_report(db_report, report.image_reference)
+            
+        # Pass the image and description to the ML model
+        query = RetrievalQuery(
+            image=report.image_reference,
+            text=report.description,
+            top_k=5
+        )
+        
+        ml_result = retrieval_service.search(query)
+        
+        for item in ml_result.results:
+            match_report = db.query(models.Report).filter(
+                models.Report.item_instance_id == item.item_instance_id,
+                models.Report.report_type != report.report_type,
+                models.Report.status == "open"
+            ).first()
+            
+            if match_report:
+                lost_id = db_report.report_id if db_report.report_type == "lost" else match_report.report_id
+                found_id = match_report.report_id if db_report.report_type == "lost" else db_report.report_id
+                
+                existing_match = db.query(models.CandidateMatch).filter(
+                    models.CandidateMatch.lost_report_id == lost_id,
+                    models.CandidateMatch.found_report_id == found_id
+                ).first()
+                
+                if not existing_match:
+                    new_match = models.CandidateMatch(
+                        lost_report_id=lost_id,
+                        found_report_id=found_id,
+                        similarity_score=item.similarity_score,
+                        status="pending"
+                    )
+                    db.add(new_match)
+        db.commit()
+    except Exception as e:
+        print(f"ML auto-match failed: {e}")
+        
     return db_report
 
 @router.get("", response_model=List[schemas.ReportOut])
@@ -119,3 +168,83 @@ def delete_report(
     db.delete(report)
     db.commit()
     return None
+
+@router.get("/{report_id}/matches")
+def get_report_matches(
+    report_id: str,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    report = db.query(models.Report).filter(models.Report.report_id == report_id).first()
+    if not report:
+        raise HTTPException(status_code=404, detail="Report not found")
+        
+    if report.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to view matches for this report")
+        
+    if report.report_type == "lost":
+        matches = db.query(models.CandidateMatch).filter(models.CandidateMatch.lost_report_id == report_id, models.CandidateMatch.status == "pending").all()
+        # enrich with found report details
+        results = []
+        for m in matches:
+            fr = m.found_report
+            if fr:
+                results.append({
+                    "match_id": m.match_id,
+                    "similarity_score": m.similarity_score,
+                    "report": {
+                        "report_id": fr.report_id,
+                        "item_category": fr.item_category,
+                        "description": fr.description,
+                        "location": fr.location,
+                        "image_reference": f"BLURRED_{fr.image_reference}" if fr.image_reference else None,
+                        "created_at": fr.created_at
+                    }
+                })
+            else:
+                results.append({
+                    "match_id": m.match_id,
+                    "similarity_score": m.similarity_score,
+                    "report": {
+                        "report_id": "deleted",
+                        "item_category": "Deleted Report",
+                        "description": "This report has been deleted by the owner.",
+                        "location": "Unknown",
+                        "image_reference": None,
+                        "created_at": m.created_at
+                    }
+                })
+        return results
+    else:
+        matches = db.query(models.CandidateMatch).filter(models.CandidateMatch.found_report_id == report_id, models.CandidateMatch.status == "pending").all()
+        # enrich with lost report details
+        results = []
+        for m in matches:
+            lr = m.lost_report
+            if lr:
+                results.append({
+                    "match_id": m.match_id,
+                    "similarity_score": m.similarity_score,
+                    "report": {
+                        "report_id": lr.report_id,
+                        "item_category": lr.item_category,
+                        "description": lr.description,
+                        "location": lr.location,
+                        "image_reference": lr.image_reference,
+                        "created_at": lr.created_at
+                    }
+                })
+            else:
+                results.append({
+                    "match_id": m.match_id,
+                    "similarity_score": m.similarity_score,
+                    "report": {
+                        "report_id": "deleted",
+                        "item_category": "Deleted Report",
+                        "description": "This report has been deleted by the owner.",
+                        "location": "Unknown",
+                        "image_reference": None,
+                        "created_at": m.created_at
+                    }
+                })
+        return results
