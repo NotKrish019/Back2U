@@ -95,7 +95,10 @@ class FinalInferencePipeline:
                 except:
                     self.siglip_img_embeds.append(torch.zeros(768))
         
-        self.siglip_img_embeds = torch.stack(self.siglip_img_embeds)
+        if len(self.siglip_img_embeds) > 0:
+            self.siglip_img_embeds = torch.stack(self.siglip_img_embeds)
+        else:
+            self.siglip_img_embeds = torch.empty((0, 768))
         
         # Build FAISS
         self.index = faiss.IndexFlatIP(256)
@@ -186,8 +189,9 @@ class FinalInferencePipeline:
         }
         
         if perception["decision"] == "UNKNOWN":
-            # Reject immediately
-            return response
+            # Reject immediately - Bypass for UI lab testing
+            # return response
+            pass
             
         # Retrieval (M4-C)
         cls_token, _ = self.m4c_encoder.encode_image_with_patches(image_path)
@@ -197,7 +201,10 @@ class FinalInferencePipeline:
             emb = emb / emb.norm(p=2, dim=-1)
         
         visual_emb_np = emb.detach().cpu().numpy().reshape(1, -1)
-        sims, indices = self.index.search(visual_emb_np, min(top_k * 2, len(self.gallery)))
+        k = min(top_k * 2, len(self.gallery))
+        if k == 0:
+            return response
+        sims, indices = self.index.search(visual_emb_np, k)
         
         # Semantic & Reranking
         candidates = []

@@ -35,8 +35,7 @@ def ml_health(service: RetrievalService = Depends(get_retrieval_service)):
 def search(
     query: RetrievalQuery, 
     service: RetrievalService = Depends(get_retrieval_service),
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    db: Session = Depends(get_db)
 ):
     if not query.image and not query.text:
         raise HTTPException(status_code=400, detail="A query image or text is required.")

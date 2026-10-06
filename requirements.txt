@@ -16,3 +16,4 @@ alembic
 psycopg2-binary
 firebase-admin
 faiss-cpu
+scikit-learn
