@@ -99,7 +99,7 @@ Full reports: [`reports/final_evaluation.md`](reports/final_evaluation.md),
 | Backend | Python, FastAPI, SQLAlchemy, Alembic, Pydantic, SQLite (PostgreSQL-ready) |
 | Auth | Firebase Authentication (web SDK + Firebase Admin / PyJWT on the server) |
 | ML | PyTorch, Hugging Face Transformers, DINOv2, Grounding DINO, SigLIP2, FAISS, scikit-learn |
-| Testing | pytest (136 tests: API, ML service, gallery store, evaluation tooling) |
+| Testing | pytest (137 tests: API, ML service, gallery store, evaluation tooling) |
 
 ## 7. Project structure
 
