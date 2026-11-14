@@ -1,0 +1,17 @@
+Using cache found in /Users/anika/.cache/torch/hub/facebookresearch_dinov2_main
+/Users/anika/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/swiglu_ffn.py:51: UserWarning: xFormers is not available (SwiGLU)
+  warnings.warn("xFormers is not available (SwiGLU)")
+/Users/anika/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/attention.py:33: UserWarning: xFormers is not available (Attention)
+  warnings.warn("xFormers is not available (Attention)")
+/Users/anika/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)
+  warnings.warn("xFormers is not available (Block)")
+Loading weights:   0%|          | 0/978 [00:00<?, ?it/s]Loading weights:  80%|████████  | 786/978 [00:00<00:00, 7847.36it/s]Loading weights: 100%|██████████| 978/978 [00:00<00:00, 9017.89it/s]
+/Users/anika/Desktop/LiveProject/LiveProject/venv/lib/python3.14/site-packages/transformers/models/grounding_dino/processing_grounding_dino.py:94: FutureWarning: The key `labels` is will return integer ids in `GroundingDinoProcessor.post_process_grounded_object_detection` output since v4.51.0. Use `text_labels` instead to retrieve string object names.
+  warnings.warn(self.message, FutureWarning)
+A_full_image                 n_q=853 inst=141 R@1=0.796 R@5=0.897 R@10=0.938 MRR=0.843 HN@1=0.799531 crops={'full_image': 853}
+B_detector_crop              n_q=853 inst=141 R@1=0.720 R@5=0.872 R@10=0.924 MRR=0.793 HN@1=0.728019 crops={'detector': 852, 'full_image_fallback': 1}
+C_ground_truth_crop          n_q=853 inst=141 R@1=0.699 R@5=0.870 R@10=0.923 MRR=0.775 HN@1=0.706917 crops={'ground_truth': 853}
+D_detector_crop_letterbox    n_q=853 inst=141 R@1=0.762 R@5=0.904 R@10=0.946 MRR=0.824 HN@1=0.764361 crops={'detector': 852, 'full_image_fallback': 1}
+A_full_image_letterbox       n_q=853 inst=141 R@1=0.812 R@5=0.928 R@10=0.958 MRR=0.866 HN@1=0.815944 crops={'full_image': 853}
+model_version: lp-riem-mm1-phase1-crop-v1+m4c.7aef423c | outputs: /Users/anika/Desktop/LiveProject/LiveProject/reports/evaluation/phase2_runs/co3d_pilot
+exit=0

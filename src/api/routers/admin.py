@@ -126,3 +126,17 @@ def get_items(resolved: Optional[bool] = None, db: Session = Depends(get_db), cu
             q = q.filter(models.ItemInstance.resolved_at == None)
     items = q.order_by(desc(models.ItemInstance.created_at)).all()
     return items
+
+
+@router.post("/reindex")
+def reindex_reports(db: Session = Depends(get_db), current_admin: models.User = Depends(get_admin_user)):
+    """Ensure every stored report with a resolvable image is in the ML gallery.
+
+    Returns per-report outcomes; reports that cannot be indexed are listed with a reason.
+    """
+    from src.api.routers.retrieval import get_retrieval_service
+    from src.api.services.index_sync import sync_reports_to_index
+    try:
+        return sync_reports_to_index(db, get_retrieval_service())
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"ML service unavailable for reindex: {str(e)[:200]}")

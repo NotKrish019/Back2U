@@ -922,3 +922,21 @@ LP-RIEM-MM1 is fully packaged with reproducible test scripts. The focus should n
 **Next action:** 
 - System is fully integrated and ready for final testing/deployment.
 
+
+
+### 2026-11-04 12:30 — Demo-path fixes: search 422, HEIC uploads, result cards, hydration error
+
+**Change:**
+- ML `/api/search` now accepts text-only queries (`file` optional): SigLIP2 text embedding vs. stored SigLIP2 gallery image embeddings, scored with SigLIP2's own sigmoid probability; every text-only match is `decision: "review"` (the calibrator needs a visual score, so it is not applied). No image and no text → 400. (`src/app/main.py`, `scripts/run_inference.py::search_text`)
+- HEIC/HEIF (iPhone) uploads: ML decodes them via `pillow-heif`; the backend converts HEIC report images to JPEG data URLs on create/update so browsers can display them (`to_browser_image` in `src/api/services/retrieval_service.py`, `src/api/routers/reports.py`). `pillow-heif` added to `requirements.txt`.
+- Backend `/retrieval/search` skips gallery items that have no report in the DB (orphan vectors left by deleted reports), and ranks are renumbered contiguously (`src/api/routers/retrieval.py`).
+- UI Lab: `/search` sends the query photo (previously always text-only); Report Lost hands its photo to `/search` via sessionStorage. `ResultCard` shows `BLURRED_` found-item photos blurred instead of broken, shows the real report type, and shows "Untitled Item" instead of an internal ID. Fixed the site-wide hydration error from the footer's `<style>` (`ticket-stub-footer.tsx` now uses `dangerouslySetInnerHTML`).
+- Data: existing HEIC report `rep_777421a9` converted to JPEG (backup `app.db.bak-20261104-122053`); re-index added it to the gallery (5 → 6 entries).
+
+**Reason:** Searching from the UI failed with `ML Retrieval failed: … 422 … /api/search` because the UI never sent the photo and the ML endpoint required one (Phase 1 limitation #4). An iPhone HEIC photo also failed to index (400).
+
+**Evidence/results:** `pytest tests`: 130 passed, 5 failed (the same pre-existing failures), 1 skipped; 6 new tests (text-only search ×2, HEIC ×2, orphan skip, backend text-only). Browser check on `/search?desc=…`: 200 responses for both text-only and photo searches, no alert, the correct laptop ranked first at 90%; no hydration mismatches on `/`, `/search` or `/browse`.
+
+**New risks/issues:** Text-only scores are SigLIP2 probabilities, not calibrated and not comparable with photo-search scores. The gallery is still append-only (deletes don't remove vectors), now hidden by the orphan filter. Result cards don't show the description (not in `RetrievalResultItem`).
+
+**Next action:** Rehearse the demo with the exact photos; consider removing vectors when a report is deleted.

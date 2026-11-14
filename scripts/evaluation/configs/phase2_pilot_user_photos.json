@@ -1,0 +1,12 @@
+{
+ "run_name": "pilot_user_photos",
+ "evidence_level": "EXPLORATORY (2 instances, 4 queries; assistant-verified boxes)",
+ "manifest": "data/processed/phase2_evaluation_manifest.jsonl",
+ "checkpoint": "models/checkpoints/m4_c/best_val_recall_at_1.pt",
+ "expected_checkpoint_sha256": "7aef423c63a258de9da6301cb545c993cb64c81bd7f75fcf3ef73381455881eb",
+ "sources": ["back2u_app_upload"],
+ "conditions": ["A_full_image", "B_detector_crop", "C_ground_truth_crop", "D_detector_crop_letterbox", "A_full_image_letterbox"],
+ "inputs_are_precropped": false,
+ "ks": [1, 5, 10],
+ "output_dir": "reports/evaluation/phase2_runs"
+}

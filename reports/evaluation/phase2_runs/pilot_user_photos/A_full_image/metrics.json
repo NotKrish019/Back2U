@@ -1,0 +1,32 @@
+{
+ "overall": {
+  "hard_negative_top1_accuracy": 0.5,
+  "mrr": 0.75,
+  "n_gallery_images": 4,
+  "n_gallery_instances": 2,
+  "n_queries": 4,
+  "n_queries_with_same_category_negative": 4,
+  "n_query_instances": 2,
+  "n_skipped_queries": 0,
+  "recall@1": 0.5,
+  "recall@10": 1.0,
+  "recall@5": 1.0,
+  "trivial_recall_ks": [
+   5,
+   10
+  ]
+ },
+ "per_category": {
+  "laptop": {
+   "hard_negative_top1_accuracy": 0.5,
+   "mrr": 0.75,
+   "n_queries": 4,
+   "n_queries_with_same_category_negative": 4,
+   "n_query_instances": 2,
+   "recall@1": 0.5,
+   "recall@10": 1.0,
+   "recall@5": 1.0
+  }
+ },
+ "skipped_queries": []
+}

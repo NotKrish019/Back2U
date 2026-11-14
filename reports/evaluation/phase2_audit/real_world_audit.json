@@ -1,0 +1,441 @@
+{
+ "category_pools": {
+  "data/raw/coil-100": {
+   "category": null,
+   "exists": false,
+   "root": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/coil-100"
+  },
+  "data/raw/earphones": {
+   "category": "earphones",
+   "exists": false,
+   "root": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/earphones"
+  },
+  "data/raw/headphones": {
+   "category": "headphones",
+   "exists": false,
+   "root": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/headphones"
+  },
+  "data/raw/images": {
+   "category": null,
+   "exists": false,
+   "root": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/images"
+  },
+  "data/raw/objectron_images": {
+   "category": null,
+   "exists": false,
+   "root": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/objectron_images"
+  },
+  "data/raw/paco_images": {
+   "category": null,
+   "exists": false,
+   "root": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/paco_images"
+  },
+  "data/raw/smartphones": {
+   "category": "mobile_phone",
+   "exists": false,
+   "root": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/smartphones"
+  }
+ },
+ "instance_roots": {
+  "historical_objectron_crops": {
+   "cross_instance_duplicates": [],
+   "exists": true,
+   "instances": [
+    {
+     "augmentation_files": [],
+     "category": "laptop",
+     "dir": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops/laptop/objectron_laptop_batch-13_12",
+     "exact_duplicate_groups": [],
+     "has_min_views": true,
+     "identity_basis": "Objectron sequence batch-13/12: one physical object per video",
+     "identity_status": "TRUSTWORTHY",
+     "m4c_eligible": false,
+     "near_duplicate_groups": [],
+     "original_files": 3,
+     "originals_local": false,
+     "physical_instance_id": "objectron_laptop_batch-13_12",
+     "source": "objectron_historical_m2_visualization",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "unreadable_files": [],
+     "valid_genuine_views": 3
+    },
+    {
+     "augmentation_files": [],
+     "category": "laptop",
+     "dir": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops/laptop/objectron_laptop_batch-13_35",
+     "exact_duplicate_groups": [],
+     "has_min_views": false,
+     "identity_basis": "Objectron sequence batch-13/35: one physical object per video",
+     "identity_status": "TRUSTWORTHY",
+     "m4c_eligible": false,
+     "near_duplicate_groups": [],
+     "original_files": 2,
+     "originals_local": false,
+     "physical_instance_id": "objectron_laptop_batch-13_35",
+     "source": "objectron_historical_m2_visualization",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "unreadable_files": [],
+     "valid_genuine_views": 2
+    },
+    {
+     "augmentation_files": [],
+     "category": "laptop",
+     "dir": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops/laptop/objectron_laptop_batch-17_27",
+     "exact_duplicate_groups": [],
+     "has_min_views": false,
+     "identity_basis": "Objectron sequence batch-17/27: one physical object per video",
+     "identity_status": "TRUSTWORTHY",
+     "m4c_eligible": false,
+     "near_duplicate_groups": [],
+     "original_files": 1,
+     "originals_local": false,
+     "physical_instance_id": "objectron_laptop_batch-17_27",
+     "source": "objectron_historical_m2_visualization",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "unreadable_files": [],
+     "valid_genuine_views": 1
+    },
+    {
+     "augmentation_files": [],
+     "category": "laptop",
+     "dir": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops/laptop/objectron_laptop_batch-17_6",
+     "exact_duplicate_groups": [],
+     "has_min_views": false,
+     "identity_basis": "Objectron sequence batch-17/6: one physical object per video",
+     "identity_status": "TRUSTWORTHY",
+     "m4c_eligible": false,
+     "near_duplicate_groups": [],
+     "original_files": 2,
+     "originals_local": false,
+     "physical_instance_id": "objectron_laptop_batch-17_6",
+     "source": "objectron_historical_m2_visualization",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "unreadable_files": [],
+     "valid_genuine_views": 2
+    },
+    {
+     "augmentation_files": [],
+     "category": "laptop",
+     "dir": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops/laptop/objectron_laptop_batch-22_4",
+     "exact_duplicate_groups": [],
+     "has_min_views": false,
+     "identity_basis": "Objectron sequence batch-22/4: one physical object per video",
+     "identity_status": "TRUSTWORTHY",
+     "m4c_eligible": false,
+     "near_duplicate_groups": [],
+     "original_files": 2,
+     "originals_local": false,
+     "physical_instance_id": "objectron_laptop_batch-22_4",
+     "source": "objectron_historical_m2_visualization",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "unreadable_files": [],
+     "valid_genuine_views": 2
+    },
+    {
+     "augmentation_files": [],
+     "category": "laptop",
+     "dir": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops/laptop/objectron_laptop_batch-24_13",
+     "exact_duplicate_groups": [],
+     "has_min_views": false,
+     "identity_basis": "Objectron sequence batch-24/13: one physical object per video",
+     "identity_status": "TRUSTWORTHY",
+     "m4c_eligible": false,
+     "near_duplicate_groups": [],
+     "original_files": 2,
+     "originals_local": false,
+     "physical_instance_id": "objectron_laptop_batch-24_13",
+     "source": "objectron_historical_m2_visualization",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "unreadable_files": [],
+     "valid_genuine_views": 2
+    },
+    {
+     "augmentation_files": [],
+     "category": "laptop",
+     "dir": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops/laptop/objectron_laptop_batch-29_3",
+     "exact_duplicate_groups": [],
+     "has_min_views": false,
+     "identity_basis": "Objectron sequence batch-29/3: one physical object per video",
+     "identity_status": "TRUSTWORTHY",
+     "m4c_eligible": false,
+     "near_duplicate_groups": [
+      [
+       "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops/laptop/objectron_laptop_batch-29_3/view_rec15.jpg",
+       "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops/laptop/objectron_laptop_batch-29_3/view_rec16.jpg"
+      ]
+     ],
+     "original_files": 2,
+     "originals_local": false,
+     "physical_instance_id": "objectron_laptop_batch-29_3",
+     "source": "objectron_historical_m2_visualization",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "unreadable_files": [],
+     "valid_genuine_views": 1
+    },
+    {
+     "augmentation_files": [],
+     "category": "laptop",
+     "dir": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops/laptop/objectron_laptop_batch-2_41",
+     "exact_duplicate_groups": [],
+     "has_min_views": false,
+     "identity_basis": "Objectron sequence batch-2/41: one physical object per video",
+     "identity_status": "TRUSTWORTHY",
+     "m4c_eligible": false,
+     "near_duplicate_groups": [],
+     "original_files": 2,
+     "originals_local": false,
+     "physical_instance_id": "objectron_laptop_batch-2_41",
+     "source": "objectron_historical_m2_visualization",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "unreadable_files": [],
+     "valid_genuine_views": 2
+    },
+    {
+     "augmentation_files": [],
+     "category": "laptop",
+     "dir": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops/laptop/objectron_laptop_batch-5_37",
+     "exact_duplicate_groups": [],
+     "has_min_views": false,
+     "identity_basis": "Objectron sequence batch-5/37: one physical object per video",
+     "identity_status": "TRUSTWORTHY",
+     "m4c_eligible": false,
+     "near_duplicate_groups": [],
+     "original_files": 2,
+     "originals_local": false,
+     "physical_instance_id": "objectron_laptop_batch-5_37",
+     "source": "objectron_historical_m2_visualization",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "unreadable_files": [],
+     "valid_genuine_views": 2
+    },
+    {
+     "augmentation_files": [],
+     "category": "laptop",
+     "dir": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops/laptop/objectron_laptop_batch-9_39",
+     "exact_duplicate_groups": [],
+     "has_min_views": false,
+     "identity_basis": "Objectron sequence batch-9/39: one physical object per video",
+     "identity_status": "TRUSTWORTHY",
+     "m4c_eligible": false,
+     "near_duplicate_groups": [],
+     "original_files": 2,
+     "originals_local": false,
+     "physical_instance_id": "objectron_laptop_batch-9_39",
+     "source": "objectron_historical_m2_visualization",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "unreadable_files": [],
+     "valid_genuine_views": 2
+    }
+   ],
+   "non_canonical_category_dirs": [],
+   "per_category": {
+    "book": {
+     "instance_dirs": 0,
+     "instances_with_ge2_views": 0,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 0,
+     "positive_pairs": 0,
+     "trustworthy_instances": 0,
+     "valid_genuine_views": 0
+    },
+    "earphones": {
+     "instance_dirs": 0,
+     "instances_with_ge2_views": 0,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 0,
+     "positive_pairs": 0,
+     "trustworthy_instances": 0,
+     "valid_genuine_views": 0
+    },
+    "headphones": {
+     "instance_dirs": 0,
+     "instances_with_ge2_views": 0,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 0,
+     "positive_pairs": 0,
+     "trustworthy_instances": 0,
+     "valid_genuine_views": 0
+    },
+    "keys": {
+     "instance_dirs": 0,
+     "instances_with_ge2_views": 0,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 0,
+     "positive_pairs": 0,
+     "trustworthy_instances": 0,
+     "valid_genuine_views": 0
+    },
+    "laptop": {
+     "instance_dirs": 10,
+     "instances_with_ge2_views": 8,
+     "instances_with_ge3_views": 1,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 20,
+     "positive_pairs": 10,
+     "trustworthy_instances": 10,
+     "valid_genuine_views": 19
+    },
+    "mobile_phone": {
+     "instance_dirs": 0,
+     "instances_with_ge2_views": 0,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 0,
+     "positive_pairs": 0,
+     "trustworthy_instances": 0,
+     "valid_genuine_views": 0
+    },
+    "wallet": {
+     "instance_dirs": 0,
+     "instances_with_ge2_views": 0,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 0,
+     "positive_pairs": 0,
+     "trustworthy_instances": 0,
+     "valid_genuine_views": 0
+    }
+   },
+   "root": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/historical_objectron_crops"
+  },
+  "real_world_instances": {
+   "cross_instance_duplicates": [],
+   "exists": true,
+   "instances": [
+    {
+     "augmentation_files": [],
+     "category": "laptop",
+     "dir": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/real_world_instances/laptop/laptop_app_u001",
+     "exact_duplicate_groups": [],
+     "has_min_views": false,
+     "identity_basis": "Unique sticker arrangement visible and consistent in every view (assistant visual inspection, 2026-11-02). Owner confirmation pending.",
+     "identity_status": "TRUSTWORTHY",
+     "m4c_eligible": false,
+     "near_duplicate_groups": [],
+     "original_files": 2,
+     "originals_local": true,
+     "physical_instance_id": "laptop_app_u001",
+     "source": "back2u_app_upload",
+     "training_overlap_risk": "NONE_KNOWN: photos uploaded 2026-10-05 12:25, after the M4-C checkpoint (2026-10-05 01:46); M4-C was trained on Objectron only.",
+     "unreadable_files": [],
+     "valid_genuine_views": 2
+    },
+    {
+     "augmentation_files": [],
+     "category": "laptop",
+     "dir": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/real_world_instances/laptop/laptop_app_u002",
+     "exact_duplicate_groups": [
+      [
+       "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/real_world_instances/laptop/laptop_app_u002/view_02.jpg",
+       "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/real_world_instances/laptop/laptop_app_u002/view_03.jpg"
+      ]
+     ],
+     "has_min_views": false,
+     "identity_basis": "Unique sticker arrangement visible and consistent in every view (assistant visual inspection, 2026-11-02). Owner confirmation pending.",
+     "identity_status": "TRUSTWORTHY",
+     "m4c_eligible": false,
+     "near_duplicate_groups": [],
+     "original_files": 3,
+     "originals_local": true,
+     "physical_instance_id": "laptop_app_u002",
+     "source": "back2u_app_upload",
+     "training_overlap_risk": "NONE_KNOWN: photos uploaded 2026-10-05 12:25, after the M4-C checkpoint (2026-10-05 01:46); M4-C was trained on Objectron only.",
+     "unreadable_files": [],
+     "valid_genuine_views": 2
+    }
+   ],
+   "non_canonical_category_dirs": [],
+   "per_category": {
+    "book": {
+     "instance_dirs": 0,
+     "instances_with_ge2_views": 0,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 0,
+     "positive_pairs": 0,
+     "trustworthy_instances": 0,
+     "valid_genuine_views": 0
+    },
+    "earphones": {
+     "instance_dirs": 0,
+     "instances_with_ge2_views": 0,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 0,
+     "positive_pairs": 0,
+     "trustworthy_instances": 0,
+     "valid_genuine_views": 0
+    },
+    "headphones": {
+     "instance_dirs": 0,
+     "instances_with_ge2_views": 0,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 0,
+     "positive_pairs": 0,
+     "trustworthy_instances": 0,
+     "valid_genuine_views": 0
+    },
+    "keys": {
+     "instance_dirs": 0,
+     "instances_with_ge2_views": 0,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 0,
+     "positive_pairs": 0,
+     "trustworthy_instances": 0,
+     "valid_genuine_views": 0
+    },
+    "laptop": {
+     "instance_dirs": 2,
+     "instances_with_ge2_views": 2,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 5,
+     "positive_pairs": 2,
+     "trustworthy_instances": 2,
+     "valid_genuine_views": 4
+    },
+    "mobile_phone": {
+     "instance_dirs": 0,
+     "instances_with_ge2_views": 0,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 0,
+     "positive_pairs": 0,
+     "trustworthy_instances": 0,
+     "valid_genuine_views": 0
+    },
+    "wallet": {
+     "instance_dirs": 0,
+     "instances_with_ge2_views": 0,
+     "instances_with_ge3_views": 0,
+     "m4c_eligible_images": 0,
+     "m4c_eligible_instances": 0,
+     "original_images": 0,
+     "positive_pairs": 0,
+     "trustworthy_instances": 0,
+     "valid_genuine_views": 0
+    }
+   },
+   "root": "/Users/anika/Desktop/LiveProject/LiveProject/data/raw/real_world_instances"
+  }
+ }
+}

@@ -1,0 +1,158 @@
+{
+ "checkpoint": "models/checkpoints/m4_c/best_val_recall_at_1.pt",
+ "checkpoint_sha256": "7aef423c63a258de9da6301cb545c993cb64c81bd7f75fcf3ef73381455881eb",
+ "conditions": {
+  "A_full_image": {
+   "crop_sources": {
+    "full_image": 4
+   },
+   "hard_negative_top1_accuracy": 0.5,
+   "mrr": 0.75,
+   "n_gallery_images": 4,
+   "n_gallery_instances": 2,
+   "n_queries": 4,
+   "n_queries_with_same_category_negative": 4,
+   "n_query_instances": 2,
+   "n_skipped_queries": 0,
+   "recall@1": 0.5,
+   "recall@10": 1.0,
+   "recall@5": 1.0,
+   "status": "RUN",
+   "transform": "production_resize256_centercrop224",
+   "trivial_recall_ks": [
+    5,
+    10
+   ]
+  },
+  "A_full_image_letterbox": {
+   "crop_sources": {
+    "full_image": 4
+   },
+   "hard_negative_top1_accuracy": 0.5,
+   "mrr": 0.75,
+   "n_gallery_images": 4,
+   "n_gallery_instances": 2,
+   "n_queries": 4,
+   "n_queries_with_same_category_negative": 4,
+   "n_query_instances": 2,
+   "n_skipped_queries": 0,
+   "recall@1": 0.5,
+   "recall@10": 1.0,
+   "recall@5": 1.0,
+   "status": "RUN",
+   "transform": "letterbox224_imagenet_mean_pad",
+   "trivial_recall_ks": [
+    5,
+    10
+   ]
+  },
+  "B_detector_crop": {
+   "crop_sources": {
+    "detector": 4
+   },
+   "hard_negative_top1_accuracy": 0.5,
+   "mrr": 0.75,
+   "n_gallery_images": 4,
+   "n_gallery_instances": 2,
+   "n_queries": 4,
+   "n_queries_with_same_category_negative": 4,
+   "n_query_instances": 2,
+   "n_skipped_queries": 0,
+   "recall@1": 0.5,
+   "recall@10": 1.0,
+   "recall@5": 1.0,
+   "status": "RUN",
+   "transform": "production_resize256_centercrop224",
+   "trivial_recall_ks": [
+    5,
+    10
+   ]
+  },
+  "C_ground_truth_crop": {
+   "crop_sources": {
+    "ground_truth": 4
+   },
+   "hard_negative_top1_accuracy": 0.5,
+   "mrr": 0.75,
+   "n_gallery_images": 4,
+   "n_gallery_instances": 2,
+   "n_queries": 4,
+   "n_queries_with_same_category_negative": 4,
+   "n_query_instances": 2,
+   "n_skipped_queries": 0,
+   "recall@1": 0.5,
+   "recall@10": 1.0,
+   "recall@5": 1.0,
+   "status": "RUN",
+   "transform": "production_resize256_centercrop224",
+   "trivial_recall_ks": [
+    5,
+    10
+   ]
+  },
+  "D_detector_crop_letterbox": {
+   "crop_sources": {
+    "detector": 4
+   },
+   "hard_negative_top1_accuracy": 0.75,
+   "mrr": 0.875,
+   "n_gallery_images": 4,
+   "n_gallery_instances": 2,
+   "n_queries": 4,
+   "n_queries_with_same_category_negative": 4,
+   "n_query_instances": 2,
+   "n_skipped_queries": 0,
+   "recall@1": 0.75,
+   "recall@10": 1.0,
+   "recall@5": 1.0,
+   "status": "RUN",
+   "transform": "letterbox224_imagenet_mean_pad",
+   "trivial_recall_ks": [
+    5,
+    10
+   ]
+  }
+ },
+ "config": {
+  "checkpoint": "models/checkpoints/m4_c/best_val_recall_at_1.pt",
+  "conditions": [
+   "A_full_image",
+   "B_detector_crop",
+   "C_ground_truth_crop",
+   "D_detector_crop_letterbox",
+   "A_full_image_letterbox"
+  ],
+  "evidence_level": "EXPLORATORY (2 instances, 4 queries; assistant-verified boxes)",
+  "expected_checkpoint_sha256": "7aef423c63a258de9da6301cb545c993cb64c81bd7f75fcf3ef73381455881eb",
+  "inputs_are_precropped": false,
+  "ks": [
+   1,
+   5,
+   10
+  ],
+  "manifest": "data/processed/phase2_evaluation_manifest.jsonl",
+  "output_dir": "reports/evaluation/phase2_runs",
+  "run_name": "pilot_user_photos",
+  "sources": [
+   "back2u_app_upload"
+  ]
+ },
+ "detector_prompt": "laptop. mobile phone. wallet. earphones. headphones. keys. book.",
+ "eval_code_revision": "phase2-eval-v1",
+ "evidence_level": "EXPLORATORY (2 instances, 4 queries; assistant-verified boxes)",
+ "filters": {
+  "categories": null,
+  "sources": [
+   "back2u_app_upload"
+  ],
+  "splits": null
+ },
+ "gallery_keys_sha256": "ea8d7e6834de34093fbcd954aa33c4031be379d7138d033fe85fe7c8e56eec3a",
+ "inputs_are_precropped": false,
+ "manifest": "data/processed/phase2_evaluation_manifest.jsonl",
+ "manifest_sha256": "e1e0044fb99e388db404b218d47b13316aee3e8274ca336b9d96110a521c7bc8",
+ "model_version": "lp-riem-mm1-phase1-crop-v1+m4c.7aef423c",
+ "n_instances": 2,
+ "n_records": 4,
+ "run_name": "pilot_user_photos"
+}

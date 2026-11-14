@@ -1,0 +1,104 @@
+{
+ "checkpoint_sha256": "7aef423c63a258de9da6301cb545c993cb64c81bd7f75fcf3ef73381455881eb",
+ "conditions": {
+  "E_background_only": {
+   "overall": {
+    "hard_negative_top1_accuracy": 0.732708,
+    "mrr": 0.792503,
+    "n_gallery_images": 853,
+    "n_gallery_instances": 141,
+    "n_queries": 853,
+    "n_queries_with_same_category_negative": 853,
+    "n_query_instances": 141,
+    "n_skipped_queries": 0,
+    "recall@1": 0.705744,
+    "recall@10": 0.956624,
+    "recall@5": 0.898007,
+    "trivial_recall_ks": []
+   },
+   "per_category": {
+    "book": {
+     "hard_negative_top1_accuracy": 0.636086,
+     "mrr": 0.726535,
+     "n_queries": 327,
+     "n_queries_with_same_category_negative": 327,
+     "n_query_instances": 50,
+     "recall@1": 0.623853,
+     "recall@10": 0.966361,
+     "recall@5": 0.844037
+    },
+    "laptop": {
+     "hard_negative_top1_accuracy": 0.654135,
+     "mrr": 0.727406,
+     "n_queries": 266,
+     "n_queries_with_same_category_negative": 266,
+     "n_query_instances": 47,
+     "recall@1": 0.612782,
+     "recall@10": 0.913534,
+     "recall@5": 0.87594
+    },
+    "mobile_phone": {
+     "hard_negative_top1_accuracy": 0.934615,
+     "mrr": 0.942072,
+     "n_queries": 260,
+     "n_queries_with_same_category_negative": 260,
+     "n_query_instances": 44,
+     "recall@1": 0.903846,
+     "recall@10": 0.988462,
+     "recall@5": 0.988462
+    }
+   }
+  },
+  "F_object_on_flat": {
+   "overall": {
+    "hard_negative_top1_accuracy": 0.640094,
+    "mrr": 0.722223,
+    "n_gallery_images": 853,
+    "n_gallery_instances": 141,
+    "n_queries": 853,
+    "n_queries_with_same_category_negative": 853,
+    "n_query_instances": 141,
+    "n_skipped_queries": 0,
+    "recall@1": 0.637749,
+    "recall@10": 0.885111,
+    "recall@5": 0.818288,
+    "trivial_recall_ks": []
+   },
+   "per_category": {
+    "book": {
+     "hard_negative_top1_accuracy": 0.752294,
+     "mrr": 0.801762,
+     "n_queries": 327,
+     "n_queries_with_same_category_negative": 327,
+     "n_query_instances": 50,
+     "recall@1": 0.752294,
+     "recall@10": 0.914373,
+     "recall@5": 0.844037
+    },
+    "laptop": {
+     "hard_negative_top1_accuracy": 0.424812,
+     "mrr": 0.545996,
+     "n_queries": 266,
+     "n_queries_with_same_category_negative": 266,
+     "n_query_instances": 47,
+     "recall@1": 0.424812,
+     "recall@10": 0.774436,
+     "recall@5": 0.68797
+    },
+    "mobile_phone": {
+     "hard_negative_top1_accuracy": 0.719231,
+     "mrr": 0.802481,
+     "n_queries": 260,
+     "n_queries_with_same_category_negative": 260,
+     "n_query_instances": 44,
+     "recall@1": 0.711538,
+     "recall@10": 0.961538,
+     "recall@5": 0.919231
+    }
+   }
+  }
+ },
+ "mask_dilation_px": 7,
+ "mean_fraction_of_frame_hidden_in_E": 0.1783,
+ "model_version": "lp-riem-mm1-phase1-crop-v1+m4c.7aef423c"
+}

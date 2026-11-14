@@ -1,0 +1,39 @@
+Using cache found in /Users/anika/.cache/torch/hub/facebookresearch_dinov2_main
+/Users/anika/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/swiglu_ffn.py:51: UserWarning: xFormers is not available (SwiGLU)
+  warnings.warn("xFormers is not available (SwiGLU)")
+/Users/anika/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/attention.py:33: UserWarning: xFormers is not available (Attention)
+  warnings.warn("xFormers is not available (Attention)")
+/Users/anika/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)
+  warnings.warn("xFormers is not available (Block)")
+Loading weights:   0%|          | 0/978 [00:00<?, ?it/s]Loading weights:  69%|██████▉   | 674/978 [00:00<00:00, 6733.47it/s]Loading weights: 100%|██████████| 978/978 [00:00<00:00, 8508.03it/s]
+/Users/anika/Desktop/LiveProject/LiveProject/venv/lib/python3.14/site-packages/transformers/models/grounding_dino/processing_grounding_dino.py:94: FutureWarning: The key `labels` is will return integer ids in `GroundingDinoProcessor.post_process_grounded_object_detection` output since v4.51.0. Use `text_labels` instead to retrieve string object names.
+  warnings.warn(self.message, FutureWarning)
+[co3d_pilot] 0/853
+[co3d_pilot] 100/853
+[co3d_pilot] 200/853
+[co3d_pilot] 300/853
+[co3d_pilot] 400/853
+[co3d_pilot] 500/853
+[co3d_pilot] 600/853
+[co3d_pilot] 700/853
+[co3d_pilot] 800/853
+co3d_pilot A_seven_category_prompt {"n": 853, "proposal_recall_iou0.5": 0.9977, "selected_category_correct": 0.8968, "selected_box_iou>=0.5": 0.9871, "mean_selected_iou": 0.9324, "wrong_object_selection": 0.0106, "no_proposal_rate": 0.0012}
+     book {"n": 327, "proposal_recall_iou0.5": 0.9969, "selected_category_correct": 0.8838, "selected_box_iou>=0.5": 0.9847, "mean_selected_iou": 0.9389, "wrong_object_selection": 0.0122, "no_proposal_rate": 0.0}
+     laptop {"n": 266, "proposal_recall_iou0.5": 0.9962, "selected_category_correct": 0.8271, "selected_box_iou>=0.5": 0.9812, "mean_selected_iou": 0.9222, "wrong_object_selection": 0.015, "no_proposal_rate": 0.0038}
+     mobile_phone {"n": 260, "proposal_recall_iou0.5": 1.0, "selected_category_correct": 0.9846, "selected_box_iou>=0.5": 0.9962, "mean_selected_iou": 0.9346, "wrong_object_selection": 0.0038, "no_proposal_rate": 0.0}
+co3d_pilot B_single_category_prompt_ORACLE {"n": 853, "proposal_recall_iou0.5": 1.0, "selected_category_correct": 1.0, "selected_box_iou>=0.5": 0.993, "mean_selected_iou": 0.9414, "wrong_object_selection": 0.007, "no_proposal_rate": 0.0}
+     book {"n": 327, "proposal_recall_iou0.5": 1.0, "selected_category_correct": 1.0, "selected_box_iou>=0.5": 0.9908, "mean_selected_iou": 0.9434, "wrong_object_selection": 0.0092, "no_proposal_rate": 0.0}
+     laptop {"n": 266, "proposal_recall_iou0.5": 1.0, "selected_category_correct": 1.0, "selected_box_iou>=0.5": 0.9962, "mean_selected_iou": 0.9371, "wrong_object_selection": 0.0038, "no_proposal_rate": 0.0}
+     mobile_phone {"n": 260, "proposal_recall_iou0.5": 1.0, "selected_category_correct": 1.0, "selected_box_iou>=0.5": 0.9923, "mean_selected_iou": 0.9433, "wrong_object_selection": 0.0077, "no_proposal_rate": 0.0}
+co3d_pilot C_filter_A_to_category_ORACLE {"n": 853, "proposal_recall_iou0.5": 0.9343, "selected_category_correct": 0.9402, "selected_box_iou>=0.5": 0.9297, "mean_selected_iou": 0.9357, "wrong_object_selection": 0.0047, "no_proposal_rate": 0.0598}
+     book {"n": 327, "proposal_recall_iou0.5": 0.945, "selected_category_correct": 0.9541, "selected_box_iou>=0.5": 0.9358, "mean_selected_iou": 0.9377, "wrong_object_selection": 0.0092, "no_proposal_rate": 0.0459}
+     laptop {"n": 266, "proposal_recall_iou0.5": 0.8684, "selected_category_correct": 0.8684, "selected_box_iou>=0.5": 0.8647, "mean_selected_iou": 0.9378, "wrong_object_selection": 0.0038, "no_proposal_rate": 0.1316}
+     mobile_phone {"n": 260, "proposal_recall_iou0.5": 0.9885, "selected_category_correct": 0.9962, "selected_box_iou>=0.5": 0.9885, "mean_selected_iou": 0.9314, "wrong_object_selection": 0.0, "no_proposal_rate": 0.0038}
+[app_photos_exploratory] 0/4
+app_photos_exploratory A_seven_category_prompt {"n": 4, "proposal_recall_iou0.5": 1.0, "selected_category_correct": 0.75, "selected_box_iou>=0.5": 0.75, "mean_selected_iou": 0.7452, "wrong_object_selection": 0.25, "no_proposal_rate": 0.0}
+     laptop {"n": 4, "proposal_recall_iou0.5": 1.0, "selected_category_correct": 0.75, "selected_box_iou>=0.5": 0.75, "mean_selected_iou": 0.7452, "wrong_object_selection": 0.25, "no_proposal_rate": 0.0}
+app_photos_exploratory B_single_category_prompt_ORACLE {"n": 4, "proposal_recall_iou0.5": 1.0, "selected_category_correct": 1.0, "selected_box_iou>=0.5": 1.0, "mean_selected_iou": 0.9989, "wrong_object_selection": 0.0, "no_proposal_rate": 0.0}
+     laptop {"n": 4, "proposal_recall_iou0.5": 1.0, "selected_category_correct": 1.0, "selected_box_iou>=0.5": 1.0, "mean_selected_iou": 0.9989, "wrong_object_selection": 0.0, "no_proposal_rate": 0.0}
+app_photos_exploratory C_filter_A_to_category_ORACLE {"n": 4, "proposal_recall_iou0.5": 1.0, "selected_category_correct": 1.0, "selected_box_iou>=0.5": 1.0, "mean_selected_iou": 0.9947, "wrong_object_selection": 0.0, "no_proposal_rate": 0.0}
+     laptop {"n": 4, "proposal_recall_iou0.5": 1.0, "selected_category_correct": 1.0, "selected_box_iou>=0.5": 1.0, "mean_selected_iou": 0.9947, "wrong_object_selection": 0.0, "no_proposal_rate": 0.0}
+exit=0

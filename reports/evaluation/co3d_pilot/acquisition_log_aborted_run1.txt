@@ -1,0 +1,31 @@
+I just need the cellphone: pool 50 eligible 50 selected 50 shortfall 0
+laptop: pool 70 eligible 68 selected 50 shortfall 0
+book: pool 83 eligible 83 selected 50 shortfall 0
+  [cellphone] cellphone_001.zip: 5 selected sequences (dir 20.5 MB, found 5/50)
+  [cellphone] cellphone_002.zip: 3 selected sequences (dir 13.6 MB, found 8/50)
+  [cellphone] cellphone_003.zip: 10 selected sequences (dir 16.3 MB, found 18/50)
+  [cellphone] cellphone_004.zip: 3 selected sequences (dir 14.0 MB, found 21/50)
+  [cellphone] cellphone_005.zip: 8 selected sequences (dir 15.1 MB, found 29/50)
+  [cellphone] cellphone_006.zip: 7 selected sequences (dir 16.3 MB, found 36/50)
+  [cellphone] cellphone_007.zip: 13 selected sequences (dir 16.7 MB, found 49/50)
+  [cellphone] cellphone_008.zip: 1 selected sequences (dir 0.6 MB, found 50/50)
+  [cellphone] 523_75216_146409: rejected (only_2_usable_views) views=2 sep=15.0 facing=1.0
+  [cellphone] 274_29360_56021: accepted (accepted_with_4_views) views=4 sep=15.0 facing=1.0
+  [cellphone] 571_83258_164583: accepted (ok) views=5 sep=15.0 facing=1.0
+  [cellphone] 606_94733_190049: accepted (ok) views=5 sep=25.0 facing=1.0
+  [cellphone] 598_91804_182393: accepted (ok) views=5 sep=15.0 facing=1.0
+  [cellphone] 558_80461_157719: rejected (only_1_usable_views) views=1 sep=15.0 facing=1.0
+  [cellphone] 444_63837_126052: accepted (ok) views=8 sep=15.0 facing=1.0
+  [cellphone] 598_91560_181629: accepted (ok) views=6 sep=25.0 facing=1.0
+  [cellphone] 610_96575_193389: accepted (ok) views=6 sep=15.0 facing=1.0
+  [cellphone] 112_13284_23744: accepted (ok) views=6 sep=25.0 facing=1.0
+  [cellphone] 373_41658_83156: accepted (ok) views=5 sep=15.0 facing=1.0
+  [cellphone] 495_71122_138231: accepted (ok) views=5 sep=25.0 facing=1.0
+  [cellphone] 379_44389_88397: accepted (ok) views=7 sep=25.0 facing=1.0
+  [cellphone] 558_80449_157686: rejected (only_1_usable_views) views=1 sep=15.0 facing=1.0
+  [cellphone] 378_43874_87515: accepted (ok) views=6 sep=15.0 facing=1.0
+  [cellphone] 373_41373_82701: accepted (ok) views=7 sep=25.0 facing=1.0
+  [cellphone] 377_43624_86962: accepted (ok) views=5 sep=15.0 facing=1.0
+  [cellphone] 540_79280_153659: accepted (ok) views=6 sep=15.0 facing=1.0
+  [cellphone] 606_94871_190743: accepted (ok) views=5 sep=15.0 facing=1.0
+  [cellphone] 598_91894_182583: accepted (ok) views=8 sep=15.0 facing=1.0

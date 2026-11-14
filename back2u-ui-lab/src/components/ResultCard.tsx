@@ -3,7 +3,11 @@ import React from 'react';
 
 export function ResultCard({ item, primary = false, onClick }: { item: any; primary?: boolean; onClick: () => void }) {
   // Extracting data from the search/match item format
-  const itemCategory = item.item_category || item.item_instance_id || "Untitled Item";
+  const itemCategory = item.item_category ? String(item.item_category).replace(/_/g, ' ') : "Untitled Item";
+  // The backend prefixes found-item photos with BLURRED_ (privacy): show them, but blurred.
+  const rawRef: string = item.image_reference || "";
+  const isBlurred = rawRef.startsWith("BLURRED_");
+  const imageRef = isBlurred ? rawRef.slice("BLURRED_".length) : rawRef;
   const description = item.description || "No description provided.";
   const location = item.location?.split('(')[0]?.trim() || "Unknown Location";
   const score = item.similarity_score ? (item.similarity_score * 100).toFixed(0) + "% MATCH" : "POSSIBLE MATCH";
@@ -30,14 +34,14 @@ export function ResultCard({ item, primary = false, onClick }: { item: any; prim
         {/* Image Block */}
         <div className="w-full h-48 border-b-2 border-retro-border bg-surface-warm-grey relative overflow-hidden flex items-center justify-center">
           <div className="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.18)_50%)] bg-[length:100%_4px] mix-blend-overlay pointer-events-none z-10"></div>
-          {item.image_url || item.image_reference ? (
+          {item.image_url || imageRef ? (
             <img 
               src={
                 item.image_url || 
-                (item.image_reference ? (item.image_reference.match(/^(http|blob:|data:)/) ? item.image_reference : `http://127.0.0.1:8000${item.image_reference.startsWith('/') ? '' : '/'}${item.image_reference}`) : "")
+                (imageRef ? (imageRef.match(/^(http|blob:|data:)/) ? imageRef : `http://127.0.0.1:8000${imageRef.startsWith('/') ? '' : '/'}${imageRef}`) : "")
               } 
               alt="Result" 
-              className="w-full h-full object-cover relative z-0" 
+              className={`w-full h-full object-cover relative z-0 ${isBlurred ? 'blur-md scale-110' : ''}`}
             />
           ) : (
             <div className="font-mono text-sm text-retro-charcoal/50 uppercase tracking-widest">[ NO_IMAGE_DATA ]</div>
@@ -60,7 +64,7 @@ export function ResultCard({ item, primary = false, onClick }: { item: any; prim
         </div>
       </div>
       <div className="px-5 py-2.5 bg-surface-canvas border-t-2 border-retro-border flex justify-between items-center text-[10px] text-retro-charcoal font-bold tracking-widest uppercase">
-        <span>SYS: FOUND</span>
+        <span>SYS: {(item.report_type || "found").toUpperCase()}</span>
         <ArrowUpRight size={14} className="opacity-50" />
       </div>
     </div>

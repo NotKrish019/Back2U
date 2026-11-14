@@ -6,6 +6,8 @@ from fastapi.testclient import TestClient
 import os
 # Ensure tests use a separate test database
 os.environ["DATABASE_URL"] = "sqlite:///./test_app.db"
+# Tests drive index sync explicitly; never start the background startup sync.
+os.environ["BACKEND_INDEX_SYNC_ON_STARTUP"] = "0"
 
 # Now we can safely import our app modules
 from src.api.main import app

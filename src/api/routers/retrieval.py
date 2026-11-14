@@ -10,26 +10,29 @@ from src.api.models import User, Report, CandidateMatch
 router = APIRouter()
 
 # Instantiate the RealRetrievalService to connect to the ML model on port 8001
-real_retrieval_service = RealRetrievalService()
+_retrieval_service: RetrievalService = RealRetrievalService()
 
 def get_retrieval_service() -> RetrievalService:
-    return real_retrieval_service
+    return _retrieval_service
+
+def set_retrieval_service(service: RetrievalService) -> None:
+    """Swap the active service (used by tests and scripts)."""
+    global _retrieval_service
+    _retrieval_service = service
 
 @router.get("/health")
 def ml_health(service: RetrievalService = Depends(get_retrieval_service)):
-    # Simulating health check
-    if isinstance(service, MockRetrievalService):
-        return {
-            "status": "ready",
-            "model_version": "mock-v1.0",
-            "service": "mock"
-        }
-    else:
-        return {
-            "status": "ready",
-            "model_version": "mir-v0.4.0",
-            "service": "real"
-        }
+    try:
+        info = service.health()
+    except Exception as e:
+        return {"status": "unavailable", "model_version": service.model_version,
+                "service": "real", "error": str(e)[:200]}
+    return {
+        "status": info.get("status", "ready"),
+        "model_version": info.get("model_version", service.model_version),
+        "service": info.get("service", "real"),
+        "gallery_entries": (info.get("gallery") or {}).get("entries"),
+    }
 
 @router.post("/search", response_model=RetrievalResult)
 def search(
@@ -64,7 +67,7 @@ def search(
             enriched_item = RetrievalResultItem(
                 item_instance_id=item.item_instance_id,
                 similarity_score=item.similarity_score,
-                rank=item.rank,
+                rank=len(enriched_results) + 1,  # contiguous after skipping orphans
                 report_id=report.report_id,
                 report_type=report.report_type,
                 item_category=report.item_category,
@@ -78,9 +81,8 @@ def search(
             # Assuming this was a search originating from a new Lost report
             # We would need the source report_id, which isn't in RetrievalQuery right now.
             # So we skip CandidateMatch creation here until RetrievalQuery includes `source_report_id`.
-        else:
-            # If no report found in DB (e.g. mock data mismatch), return ML data as is
-            enriched_results.append(item)
+        # else: the gallery still holds vectors for an item whose report no longer exists
+        # (deletes don't remove vectors). The DB is the source of truth, so skip it.
 
     return RetrievalResult(
         model_version=ml_result.model_version,

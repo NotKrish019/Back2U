@@ -1008,7 +1008,7 @@ export default function TicketStubFooter({
       data-seen={seen || reduced ? "1" : "0"}
       aria-label={brand}
     >
-      <style>{CSS}</style>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div className="tsf-grid">
         {[2, 3, 4, 5, 6, 7].map((c) => (
           <span key={"v" + c} className="tsf-vl" style={{ gridColumn: c }} aria-hidden="true" />

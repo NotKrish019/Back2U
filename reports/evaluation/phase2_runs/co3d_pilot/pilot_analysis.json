@@ -1,0 +1,391 @@
+{
+ "run": "reports/evaluation/phase2_runs/co3d_pilot",
+ "model_version": "lp-riem-mm1-phase1-crop-v1+m4c.7aef423c",
+ "conditions": {
+  "A_full_image": {
+   "visual_only": {
+    "overall": {
+     "hard_negative_top1_accuracy": 0.799531,
+     "mrr": 0.843182,
+     "n_gallery_images": 853,
+     "n_gallery_instances": 141,
+     "n_queries": 853,
+     "n_queries_with_same_category_negative": 853,
+     "n_query_instances": 141,
+     "n_skipped_queries": 0,
+     "recall@1": 0.796014,
+     "recall@10": 0.937866,
+     "recall@5": 0.896835,
+     "trivial_recall_ks": [],
+     "recall@1_wilson95": [
+      0.7677,
+      0.8217
+     ]
+    },
+    "per_category": {
+     "book": {
+      "hard_negative_top1_accuracy": 0.764526,
+      "mrr": 0.813875,
+      "n_queries": 327,
+      "n_queries_with_same_category_negative": 327,
+      "n_query_instances": 50,
+      "recall@1": 0.764526,
+      "recall@10": 0.917431,
+      "recall@5": 0.859327,
+      "recall@1_wilson95": [
+       0.7156,
+       0.8073
+      ]
+     },
+     "laptop": {
+      "hard_negative_top1_accuracy": 0.684211,
+      "mrr": 0.755127,
+      "n_queries": 266,
+      "n_queries_with_same_category_negative": 266,
+      "n_query_instances": 47,
+      "recall@1": 0.672932,
+      "recall@10": 0.917293,
+      "recall@5": 0.860902,
+      "recall@1_wilson95": [
+       0.6144,
+       0.7265
+      ]
+     },
+     "mobile_phone": {
+      "hard_negative_top1_accuracy": 0.961538,
+      "mrr": 0.970128,
+      "n_queries": 260,
+      "n_queries_with_same_category_negative": 260,
+      "n_query_instances": 44,
+      "recall@1": 0.961538,
+      "recall@10": 0.984615,
+      "recall@5": 0.980769,
+      "recall@1_wilson95": [
+       0.9307,
+       0.979
+      ]
+     }
+    },
+    "true_instance_score_mean": 0.8255,
+    "hardest_same_category_negative_mean": 0.7469
+   },
+   "existing_calibrator_diagnostic": {
+    "note": "monotonic in visual score without text \u2192 same ranking; probabilities UNVALIDATED for CO3D",
+    "top1_candidate_rate_p>0.8": 0.1067,
+    "precision_of_candidate_decisions": 0.8681,
+    "top1_reject_rate_p<0.2": 0.007,
+    "correct_top1_wrongly_rejected": 1,
+    "mean_top1_probability_correct": 0.6885,
+    "mean_top1_probability_wrong": 0.6165
+   }
+  },
+  "A_full_image_letterbox": {
+   "visual_only": {
+    "overall": {
+     "hard_negative_top1_accuracy": 0.815944,
+     "mrr": 0.865702,
+     "n_gallery_images": 853,
+     "n_gallery_instances": 141,
+     "n_queries": 853,
+     "n_queries_with_same_category_negative": 853,
+     "n_query_instances": 141,
+     "n_skipped_queries": 0,
+     "recall@1": 0.812427,
+     "recall@10": 0.957796,
+     "recall@5": 0.928488,
+     "trivial_recall_ks": [],
+     "recall@1_wilson95": [
+      0.7848,
+      0.8372
+     ]
+    },
+    "per_category": {
+     "book": {
+      "hard_negative_top1_accuracy": 0.755352,
+      "mrr": 0.821161,
+      "n_queries": 327,
+      "n_queries_with_same_category_negative": 327,
+      "n_query_instances": 50,
+      "recall@1": 0.752294,
+      "recall@10": 0.944954,
+      "recall@5": 0.899083,
+      "recall@1_wilson95": [
+       0.7028,
+       0.796
+      ]
+     },
+     "laptop": {
+      "hard_negative_top1_accuracy": 0.736842,
+      "mrr": 0.806092,
+      "n_queries": 266,
+      "n_queries_with_same_category_negative": 266,
+      "n_query_instances": 47,
+      "recall@1": 0.729323,
+      "recall@10": 0.932331,
+      "recall@5": 0.902256,
+      "recall@1_wilson95": [
+       0.6729,
+       0.7792
+      ]
+     },
+     "mobile_phone": {
+      "hard_negative_top1_accuracy": 0.973077,
+      "mrr": 0.982708,
+      "n_queries": 260,
+      "n_queries_with_same_category_negative": 260,
+      "n_query_instances": 44,
+      "recall@1": 0.973077,
+      "recall@10": 1.0,
+      "recall@5": 0.992308,
+      "recall@1_wilson95": [
+       0.9455,
+       0.9869
+      ]
+     }
+    },
+    "true_instance_score_mean": 0.8224,
+    "hardest_same_category_negative_mean": 0.7434
+   },
+   "existing_calibrator_diagnostic": {
+    "note": "monotonic in visual score without text \u2192 same ranking; probabilities UNVALIDATED for CO3D",
+    "top1_candidate_rate_p>0.8": 0.0551,
+    "precision_of_candidate_decisions": 0.9362,
+    "top1_reject_rate_p<0.2": 0.0023,
+    "correct_top1_wrongly_rejected": 1,
+    "mean_top1_probability_correct": 0.6746,
+    "mean_top1_probability_wrong": 0.6181
+   }
+  },
+  "B_detector_crop": {
+   "visual_only": {
+    "overall": {
+     "hard_negative_top1_accuracy": 0.728019,
+     "mrr": 0.792593,
+     "n_gallery_images": 853,
+     "n_gallery_instances": 141,
+     "n_queries": 853,
+     "n_queries_with_same_category_negative": 853,
+     "n_query_instances": 141,
+     "n_skipped_queries": 0,
+     "recall@1": 0.719812,
+     "recall@10": 0.923798,
+     "recall@5": 0.872216,
+     "trivial_recall_ks": [],
+     "recall@1_wilson95": [
+      0.6887,
+      0.7489
+     ]
+    },
+    "per_category": {
+     "book": {
+      "hard_negative_top1_accuracy": 0.801223,
+      "mrr": 0.839467,
+      "n_queries": 327,
+      "n_queries_with_same_category_negative": 327,
+      "n_query_instances": 50,
+      "recall@1": 0.801223,
+      "recall@10": 0.917431,
+      "recall@5": 0.880734,
+      "recall@1_wilson95": [
+       0.7546,
+       0.8409
+      ]
+     },
+     "laptop": {
+      "hard_negative_top1_accuracy": 0.541353,
+      "mrr": 0.652906,
+      "n_queries": 266,
+      "n_queries_with_same_category_negative": 266,
+      "n_query_instances": 47,
+      "recall@1": 0.522556,
+      "recall@10": 0.883459,
+      "recall@5": 0.789474,
+      "recall@1_wilson95": [
+       0.4626,
+       0.5818
+      ]
+     },
+     "mobile_phone": {
+      "hard_negative_top1_accuracy": 0.826923,
+      "mrr": 0.87655,
+      "n_queries": 260,
+      "n_queries_with_same_category_negative": 260,
+      "n_query_instances": 44,
+      "recall@1": 0.819231,
+      "recall@10": 0.973077,
+      "recall@5": 0.946154,
+      "recall@1_wilson95": [
+       0.7679,
+       0.8613
+      ]
+     }
+    },
+    "true_instance_score_mean": 0.8102,
+    "hardest_same_category_negative_mean": 0.7569
+   },
+   "existing_calibrator_diagnostic": {
+    "note": "monotonic in visual score without text \u2192 same ranking; probabilities UNVALIDATED for CO3D",
+    "top1_candidate_rate_p>0.8": 0.0973,
+    "precision_of_candidate_decisions": 0.8434,
+    "top1_reject_rate_p<0.2": 0.0094,
+    "correct_top1_wrongly_rejected": 1,
+    "mean_top1_probability_correct": 0.6772,
+    "mean_top1_probability_wrong": 0.5932
+   }
+  },
+  "C_ground_truth_crop": {
+   "visual_only": {
+    "overall": {
+     "hard_negative_top1_accuracy": 0.706917,
+     "mrr": 0.775121,
+     "n_gallery_images": 853,
+     "n_gallery_instances": 141,
+     "n_queries": 853,
+     "n_queries_with_same_category_negative": 853,
+     "n_query_instances": 141,
+     "n_skipped_queries": 0,
+     "recall@1": 0.69871,
+     "recall@10": 0.922626,
+     "recall@5": 0.869871,
+     "trivial_recall_ks": [],
+     "recall@1_wilson95": [
+      0.6671,
+      0.7286
+     ]
+    },
+    "per_category": {
+     "book": {
+      "hard_negative_top1_accuracy": 0.795107,
+      "mrr": 0.834572,
+      "n_queries": 327,
+      "n_queries_with_same_category_negative": 327,
+      "n_query_instances": 50,
+      "recall@1": 0.795107,
+      "recall@10": 0.911315,
+      "recall@5": 0.868502,
+      "recall@1_wilson95": [
+       0.7481,
+       0.8353
+      ]
+     },
+     "laptop": {
+      "hard_negative_top1_accuracy": 0.496241,
+      "mrr": 0.612589,
+      "n_queries": 266,
+      "n_queries_with_same_category_negative": 266,
+      "n_query_instances": 47,
+      "recall@1": 0.477444,
+      "recall@10": 0.883459,
+      "recall@5": 0.793233,
+      "recall@1_wilson95": [
+       0.4182,
+       0.5374
+      ]
+     },
+     "mobile_phone": {
+      "hard_negative_top1_accuracy": 0.811538,
+      "mrr": 0.866632,
+      "n_queries": 260,
+      "n_queries_with_same_category_negative": 260,
+      "n_query_instances": 44,
+      "recall@1": 0.803846,
+      "recall@10": 0.976923,
+      "recall@5": 0.95,
+      "recall@1_wilson95": [
+       0.7513,
+       0.8475
+      ]
+     }
+    },
+    "true_instance_score_mean": 0.8087,
+    "hardest_same_category_negative_mean": 0.7574
+   },
+   "existing_calibrator_diagnostic": {
+    "note": "monotonic in visual score without text \u2192 same ranking; probabilities UNVALIDATED for CO3D",
+    "top1_candidate_rate_p>0.8": 0.0832,
+    "precision_of_candidate_decisions": 0.7887,
+    "top1_reject_rate_p<0.2": 0.0082,
+    "correct_top1_wrongly_rejected": 0,
+    "mean_top1_probability_correct": 0.6804,
+    "mean_top1_probability_wrong": 0.5867
+   }
+  },
+  "D_detector_crop_letterbox": {
+   "visual_only": {
+    "overall": {
+     "hard_negative_top1_accuracy": 0.764361,
+     "mrr": 0.823787,
+     "n_gallery_images": 853,
+     "n_gallery_instances": 141,
+     "n_queries": 853,
+     "n_queries_with_same_category_negative": 853,
+     "n_query_instances": 141,
+     "n_skipped_queries": 0,
+     "recall@1": 0.762016,
+     "recall@10": 0.946073,
+     "recall@5": 0.903869,
+     "trivial_recall_ks": [],
+     "recall@1_wilson95": [
+      0.7323,
+      0.7894
+     ]
+    },
+    "per_category": {
+     "book": {
+      "hard_negative_top1_accuracy": 0.752294,
+      "mrr": 0.812108,
+      "n_queries": 327,
+      "n_queries_with_same_category_negative": 327,
+      "n_query_instances": 50,
+      "recall@1": 0.752294,
+      "recall@10": 0.938838,
+      "recall@5": 0.889908,
+      "recall@1_wilson95": [
+       0.7028,
+       0.796
+      ]
+     },
+     "laptop": {
+      "hard_negative_top1_accuracy": 0.631579,
+      "mrr": 0.72111,
+      "n_queries": 266,
+      "n_queries_with_same_category_negative": 266,
+      "n_query_instances": 47,
+      "recall@1": 0.62406,
+      "recall@10": 0.909774,
+      "recall@5": 0.849624,
+      "recall@1_wilson95": [
+       0.5645,
+       0.6801
+      ]
+     },
+     "mobile_phone": {
+      "hard_negative_top1_accuracy": 0.915385,
+      "mrr": 0.943523,
+      "n_queries": 260,
+      "n_queries_with_same_category_negative": 260,
+      "n_query_instances": 44,
+      "recall@1": 0.915385,
+      "recall@10": 0.992308,
+      "recall@5": 0.976923,
+      "recall@1_wilson95": [
+       0.8752,
+       0.9435
+      ]
+     }
+    },
+    "true_instance_score_mean": 0.8324,
+    "hardest_same_category_negative_mean": 0.7699
+   },
+   "existing_calibrator_diagnostic": {
+    "note": "monotonic in visual score without text \u2192 same ranking; probabilities UNVALIDATED for CO3D",
+    "top1_candidate_rate_p>0.8": 0.1395,
+    "precision_of_candidate_decisions": 0.8487,
+    "top1_reject_rate_p<0.2": 0.0012,
+    "correct_top1_wrongly_rejected": 0,
+    "mean_top1_probability_correct": 0.7039,
+    "mean_top1_probability_wrong": 0.6375
+   }
+  }
+ }
+}

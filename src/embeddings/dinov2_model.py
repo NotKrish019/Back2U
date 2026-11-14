@@ -46,12 +46,20 @@ class Dinov2ImageEncoder:
         """
         try:
             image = Image.open(image_path).convert("RGB")
-            tensor = self.transform(image).unsqueeze(0).to(self.device)
-            with torch.no_grad():
-                res = self.model.forward_features(tensor)
-                cls_token = res["x_norm_clstoken"].squeeze(0) # (384,)
-                patch_tokens = res["x_norm_patchtokens"].squeeze(0) # (256, 384)
-                return cls_token.cpu(), patch_tokens.cpu()
+            return self.encode_pil_with_patches(image)
         except Exception as e:
             print(f"Error encoding patches for {image_path}: {e}")
             return torch.zeros(384), torch.zeros(256, 384)
+
+    def encode_pil_with_patches(self, image: Image.Image):
+        """Same as encode_image_with_patches but takes an in-memory PIL image (e.g. a crop).
+
+        Raises on failure instead of returning zeros, so callers cannot silently index
+        a zero vector.
+        """
+        tensor = self.transform(image.convert("RGB")).unsqueeze(0).to(self.device)
+        with torch.no_grad():
+            res = self.model.forward_features(tensor)
+            cls_token = res["x_norm_clstoken"].squeeze(0) # (384,)
+            patch_tokens = res["x_norm_patchtokens"].squeeze(0) # (256, 384)
+            return cls_token.cpu(), patch_tokens.cpu()

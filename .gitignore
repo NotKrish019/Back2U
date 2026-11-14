@@ -26,3 +26,13 @@ local_config.yaml
 .idea/
 data/uploads/
 
+
+# Phase 1: persistent ML gallery, quarantined stores, DB backups
+data/gallery/
+data/gallery.incompatible-*/
+app.db.bak-*
+
+# CO3D (CC BY-NC 4.0, research only): never commit imagery derived from it
+reports/evaluation/co3d_pilot/contact_sheets/
+reports/evaluation/co3d_pilot/qc_review/
+reports/evaluation/phase2_runs/co3d_pilot/**/*.npy

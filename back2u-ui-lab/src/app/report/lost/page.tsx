@@ -57,6 +57,10 @@ function ReportContent() {
         await api.createReport(formData);
 
         if (type === 'lost') {
+          // Hand the photo to /search so matching uses the image, not just the description.
+          try {
+            if (form.image.startsWith('data:image')) sessionStorage.setItem('back2u:lostQueryImage', form.image);
+          } catch { /* storage full or unavailable: /search falls back to text-only */ }
           router.push(`/search?desc=${encodeURIComponent(form.item + ' ' + form.details)}`);
         } else {
           setSubmitted(true);

@@ -5,8 +5,20 @@ import json
 from src.api import models, schemas
 from src.api.database import get_db
 from src.api.auth import get_current_user
+from src.categories import normalize_category
+from src.api.services.retrieval_service import to_browser_image
 
 router = APIRouter()
+
+
+def _normalized_category_and_attributes(raw_category, attributes):
+    """Canonical category (or None) + attributes that keep the user's original wording."""
+    canonical = normalize_category(raw_category)
+    attrs = dict(attributes or {})
+    raw = (raw_category or "").strip()
+    if raw and raw.lower().replace(" ", "_").replace("-", "_") != canonical:
+        attrs["item_name"] = raw
+    return canonical, (json.dumps(attrs) if attrs else None)
 
 @router.post("", response_model=schemas.ReportOut, status_code=201)
 def create_report(
@@ -28,13 +40,15 @@ def create_report(
     db.add(db_item)
     db.flush() # flush to get the item_instance_id
     
+    report.image_reference = to_browser_image(report.image_reference)
+    category, attributes = _normalized_category_and_attributes(report.item_category, report.attributes)
     db_report = models.Report(
         report_type=report.report_type,
         item_instance_id=db_item.item_instance_id,
-        item_category=report.item_category,
+        item_category=category,
         description=report.description,
         image_reference=report.image_reference,
-        attributes=json.dumps(report.attributes) if report.attributes else None,
+        attributes=attributes,
         location=report.location,
         user_id=current_user.id
     )
@@ -51,7 +65,10 @@ def create_report(
         
         # Dynamically add the new report's image to the ML model's FAISS index
         if report.image_reference and report.image_reference.startswith("data:image"):
-            retrieval_service.index_report(db_report, report.image_reference)
+            from src.api.services.index_sync import record_indexed
+            index_result = retrieval_service.index_report(db_report, report.image_reference)
+            record_indexed(db, db_report, index_result)
+            db.commit()
             
         # Pass the image and description to the ML model
         query = RetrievalQuery(
@@ -140,13 +157,16 @@ def update_report(
     if update_data.report_type not in ["lost", "found"]:
         raise HTTPException(status_code=400, detail="Invalid report_type")
         
+    existing_attrs = json.loads(report.attributes) if report.attributes else {}
+    merged_attrs = {**existing_attrs, **(update_data.attributes or {})}
+    merged_attrs.pop("item_name", None)  # recomputed from the new category text
+    category, attributes = _normalized_category_and_attributes(update_data.item_category, merged_attrs)
     report.report_type = update_data.report_type
-    report.item_category = update_data.item_category
+    report.item_category = category
     report.description = update_data.description
-    report.image_reference = update_data.image_reference
+    report.image_reference = to_browser_image(update_data.image_reference)
     report.location = update_data.location
-    if update_data.attributes:
-        report.attributes = json.dumps(update_data.attributes)
+    report.attributes = attributes
         
     db.commit()
     db.refresh(report)

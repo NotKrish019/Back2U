@@ -59,3 +59,14 @@ def health_check(db: Session = Depends(get_db)):
         return {"status": "healthy", "database": "connected"}
     except Exception as e:
         raise HTTPException(status_code=503, detail="Database unavailable")
+
+
+@app.on_event("startup")
+def sync_ml_gallery_on_startup():
+    """Make sure reports stored in the DB are present in the ML gallery after any restart."""
+    if os.getenv("BACKEND_INDEX_SYNC_ON_STARTUP", "1") != "1":
+        return
+    from src.api.database import SessionLocal
+    from src.api.routers.retrieval import get_retrieval_service
+    from src.api.services.index_sync import start_background_sync
+    start_background_sync(SessionLocal, get_retrieval_service)

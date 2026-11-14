@@ -1,0 +1,102 @@
+{
+ "checkpoint": "models/checkpoints/m4_c/best_val_recall_at_1.pt",
+ "checkpoint_sha256": "7aef423c63a258de9da6301cb545c993cb64c81bd7f75fcf3ef73381455881eb",
+ "conditions": {
+  "A_full_image": {
+   "crop_sources": {
+    "full_image": 19
+   },
+   "hard_negative_top1_accuracy": 0.882353,
+   "mrr": 0.941176,
+   "n_gallery_images": 19,
+   "n_gallery_instances": 10,
+   "n_queries": 17,
+   "n_queries_with_same_category_negative": 17,
+   "n_query_instances": 8,
+   "n_skipped_queries": 2,
+   "recall@1": 0.882353,
+   "recall@10": 1.0,
+   "recall@5": 1.0,
+   "status": "RUN",
+   "transform": "production_resize256_centercrop224",
+   "trivial_recall_ks": [
+    10
+   ]
+  },
+  "A_full_image_letterbox": {
+   "crop_sources": {
+    "full_image": 19
+   },
+   "hard_negative_top1_accuracy": 0.823529,
+   "mrr": 0.897059,
+   "n_gallery_images": 19,
+   "n_gallery_instances": 10,
+   "n_queries": 17,
+   "n_queries_with_same_category_negative": 17,
+   "n_query_instances": 8,
+   "n_skipped_queries": 2,
+   "recall@1": 0.823529,
+   "recall@10": 1.0,
+   "recall@5": 1.0,
+   "status": "RUN",
+   "transform": "letterbox224_imagenet_mean_pad",
+   "trivial_recall_ks": [
+    10
+   ]
+  },
+  "B_detector_crop": {
+   "reason": "inputs are stored historical crops; original frames are unavailable",
+   "status": "BLOCKED"
+  },
+  "C_ground_truth_crop": {
+   "reason": "19/19 records lack a verified ground_truth_bbox (e.g. objectron_laptop_batch-13_12/view_rec04)",
+   "status": "BLOCKED"
+  },
+  "D_detector_crop_letterbox": {
+   "reason": "inputs are stored historical crops; original frames are unavailable",
+   "status": "BLOCKED"
+  }
+ },
+ "config": {
+  "checkpoint": "models/checkpoints/m4_c/best_val_recall_at_1.pt",
+  "conditions": [
+   "A_full_image",
+   "A_full_image_letterbox",
+   "B_detector_crop",
+   "C_ground_truth_crop",
+   "D_detector_crop_letterbox"
+  ],
+  "evidence_level": "EXPLORATORY (10 laptop instances, stored detector crops, possible M4-C training overlap UNVERIFIED)",
+  "expected_checkpoint_sha256": "7aef423c63a258de9da6301cb545c993cb64c81bd7f75fcf3ef73381455881eb",
+  "inputs_are_precropped": true,
+  "ks": [
+   1,
+   5,
+   10
+  ],
+  "manifest": "data/processed/phase2_evaluation_manifest.jsonl",
+  "output_dir": "reports/evaluation/phase2_runs",
+  "run_name": "historical_objectron_crops",
+  "sources": [
+   "objectron_historical_m2_visualization"
+  ]
+ },
+ "detector_prompt": "laptop. mobile phone. wallet. earphones. headphones. keys. book.",
+ "eval_code_revision": "phase2-eval-v1",
+ "evidence_level": "EXPLORATORY (10 laptop instances, stored detector crops, possible M4-C training overlap UNVERIFIED)",
+ "filters": {
+  "categories": null,
+  "sources": [
+   "objectron_historical_m2_visualization"
+  ],
+  "splits": null
+ },
+ "gallery_keys_sha256": "f6c94bced72b25437019aaa79680a002e4bc328a686521dc5ee23410939028c3",
+ "inputs_are_precropped": true,
+ "manifest": "data/processed/phase2_evaluation_manifest.jsonl",
+ "manifest_sha256": "e1e0044fb99e388db404b218d47b13316aee3e8274ca336b9d96110a521c7bc8",
+ "model_version": "lp-riem-mm1-phase1-crop-v1+m4c.7aef423c",
+ "n_instances": 10,
+ "n_records": 19,
+ "run_name": "historical_objectron_crops"
+}

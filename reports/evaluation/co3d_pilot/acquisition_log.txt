@@ -1,0 +1,261 @@
+cellphone: pool 50 eligible 50 selected 50 shortfall 0
+laptop: pool 70 eligible 68 selected 50 shortfall 0
+book: pool 83 eligible 83 selected 50 shortfall 0
+  [cellphone] cellphone_001.zip: 5 selected sequences (dir 20.5 MB, found 5/50)
+  [cellphone] cellphone_002.zip: 3 selected sequences (dir 13.6 MB, found 8/50)
+  [cellphone] cellphone_003.zip: 10 selected sequences (dir 16.3 MB, found 18/50)
+  [cellphone] cellphone_004.zip: 3 selected sequences (dir 14.0 MB, found 21/50)
+  [cellphone] cellphone_005.zip: 8 selected sequences (dir 15.1 MB, found 29/50)
+  [cellphone] cellphone_006.zip: 7 selected sequences (dir 16.3 MB, found 36/50)
+  [cellphone] cellphone_007.zip: 13 selected sequences (dir 16.7 MB, found 49/50)
+  [cellphone] cellphone_008.zip: 1 selected sequences (dir 0.6 MB, found 50/50)
+  [cellphone] 558_80461_157719: rejected (only_1_usable_views) views=1 sep=15.0 facing=1.0
+  [cellphone] 523_75216_146409: accepted (accepted_with_4_views) views=4 sep=15.0 facing=0.9946
+  [cellphone] 274_29360_56021: accepted (accepted_with_4_views) views=4 sep=15.0 facing=1.0
+  [cellphone] 606_94733_190049: accepted (ok) views=5 sep=25.0 facing=1.0
+  [cellphone] 571_83258_164583: accepted (ok) views=5 sep=15.0 facing=1.0
+  [cellphone] 598_91560_181629: accepted (ok) views=6 sep=25.0 facing=1.0
+  [cellphone] 610_96575_193389: accepted (ok) views=6 sep=15.0 facing=1.0
+  [cellphone] 444_63837_126052: accepted (ok) views=8 sep=15.0 facing=1.0
+  [cellphone] 606_94871_190743: accepted (ok) views=5 sep=15.0 facing=1.0
+  [cellphone] 495_71122_138231: accepted (ok) views=5 sep=25.0 facing=1.0
+  [cellphone] 373_41373_82701: accepted (ok) views=7 sep=25.0 facing=1.0
+  [cellphone] 598_91804_182393: accepted (ok) views=8 sep=25.0 facing=0.9235
+  [cellphone] 373_41658_83156: accepted (ok) views=5 sep=15.0 facing=1.0
+  [cellphone] 112_13284_23744: accepted (ok) views=6 sep=25.0 facing=1.0
+  [cellphone] 379_44389_88397: accepted (ok) views=7 sep=25.0 facing=1.0
+  [cellphone] 558_80449_157686: rejected (only_1_usable_views) views=1 sep=15.0 facing=1.0
+  [cellphone] 377_43624_86962: accepted (ok) views=5 sep=15.0 facing=1.0
+  [cellphone] 378_43874_87515: accepted (ok) views=6 sep=15.0 facing=1.0
+  [cellphone] 540_79280_153659: accepted (ok) views=6 sep=15.0 facing=1.0
+  [cellphone] 444_63778_125914: accepted (ok) views=7 sep=25.0 facing=1.0
+  [cellphone] 598_91894_182583: accepted (ok) views=8 sep=15.0 facing=1.0
+  [cellphone] 624_103161_207211: accepted (ok) views=6 sep=25.0 facing=1.0
+  [cellphone] 558_80460_157712: rejected (only_2_usable_views) views=2 sep=15.0 facing=1.0
+  [cellphone] 375_42407_84968: accepted (ok) views=7 sep=25.0 facing=1.0
+  [cellphone] 379_44361_88370: accepted (ok) views=5 sep=15.0 facing=1.0
+  [cellphone] 577_85060_168336: accepted (ok) views=7 sep=15.0 facing=1.0
+  [cellphone] 514_73764_143591: accepted (ok) views=7 sep=25.0 facing=1.0
+  [cellphone] 378_44039_87758: accepted (ok) views=5 sep=15.0 facing=1.0
+  [cellphone] 555_80016_155909: accepted (ok) views=5 sep=15.0 facing=1.0
+  [cellphone] 342_35791_64636: accepted (accepted_with_3_views) views=3 sep=15.0 facing=1.0
+  [cellphone] 506_73107_142421: accepted (ok) views=6 sep=25.0 facing=1.0
+  [cellphone] 581_86268_171251: accepted (ok) views=8 sep=15.0 facing=1.0
+  [cellphone] 76_7550_15819: accepted (ok) views=6 sep=25.0 facing=1.0
+  [cellphone] 610_96886_194142: accepted (ok) views=6 sep=25.0 facing=1.0
+  [cellphone] 614_98725_198544: rejected (only_1_usable_views) views=1 sep=15.0 facing=1.0
+  [cellphone] 598_91896_182568: accepted (ok) views=7 sep=25.0 facing=1.0
+  [cellphone] 610_96845_194060: accepted (ok) views=5 sep=25.0 facing=1.0
+  [cellphone] 378_43907_87449: accepted (accepted_with_4_views) views=4 sep=15.0 facing=1.0
+  [cellphone] 598_91909_182603: accepted (ok) views=5 sep=25.0 facing=1.0
+  [cellphone] 76_7542_15807: rejected (only_0_usable_views) views=0 sep=None facing=1.0
+  [cellphone] 523_75480_147358: accepted (accepted_with_4_views) views=4 sep=15.0 facing=1.0
+  [cellphone] 76_7541_15405: accepted (ok) views=7 sep=25.0 facing=1.0
+  [cellphone] 598_91916_182612: accepted (ok) views=7 sep=15.0 facing=1.0
+  [cellphone] 622_102390_205671: rejected (only_2_usable_views) views=2 sep=15.0 facing=1.0
+  [cellphone] 374_42188_84354: accepted (ok) views=5 sep=25.0 facing=1.0
+  [cellphone] 470_66304_130160: accepted (ok) views=5 sep=25.0 facing=1.0
+  [cellphone] 492_70519_136646: accepted (ok) views=6 sep=25.0 facing=1.0
+  [cellphone] 191_20575_35658: accepted (ok) views=8 sep=25.0 facing=1.0
+  [cellphone] 523_75438_147270: accepted (ok) views=7 sep=25.0 facing=1.0
+  [cellphone] 373_41642_83130: accepted (ok) views=6 sep=25.0 facing=1.0
+  [laptop] laptop_001.zip: 5 selected sequences (dir 12.2 MB, found 5/50)
+  [laptop] laptop_002.zip: 15 selected sequences (dir 12.1 MB, found 20/50)
+  [laptop] laptop_003.zip: 7 selected sequences (dir 14.3 MB, found 27/50)
+  [laptop] laptop_004.zip: 8 selected sequences (dir 19.4 MB, found 35/50)
+  [laptop] laptop_005.zip: 1 selected sequences (dir 12.4 MB, found 36/50)
+  [laptop] laptop_006.zip: 7 selected sequences (dir 15.1 MB, found 43/50)
+  [laptop] laptop_007.zip: 7 selected sequences (dir 11.2 MB, found 50/50)
+  [laptop] 595_90444_180226: accepted (ok) views=8 sep=15.0 facing=1.0
+  [laptop] 558_80636_158444: accepted (ok) views=5 sep=25.0 facing=1.0
+  [laptop] 529_76665_148145: accepted (accepted_with_4_views) views=4 sep=15.0 facing=1.0
+  [laptop] 569_82743_163318: accepted (ok) views=8 sep=25.0 facing=1.0
+  [laptop] 387_46446_92723: accepted (accepted_with_4_views) views=4 sep=15.0 facing=1.0
+  [laptop] 375_42571_85394: accepted (ok) views=7 sep=25.0 facing=1.0
+  [laptop] 598_92054_183616: accepted (ok) views=6 sep=15.0 facing=1.0
+  [laptop] 378_44211_88110: accepted (ok) views=8 sep=15.0 facing=1.0
+  [laptop] 392_47559_94573: accepted (ok) views=7 sep=25.0 facing=1.0
+  [laptop] 391_47271_94003: accepted (accepted_with_3_views) views=3 sep=15.0 facing=1.0
+  [laptop] 385_45393_90753: accepted (ok) views=7 sep=25.0 facing=1.0
+  [laptop] 604_94275_189483: accepted (accepted_with_3_views) views=3 sep=15.0 facing=1.0
+  [laptop] 378_43855_87425: accepted (ok) views=6 sep=25.0 facing=1.0
+  [laptop] 354_37685_70782: accepted (accepted_with_4_views) views=4 sep=15.0 facing=1.0
+  [laptop] 378_43976_87640: accepted (ok) views=6 sep=25.0 facing=1.0
+  [laptop] 378_44207_88121: accepted (ok) views=5 sep=15.0 facing=1.0
+  [laptop] 374_42105_84199: accepted (ok) views=5 sep=15.0 facing=1.0
+  [laptop] 256_27647_53803: accepted (ok) views=6 sep=25.0 facing=1.0
+  [laptop] 612_97824_196798: rejected (only_2_usable_views) views=2 sep=15.0 facing=1.0
+  [laptop] 372_41062_82211: accepted (ok) views=5 sep=15.0 facing=1.0
+  [laptop] 372_40878_81136: accepted (ok) views=5 sep=25.0 facing=1.0
+  [laptop] 598_91782_182360: accepted (ok) views=7 sep=25.0 facing=1.0
+  [laptop] 391_47273_94005: accepted (accepted_with_4_views) views=4 sep=15.0 facing=1.0
+  [laptop] 373_41558_82973: accepted (ok) views=7 sep=25.0 facing=1.0
+  [laptop] 339_35071_63061: accepted (ok) views=6 sep=15.0 facing=1.0
+  [laptop] 372_40947_81629: rejected (only_0_usable_views) views=0 sep=None facing=1.0
+  [laptop] 372_41242_82155: accepted (ok) views=6 sep=25.0 facing=1.0
+  [laptop] 373_41416_82673: accepted (ok) views=7 sep=25.0 facing=1.0
+  [laptop] 373_41656_83408: accepted (ok) views=5 sep=25.0 facing=1.0
+  [laptop] 380_44854_89698: accepted (ok) views=6 sep=25.0 facing=1.0
+  [laptop] 212_22443_46420: accepted (ok) views=5 sep=15.0 facing=1.0
+  [laptop] 540_79011_153084: accepted (ok) views=5 sep=25.0 facing=1.0
+  [laptop] 614_98511_198261: accepted (ok) views=6 sep=25.0 facing=1.0
+  [laptop] 523_75187_146271: accepted (ok) views=5 sep=15.0 facing=1.0
+  [laptop] 372_41337_82330: accepted (ok) views=6 sep=25.0 facing=1.0
+  [laptop] 374_41860_83920: accepted (ok) views=5 sep=15.0 facing=1.0
+  [laptop] 212_22391_44980: accepted (ok) views=5 sep=25.0 facing=1.0
+  [laptop] 378_44220_88123: accepted (ok) views=5 sep=15.0 facing=1.0
+  [laptop] 353_37503_70589: accepted (ok) views=6 sep=25.0 facing=1.0
+  [laptop] 394_48738_96392: accepted (accepted_with_4_views) views=4 sep=15.0 facing=1.0
+  [laptop] 222_23409_48576: accepted (ok) views=8 sep=25.0 facing=1.0
+  [laptop] 537_78150_151192: accepted (ok) views=5 sep=25.0 facing=1.0
+  [laptop] 558_80367_157341: accepted (ok) views=6 sep=25.0 facing=1.0
+  [laptop] 386_46199_92188: accepted (ok) views=5 sep=25.0 facing=1.0
+  [laptop] 182_19688_35488: accepted (ok) views=5 sep=25.0 facing=1.0
+  [laptop] 391_47265_93997: accepted (accepted_with_4_views) views=4 sep=15.0 facing=1.0
+  [laptop] 457_64452_127008: accepted (ok) views=7 sep=25.0 facing=1.0
+  [laptop] 372_41085_81815: accepted (ok) views=7 sep=25.0 facing=1.0
+  [laptop] 624_102975_206937: rejected (only_2_usable_views) views=2 sep=15.0 facing=1.0
+  [laptop] 374_41891_83927: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] book_001.zip: 9 selected sequences (dir 16.1 MB, found 9/50)
+  [book] book_002.zip: 6 selected sequences (dir 13.5 MB, found 15/50)
+  [book] book_003.zip: 2 selected sequences (dir 7.0 MB, found 17/50)
+  [book] book_004.zip: 8 selected sequences (dir 7.0 MB, found 25/50)
+  [book] book_005.zip: 14 selected sequences (dir 12.5 MB, found 39/50)
+  [book] book_006.zip: 1 selected sequences (dir 11.7 MB, found 40/50)
+  [book] book_007.zip: 1 selected sequences (dir 10.6 MB, found 41/50)
+  [book] book_008.zip: 1 selected sequences (dir 12.2 MB, found 42/50)
+  [book] book_009.zip: 1 selected sequences (dir 15.3 MB, found 43/50)
+  [book] book_010.zip: 0 selected sequences (dir 13.5 MB, found 43/50)
+  [book] book_011.zip: 1 selected sequences (dir 14.1 MB, found 44/50)
+  [book] book_012.zip: 3 selected sequences (dir 12.7 MB, found 47/50)
+  [book] book_013.zip: 0 selected sequences (dir 16.4 MB, found 47/50)
+  [book] book_014.zip: 1 selected sequences (dir 13.6 MB, found 48/50)
+  [book] book_015.zip: 0 selected sequences (dir 13.0 MB, found 48/50)
+  [book] book_016.zip: 0 selected sequences (dir 14.5 MB, found 48/50)
+  [book] book_017.zip: 1 selected sequences (dir 13.8 MB, found 49/50)
+  [book] book_018.zip: 1 selected sequences (dir 12.4 MB, found 50/50)
+  [book] 262_28105_55340: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 534_77418_149814: accepted (ok) views=8 sep=15.0 facing=1.0
+  [book] 540_79227_153438: accepted (accepted_with_4_views) views=4 sep=15.0 facing=1.0
+  [book] 604_94080_188373: accepted (ok) views=5 sep=25.0 facing=1.0
+  [book] 150_16690_32076: accepted (ok) views=8 sep=25.0 facing=1.0
+  [book] 271_28906_56261: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 197_21193_41047: accepted (ok) views=5 sep=25.0 facing=1.0
+  [book] 247_26450_50929: accepted (ok) views=6 sep=25.0 facing=1.0
+  [book] 247_26475_51826: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 209_22150_45214: accepted (ok) views=5 sep=25.0 facing=1.0
+  [book] 209_22089_45167: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 228_23996_49759: accepted (ok) views=8 sep=15.0 facing=1.0
+  [book] 30_1112_3047: accepted (accepted_with_4_views) views=4 sep=15.0 facing=1.0
+  [book] 455_64227_126525: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 14_187_757: accepted (ok) views=8 sep=25.0 facing=1.0
+  [book] 20_752_1509: accepted (ok) views=8 sep=25.0 facing=1.0
+  [book] 20_688_1353: accepted (ok) views=8 sep=15.0 facing=1.0
+  [book] 540_79103_153236: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 160_17582_33086: accepted (ok) views=7 sep=15.0 facing=1.0
+  [book] 102_11955_20634: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 475_67193_131887: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 188_20322_37186: accepted (ok) views=8 sep=25.0 facing=1.0
+  [book] 209_22156_45173: accepted (ok) views=5 sep=25.0 facing=1.0
+  [book] 253_27217_54517: accepted (ok) views=6 sep=25.0 facing=1.0
+  [book] 579_85971_170389: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 30_1241_3644: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 209_22166_45183: accepted (ok) views=6 sep=25.0 facing=1.0
+  [book] 540_79151_153292: accepted (ok) views=6 sep=25.0 facing=1.0
+  [book] 209_22181_45211: accepted (ok) views=5 sep=25.0 facing=1.0
+  [book] 271_28947_56809: accepted (ok) views=6 sep=15.0 facing=1.0
+  [book] 209_22170_45187: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 219_23094_47459: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 209_22175_45193: accepted (ok) views=8 sep=25.0 facing=1.0
+  [book] 30_1202_3579: accepted (ok) views=5 sep=25.0 facing=1.0
+  [book] 247_26493_52247: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 188_20350_38446: accepted (ok) views=5 sep=25.0 facing=1.0
+  [book] 247_26474_51827: accepted (ok) views=6 sep=25.0 facing=1.0
+  [book] 620_101111_202752: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 247_26469_51778: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 188_20313_36545: accepted (ok) views=6 sep=25.0 facing=1.0
+  [book] 209_22174_45191: accepted (ok) views=6 sep=25.0 facing=1.0
+  [book] 150_16691_32077: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 209_22168_45185: accepted (ok) views=6 sep=25.0 facing=1.0
+  [book] 150_16670_31845: accepted (ok) views=8 sep=25.0 facing=1.0
+  [book] 346_36036_66110: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 150_16684_31898: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 209_22183_45213: accepted (ok) views=5 sep=25.0 facing=1.0
+  [book] 209_22184_45215: accepted (ok) views=6 sep=25.0 facing=1.0
+  [book] 289_30608_58317: accepted (ok) views=7 sep=25.0 facing=1.0
+  [book] 353_37516_70606: accepted (ok) views=7 sep=15.0 facing=1.0
+{
+ "per_category": {
+  "cellphone": {
+   "selected_sequences": 50,
+   "accepted": 44,
+   "views": 260,
+   "views_hist": {
+    "3": 1,
+    "4": 4,
+    "5": 13,
+    "6": 11,
+    "7": 10,
+    "8": 5
+   },
+   "relaxed_15deg": 20,
+   "frame_rejection_reasons": {
+    "crop_side_below_64px": 36,
+    "exposure_out_of_range": 4,
+    "object_truncated_3plus_borders": 74,
+    "sharpness_bottom_25pct_of_sequence": 268
+   },
+   "n_rejected": 6
+  },
+  "laptop": {
+   "selected_sequences": 50,
+   "accepted": 47,
+   "views": 266,
+   "views_hist": {
+    "3": 2,
+    "4": 6,
+    "5": 15,
+    "6": 11,
+    "7": 9,
+    "8": 4
+   },
+   "relaxed_15deg": 19,
+   "frame_rejection_reasons": {
+    "crop_side_below_64px": 24,
+    "exposure_out_of_range": 2,
+    "object_truncated_3plus_borders": 32,
+    "sharpness_bottom_25pct_of_sequence": 290
+   },
+   "n_rejected": 3
+  },
+  "book": {
+   "selected_sequences": 50,
+   "accepted": 50,
+   "views": 327,
+   "views_hist": {
+    "3": 0,
+    "4": 2,
+    "5": 8,
+    "6": 10,
+    "7": 21,
+    "8": 9
+   },
+   "relaxed_15deg": 8,
+   "frame_rejection_reasons": {
+    "crop_side_below_64px": 1,
+    "exposure_out_of_range": 5,
+    "object_truncated_3plus_borders": 1,
+    "sharpness_bottom_25pct_of_sequence": 297
+   },
+   "n_rejected": 0
+  }
+ },
+ "transfer_MB": {
+  "metadata_bytes": 365.9,
+  "directory_bytes": 439.6,
+  "candidate_bytes": 400.6
+ },
+ "records": 853,
+ "seconds": 781.7
+}
+exit=0

@@ -1,0 +1,145 @@
+{
+ "checkpoint": "models/checkpoints/m4_c/best_val_recall_at_1.pt",
+ "checkpoint_sha256": "7aef423c63a258de9da6301cb545c993cb64c81bd7f75fcf3ef73381455881eb",
+ "conditions": {
+  "A_full_image": {
+   "crop_sources": {
+    "full_image": 853
+   },
+   "hard_negative_top1_accuracy": 0.799531,
+   "mrr": 0.843182,
+   "n_gallery_images": 853,
+   "n_gallery_instances": 141,
+   "n_queries": 853,
+   "n_queries_with_same_category_negative": 853,
+   "n_query_instances": 141,
+   "n_skipped_queries": 0,
+   "recall@1": 0.796014,
+   "recall@10": 0.937866,
+   "recall@5": 0.896835,
+   "status": "RUN",
+   "transform": "production_resize256_centercrop224",
+   "trivial_recall_ks": []
+  },
+  "A_full_image_letterbox": {
+   "crop_sources": {
+    "full_image": 853
+   },
+   "hard_negative_top1_accuracy": 0.815944,
+   "mrr": 0.865702,
+   "n_gallery_images": 853,
+   "n_gallery_instances": 141,
+   "n_queries": 853,
+   "n_queries_with_same_category_negative": 853,
+   "n_query_instances": 141,
+   "n_skipped_queries": 0,
+   "recall@1": 0.812427,
+   "recall@10": 0.957796,
+   "recall@5": 0.928488,
+   "status": "RUN",
+   "transform": "letterbox224_imagenet_mean_pad",
+   "trivial_recall_ks": []
+  },
+  "B_detector_crop": {
+   "crop_sources": {
+    "detector": 852,
+    "full_image_fallback": 1
+   },
+   "hard_negative_top1_accuracy": 0.728019,
+   "mrr": 0.792593,
+   "n_gallery_images": 853,
+   "n_gallery_instances": 141,
+   "n_queries": 853,
+   "n_queries_with_same_category_negative": 853,
+   "n_query_instances": 141,
+   "n_skipped_queries": 0,
+   "recall@1": 0.719812,
+   "recall@10": 0.923798,
+   "recall@5": 0.872216,
+   "status": "RUN",
+   "transform": "production_resize256_centercrop224",
+   "trivial_recall_ks": []
+  },
+  "C_ground_truth_crop": {
+   "crop_sources": {
+    "ground_truth": 853
+   },
+   "hard_negative_top1_accuracy": 0.706917,
+   "mrr": 0.775121,
+   "n_gallery_images": 853,
+   "n_gallery_instances": 141,
+   "n_queries": 853,
+   "n_queries_with_same_category_negative": 853,
+   "n_query_instances": 141,
+   "n_skipped_queries": 0,
+   "recall@1": 0.69871,
+   "recall@10": 0.922626,
+   "recall@5": 0.869871,
+   "status": "RUN",
+   "transform": "production_resize256_centercrop224",
+   "trivial_recall_ks": []
+  },
+  "D_detector_crop_letterbox": {
+   "crop_sources": {
+    "detector": 852,
+    "full_image_fallback": 1
+   },
+   "hard_negative_top1_accuracy": 0.764361,
+   "mrr": 0.823787,
+   "n_gallery_images": 853,
+   "n_gallery_instances": 141,
+   "n_queries": 853,
+   "n_queries_with_same_category_negative": 853,
+   "n_query_instances": 141,
+   "n_skipped_queries": 0,
+   "recall@1": 0.762016,
+   "recall@10": 0.946073,
+   "recall@5": 0.903869,
+   "status": "RUN",
+   "transform": "letterbox224_imagenet_mean_pad",
+   "trivial_recall_ks": []
+  }
+ },
+ "config": {
+  "checkpoint": "models/checkpoints/m4_c/best_val_recall_at_1.pt",
+  "conditions": [
+   "A_full_image",
+   "B_detector_crop",
+   "C_ground_truth_crop",
+   "D_detector_crop_letterbox",
+   "A_full_image_letterbox"
+  ],
+  "evidence_level": "PILOT (CO3D v2 few-view dev holdout, 150 sequences; research-only CC BY-NC 4.0)",
+  "expected_checkpoint_sha256": "7aef423c63a258de9da6301cb545c993cb64c81bd7f75fcf3ef73381455881eb",
+  "inputs_are_precropped": false,
+  "ks": [
+   1,
+   5,
+   10
+  ],
+  "manifest": "data/processed/co3d_phase2_pilot_manifest.jsonl",
+  "output_dir": "reports/evaluation/phase2_runs",
+  "run_name": "co3d_pilot",
+  "sources": [
+   "CO3D"
+  ]
+ },
+ "detector_prompt": "laptop. mobile phone. wallet. earphones. headphones. keys. book.",
+ "eval_code_revision": "phase2-eval-v1",
+ "evidence_level": "PILOT (CO3D v2 few-view dev holdout, 150 sequences; research-only CC BY-NC 4.0)",
+ "filters": {
+  "categories": null,
+  "sources": [
+   "CO3D"
+  ],
+  "splits": null
+ },
+ "gallery_keys_sha256": "e94c211c5c975ef84b14228c50cc0d187e36d34eb060cc5a9c59a83c7be1844d",
+ "inputs_are_precropped": false,
+ "manifest": "data/processed/co3d_phase2_pilot_manifest.jsonl",
+ "manifest_sha256": "a1a637e517beb1a2e8d534ee8208db4f3b1d1dc8892144cdd939f2773bbb29a2",
+ "model_version": "lp-riem-mm1-phase1-crop-v1+m4c.7aef423c",
+ "n_instances": 141,
+ "n_records": 853,
+ "run_name": "co3d_pilot"
+}

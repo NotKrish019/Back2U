@@ -79,7 +79,19 @@ function SearchFlowContent() {
             setReportCreated(true);
           }
           
-          const res = await api.search({ text: description, top_k: 6 });
+          // Send the photo when we have one (from this page or handed over by Report Lost);
+          // the ML service falls back to text-only search otherwise.
+          let queryImage = image;
+          if (!queryImage) {
+            try { queryImage = sessionStorage.getItem('back2u:lostQueryImage'); } catch { /* storage unavailable */ }
+          }
+          const res = await api.search({
+            image: queryImage && queryImage.startsWith('data:image') ? queryImage : undefined,
+            text: description.trim() || undefined,
+            top_k: 6,
+          });
+          // Clear the hand-over only once results arrive (dev-mode effects can run twice).
+          try { sessionStorage.removeItem('back2u:lostQueryImage'); } catch { /* storage unavailable */ }
           setResult(res);
           setProgress(100);
           setTimeout(() => setView('results'), 500);

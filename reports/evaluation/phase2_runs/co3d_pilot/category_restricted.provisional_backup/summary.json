@@ -1,0 +1,644 @@
+{
+ "qc_applied": false,
+ "n_uncertain_relationships": 87,
+ "model_version": "lp-riem-mm1-phase1-crop-v1+m4c.7aef423c",
+ "conditions": {
+  "A_full_image": {
+   "mixed": {
+    "overall": {
+     "n_queries": 853,
+     "n_query_instances": 141,
+     "mrr": 0.843182,
+     "hard_negative_top1_accuracy": 0.830012,
+     "n_queries_with_eligible_negative": 853,
+     "top1_errors": {
+      "within_category": 107,
+      "uncertain_identity": 60,
+      "cross_category": 7
+     },
+     "recall@1": 0.796014,
+     "recall@5": 0.896835,
+     "recall@10": 0.937866,
+     "n_skipped_queries": 0
+    },
+    "per_category": {
+     "book": {
+      "n_queries": 327,
+      "n_query_instances": 50,
+      "mrr": 0.813875,
+      "hard_negative_top1_accuracy": 0.819572,
+      "n_queries_with_eligible_negative": 327,
+      "top1_errors": {
+       "within_category": 34,
+       "uncertain_identity": 43
+      },
+      "recall@1": 0.764526,
+      "recall@5": 0.859327,
+      "recall@10": 0.917431
+     },
+     "laptop": {
+      "n_queries": 266,
+      "n_query_instances": 47,
+      "mrr": 0.755127,
+      "hard_negative_top1_accuracy": 0.714286,
+      "n_queries_with_eligible_negative": 266,
+      "top1_errors": {
+       "within_category": 64,
+       "uncertain_identity": 17,
+       "cross_category": 6
+      },
+      "recall@1": 0.672932,
+      "recall@5": 0.860902,
+      "recall@10": 0.917293
+     },
+     "mobile_phone": {
+      "n_queries": 260,
+      "n_query_instances": 44,
+      "mrr": 0.970128,
+      "hard_negative_top1_accuracy": 0.961538,
+      "n_queries_with_eligible_negative": 260,
+      "top1_errors": {
+       "within_category": 9,
+       "cross_category": 1
+      },
+      "recall@1": 0.961538,
+      "recall@5": 0.980769,
+      "recall@10": 0.984615
+     }
+    },
+    "skipped_queries": []
+   },
+   "category_restricted_ORACLE": {
+    "overall": {
+     "n_queries": 853,
+     "n_query_instances": 141,
+     "mrr": 0.847434,
+     "hard_negative_top1_accuracy": 0.830012,
+     "n_queries_with_eligible_negative": 853,
+     "top1_errors": {
+      "within_category": 111,
+      "uncertain_identity": 60
+     },
+     "recall@1": 0.799531,
+     "recall@5": 0.900352,
+     "recall@10": 0.940211,
+     "n_skipped_queries": 0
+    },
+    "per_category": {
+     "book": {
+      "n_queries": 327,
+      "n_query_instances": 50,
+      "mrr": 0.813929,
+      "hard_negative_top1_accuracy": 0.819572,
+      "n_queries_with_eligible_negative": 327,
+      "top1_errors": {
+       "within_category": 34,
+       "uncertain_identity": 43
+      },
+      "recall@1": 0.764526,
+      "recall@5": 0.859327,
+      "recall@10": 0.917431
+     },
+     "laptop": {
+      "n_queries": 266,
+      "n_query_instances": 47,
+      "mrr": 0.768317,
+      "hard_negative_top1_accuracy": 0.714286,
+      "n_queries_with_eligible_negative": 266,
+      "top1_errors": {
+       "within_category": 67,
+       "uncertain_identity": 17
+      },
+      "recall@1": 0.684211,
+      "recall@5": 0.87218,
+      "recall@10": 0.921053
+     },
+     "mobile_phone": {
+      "n_queries": 260,
+      "n_query_instances": 44,
+      "mrr": 0.970517,
+      "hard_negative_top1_accuracy": 0.961538,
+      "n_queries_with_eligible_negative": 260,
+      "top1_errors": {
+       "within_category": 10
+      },
+      "recall@1": 0.961538,
+      "recall@5": 0.980769,
+      "recall@10": 0.988462
+     }
+    },
+    "skipped_queries": []
+   }
+  },
+  "B_detector_crop": {
+   "mixed": {
+    "overall": {
+     "n_queries": 853,
+     "n_query_instances": 141,
+     "mrr": 0.792593,
+     "hard_negative_top1_accuracy": 0.759672,
+     "n_queries_with_eligible_negative": 853,
+     "top1_errors": {
+      "within_category": 169,
+      "cross_category": 12,
+      "uncertain_identity": 58
+     },
+     "recall@1": 0.719812,
+     "recall@5": 0.872216,
+     "recall@10": 0.923798,
+     "n_skipped_queries": 0
+    },
+    "per_category": {
+     "book": {
+      "n_queries": 327,
+      "n_query_instances": 50,
+      "mrr": 0.839467,
+      "hard_negative_top1_accuracy": 0.844037,
+      "n_queries_with_eligible_negative": 327,
+      "top1_errors": {
+       "within_category": 32,
+       "cross_category": 2,
+       "uncertain_identity": 31
+      },
+      "recall@1": 0.801223,
+      "recall@5": 0.880734,
+      "recall@10": 0.917431
+     },
+     "laptop": {
+      "n_queries": 266,
+      "n_query_instances": 47,
+      "mrr": 0.652906,
+      "hard_negative_top1_accuracy": 0.590226,
+      "n_queries_with_eligible_negative": 266,
+      "top1_errors": {
+       "within_category": 92,
+       "uncertain_identity": 27,
+       "cross_category": 8
+      },
+      "recall@1": 0.522556,
+      "recall@5": 0.789474,
+      "recall@10": 0.883459
+     },
+     "mobile_phone": {
+      "n_queries": 260,
+      "n_query_instances": 44,
+      "mrr": 0.87655,
+      "hard_negative_top1_accuracy": 0.826923,
+      "n_queries_with_eligible_negative": 260,
+      "top1_errors": {
+       "within_category": 45,
+       "cross_category": 2
+      },
+      "recall@1": 0.819231,
+      "recall@5": 0.946154,
+      "recall@10": 0.973077
+     }
+    },
+    "skipped_queries": []
+   },
+   "category_restricted_ORACLE": {
+    "overall": {
+     "n_queries": 853,
+     "n_query_instances": 141,
+     "mrr": 0.798476,
+     "hard_negative_top1_accuracy": 0.759672,
+     "n_queries_with_eligible_negative": 853,
+     "top1_errors": {
+      "within_category": 174,
+      "uncertain_identity": 58
+     },
+     "recall@1": 0.728019,
+     "recall@5": 0.873388,
+     "recall@10": 0.927315,
+     "n_skipped_queries": 0
+    },
+    "per_category": {
+     "book": {
+      "n_queries": 327,
+      "n_query_instances": 50,
+      "mrr": 0.839922,
+      "hard_negative_top1_accuracy": 0.844037,
+      "n_queries_with_eligible_negative": 327,
+      "top1_errors": {
+       "within_category": 34,
+       "uncertain_identity": 31
+      },
+      "recall@1": 0.801223,
+      "recall@5": 0.880734,
+      "recall@10": 0.917431
+     },
+     "laptop": {
+      "n_queries": 266,
+      "n_query_instances": 47,
+      "mrr": 0.666077,
+      "hard_negative_top1_accuracy": 0.590226,
+      "n_queries_with_eligible_negative": 266,
+      "top1_errors": {
+       "within_category": 95,
+       "uncertain_identity": 27
+      },
+      "recall@1": 0.541353,
+      "recall@5": 0.793233,
+      "recall@10": 0.890977
+     },
+     "mobile_phone": {
+      "n_queries": 260,
+      "n_query_instances": 44,
+      "mrr": 0.881806,
+      "hard_negative_top1_accuracy": 0.826923,
+      "n_queries_with_eligible_negative": 260,
+      "top1_errors": {
+       "within_category": 45
+      },
+      "recall@1": 0.826923,
+      "recall@5": 0.946154,
+      "recall@10": 0.976923
+     }
+    },
+    "skipped_queries": []
+   }
+  },
+  "C_ground_truth_crop": {
+   "mixed": {
+    "overall": {
+     "n_queries": 853,
+     "n_query_instances": 141,
+     "mrr": 0.775121,
+     "hard_negative_top1_accuracy": 0.740914,
+     "n_queries_with_eligible_negative": 853,
+     "top1_errors": {
+      "within_category": 179,
+      "uncertain_identity": 61,
+      "cross_category": 17
+     },
+     "recall@1": 0.69871,
+     "recall@5": 0.869871,
+     "recall@10": 0.922626,
+     "n_skipped_queries": 0
+    },
+    "per_category": {
+     "book": {
+      "n_queries": 327,
+      "n_query_instances": 50,
+      "mrr": 0.834572,
+      "hard_negative_top1_accuracy": 0.844037,
+      "n_queries_with_eligible_negative": 327,
+      "top1_errors": {
+       "within_category": 31,
+       "uncertain_identity": 33,
+       "cross_category": 3
+      },
+      "recall@1": 0.795107,
+      "recall@5": 0.868502,
+      "recall@10": 0.911315
+     },
+     "laptop": {
+      "n_queries": 266,
+      "n_query_instances": 47,
+      "mrr": 0.612589,
+      "hard_negative_top1_accuracy": 0.545113,
+      "n_queries_with_eligible_negative": 266,
+      "top1_errors": {
+       "within_category": 100,
+       "cross_category": 11,
+       "uncertain_identity": 28
+      },
+      "recall@1": 0.477444,
+      "recall@5": 0.793233,
+      "recall@10": 0.883459
+     },
+     "mobile_phone": {
+      "n_queries": 260,
+      "n_query_instances": 44,
+      "mrr": 0.866632,
+      "hard_negative_top1_accuracy": 0.811538,
+      "n_queries_with_eligible_negative": 260,
+      "top1_errors": {
+       "within_category": 48,
+       "cross_category": 3
+      },
+      "recall@1": 0.803846,
+      "recall@5": 0.95,
+      "recall@10": 0.976923
+     }
+    },
+    "skipped_queries": []
+   },
+   "category_restricted_ORACLE": {
+    "overall": {
+     "n_queries": 853,
+     "n_query_instances": 141,
+     "mrr": 0.782224,
+     "hard_negative_top1_accuracy": 0.740914,
+     "n_queries_with_eligible_negative": 853,
+     "top1_errors": {
+      "within_category": 189,
+      "uncertain_identity": 61
+     },
+     "recall@1": 0.706917,
+     "recall@5": 0.87456,
+     "recall@10": 0.927315,
+     "n_skipped_queries": 0
+    },
+    "per_category": {
+     "book": {
+      "n_queries": 327,
+      "n_query_instances": 50,
+      "mrr": 0.835616,
+      "hard_negative_top1_accuracy": 0.844037,
+      "n_queries_with_eligible_negative": 327,
+      "top1_errors": {
+       "within_category": 34,
+       "uncertain_identity": 33
+      },
+      "recall@1": 0.795107,
+      "recall@5": 0.87156,
+      "recall@10": 0.917431
+     },
+     "laptop": {
+      "n_queries": 266,
+      "n_query_instances": 47,
+      "mrr": 0.627852,
+      "hard_negative_top1_accuracy": 0.545113,
+      "n_queries_with_eligible_negative": 266,
+      "top1_errors": {
+       "within_category": 106,
+       "uncertain_identity": 28
+      },
+      "recall@1": 0.496241,
+      "recall@5": 0.800752,
+      "recall@10": 0.890977
+     },
+     "mobile_phone": {
+      "n_queries": 260,
+      "n_query_instances": 44,
+      "mrr": 0.873008,
+      "hard_negative_top1_accuracy": 0.811538,
+      "n_queries_with_eligible_negative": 260,
+      "top1_errors": {
+       "within_category": 49
+      },
+      "recall@1": 0.811538,
+      "recall@5": 0.953846,
+      "recall@10": 0.976923
+     }
+    },
+    "skipped_queries": []
+   }
+  },
+  "D_detector_crop_letterbox": {
+   "mixed": {
+    "overall": {
+     "n_queries": 853,
+     "n_query_instances": 141,
+     "mrr": 0.823787,
+     "hard_negative_top1_accuracy": 0.80422,
+     "n_queries_with_eligible_negative": 853,
+     "top1_errors": {
+      "within_category": 131,
+      "uncertain_identity": 66,
+      "cross_category": 6
+     },
+     "recall@1": 0.762016,
+     "recall@5": 0.903869,
+     "recall@10": 0.946073,
+     "n_skipped_queries": 0
+    },
+    "per_category": {
+     "book": {
+      "n_queries": 327,
+      "n_query_instances": 50,
+      "mrr": 0.812108,
+      "hard_negative_top1_accuracy": 0.819572,
+      "n_queries_with_eligible_negative": 327,
+      "top1_errors": {
+       "within_category": 38,
+       "uncertain_identity": 42,
+       "cross_category": 1
+      },
+      "recall@1": 0.752294,
+      "recall@5": 0.889908,
+      "recall@10": 0.938838
+     },
+     "laptop": {
+      "n_queries": 266,
+      "n_query_instances": 47,
+      "mrr": 0.72111,
+      "hard_negative_top1_accuracy": 0.676692,
+      "n_queries_with_eligible_negative": 266,
+      "top1_errors": {
+       "within_category": 71,
+       "uncertain_identity": 24,
+       "cross_category": 5
+      },
+      "recall@1": 0.62406,
+      "recall@5": 0.849624,
+      "recall@10": 0.909774
+     },
+     "mobile_phone": {
+      "n_queries": 260,
+      "n_query_instances": 44,
+      "mrr": 0.943523,
+      "hard_negative_top1_accuracy": 0.915385,
+      "n_queries_with_eligible_negative": 260,
+      "top1_errors": {
+       "within_category": 22
+      },
+      "recall@1": 0.915385,
+      "recall@5": 0.976923,
+      "recall@10": 0.992308
+     }
+    },
+    "skipped_queries": []
+   },
+   "category_restricted_ORACLE": {
+    "overall": {
+     "n_queries": 853,
+     "n_query_instances": 141,
+     "mrr": 0.826835,
+     "hard_negative_top1_accuracy": 0.80422,
+     "n_queries_with_eligible_negative": 853,
+     "top1_errors": {
+      "within_category": 135,
+      "uncertain_identity": 66
+     },
+     "recall@1": 0.764361,
+     "recall@5": 0.907386,
+     "recall@10": 0.94959,
+     "n_skipped_queries": 0
+    },
+    "per_category": {
+     "book": {
+      "n_queries": 327,
+      "n_query_instances": 50,
+      "mrr": 0.813207,
+      "hard_negative_top1_accuracy": 0.819572,
+      "n_queries_with_eligible_negative": 327,
+      "top1_errors": {
+       "within_category": 39,
+       "uncertain_identity": 42
+      },
+      "recall@1": 0.752294,
+      "recall@5": 0.889908,
+      "recall@10": 0.938838
+     },
+     "laptop": {
+      "n_queries": 266,
+      "n_query_instances": 47,
+      "mrr": 0.729533,
+      "hard_negative_top1_accuracy": 0.676692,
+      "n_queries_with_eligible_negative": 266,
+      "top1_errors": {
+       "within_category": 74,
+       "uncertain_identity": 24
+      },
+      "recall@1": 0.631579,
+      "recall@5": 0.860902,
+      "recall@10": 0.921053
+     },
+     "mobile_phone": {
+      "n_queries": 260,
+      "n_query_instances": 44,
+      "mrr": 0.943523,
+      "hard_negative_top1_accuracy": 0.915385,
+      "n_queries_with_eligible_negative": 260,
+      "top1_errors": {
+       "within_category": 22
+      },
+      "recall@1": 0.915385,
+      "recall@5": 0.976923,
+      "recall@10": 0.992308
+     }
+    },
+    "skipped_queries": []
+   }
+  },
+  "A_full_image_letterbox": {
+   "mixed": {
+    "overall": {
+     "n_queries": 853,
+     "n_query_instances": 141,
+     "mrr": 0.865702,
+     "hard_negative_top1_accuracy": 0.858148,
+     "n_queries_with_eligible_negative": 853,
+     "top1_errors": {
+      "within_category": 93,
+      "uncertain_identity": 62,
+      "cross_category": 5
+     },
+     "recall@1": 0.812427,
+     "recall@5": 0.928488,
+     "recall@10": 0.957796,
+     "n_skipped_queries": 0
+    },
+    "per_category": {
+     "book": {
+      "n_queries": 327,
+      "n_query_instances": 50,
+      "mrr": 0.821161,
+      "hard_negative_top1_accuracy": 0.840979,
+      "n_queries_with_eligible_negative": 327,
+      "top1_errors": {
+       "within_category": 36,
+       "uncertain_identity": 44,
+       "cross_category": 1
+      },
+      "recall@1": 0.752294,
+      "recall@5": 0.899083,
+      "recall@10": 0.944954
+     },
+     "laptop": {
+      "n_queries": 266,
+      "n_query_instances": 47,
+      "mrr": 0.806092,
+      "hard_negative_top1_accuracy": 0.766917,
+      "n_queries_with_eligible_negative": 266,
+      "top1_errors": {
+       "within_category": 50,
+       "uncertain_identity": 18,
+       "cross_category": 4
+      },
+      "recall@1": 0.729323,
+      "recall@5": 0.902256,
+      "recall@10": 0.932331
+     },
+     "mobile_phone": {
+      "n_queries": 260,
+      "n_query_instances": 44,
+      "mrr": 0.982708,
+      "hard_negative_top1_accuracy": 0.973077,
+      "n_queries_with_eligible_negative": 260,
+      "top1_errors": {
+       "within_category": 7
+      },
+      "recall@1": 0.973077,
+      "recall@5": 0.992308,
+      "recall@10": 1.0
+     }
+    },
+    "skipped_queries": []
+   },
+   "category_restricted_ORACLE": {
+    "overall": {
+     "n_queries": 853,
+     "n_query_instances": 141,
+     "mrr": 0.868526,
+     "hard_negative_top1_accuracy": 0.858148,
+     "n_queries_with_eligible_negative": 853,
+     "top1_errors": {
+      "within_category": 95,
+      "uncertain_identity": 62
+     },
+     "recall@1": 0.815944,
+     "recall@5": 0.930832,
+     "recall@10": 0.960141,
+     "n_skipped_queries": 0
+    },
+    "per_category": {
+     "book": {
+      "n_queries": 327,
+      "n_query_instances": 50,
+      "mrr": 0.82269,
+      "hard_negative_top1_accuracy": 0.840979,
+      "n_queries_with_eligible_negative": 327,
+      "top1_errors": {
+       "within_category": 36,
+       "uncertain_identity": 44
+      },
+      "recall@1": 0.755352,
+      "recall@5": 0.899083,
+      "recall@10": 0.944954
+     },
+     "laptop": {
+      "n_queries": 266,
+      "n_query_instances": 47,
+      "mrr": 0.813267,
+      "hard_negative_top1_accuracy": 0.766917,
+      "n_queries_with_eligible_negative": 266,
+      "top1_errors": {
+       "within_category": 52,
+       "uncertain_identity": 18
+      },
+      "recall@1": 0.736842,
+      "recall@5": 0.909774,
+      "recall@10": 0.93985
+     },
+     "mobile_phone": {
+      "n_queries": 260,
+      "n_query_instances": 44,
+      "mrr": 0.982708,
+      "hard_negative_top1_accuracy": 0.973077,
+      "n_queries_with_eligible_negative": 260,
+      "top1_errors": {
+       "within_category": 7
+      },
+      "recall@1": 0.973077,
+      "recall@5": 0.992308,
+      "recall@10": 1.0
+     }
+    },
+    "skipped_queries": []
+   }
+  }
+ }
+}

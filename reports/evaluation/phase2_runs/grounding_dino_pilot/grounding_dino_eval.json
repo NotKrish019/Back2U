@@ -1,0 +1,700 @@
+{
+ "evidence_level": "EXPLORATORY",
+ "detector_prompt": "laptop. mobile phone. wallet. earphones. headphones. keys. book.",
+ "box_threshold": 0.3,
+ "text_threshold": 0.3,
+ "iou_threshold": 0.5,
+ "n_records_in_manifest_after_filter": 4,
+ "n_annotated_original_photos": 4,
+ "aggregate": {
+  "n_images": 4,
+  "iou_threshold": 0.5,
+  "object_proposal_recall": 1.0,
+  "correct_category_proposal_rate": 1.0,
+  "selected_correct_rate": 0.75,
+  "incorrect_category_proposal_fraction": 0.5,
+  "missed_object_rate": 0.0,
+  "wrong_category_selection_rate": 0.0,
+  "multiple_object_selection_error_rate": 0.25,
+  "mean_selected_iou": 0.7452,
+  "mean_best_iou_any": 0.9947,
+  "full_image_fallbacks": 0
+ },
+ "per_image": [
+  {
+   "record": "laptop_app_u001/view_01",
+   "category": "laptop",
+   "n_proposals": 2,
+   "proposals": [
+    {
+     "label": "laptop",
+     "canonical": "laptop",
+     "score": 0.4417,
+     "box": [
+      51.1,
+      11.8,
+      795.4,
+      1516.3
+     ],
+     "iou": 0.9914
+    },
+    {
+     "label": "mobile phone",
+     "canonical": "mobile_phone",
+     "score": 0.3983,
+     "box": [
+      170.7,
+      69.1,
+      247.1,
+      214.6
+     ],
+     "iou": 0.0099
+    }
+   ],
+   "best_iou_any": 0.9914,
+   "proposal_hit": true,
+   "correct_category_hit": true,
+   "incorrect_category_proposals": 1,
+   "selected": {
+    "source": "detector",
+    "label": "laptop",
+    "score": 0.4417179524898529,
+    "box": [
+     51.102359771728516,
+     11.754322052001953,
+     795.421630859375,
+     1516.3275146484375
+    ],
+    "iou": 0.9914,
+    "reason": "highest_scoring_valid_detection"
+   },
+   "selected_correct": true,
+   "wrong_category": false,
+   "wrong_object": false,
+   "missed": false
+  },
+  {
+   "record": "laptop_app_u001/view_02",
+   "category": "laptop",
+   "n_proposals": 1,
+   "proposals": [
+    {
+     "label": "laptop",
+     "canonical": "laptop",
+     "score": 0.4928,
+     "box": [
+      1.0,
+      427.1,
+      887.7,
+      1594.0
+     ],
+     "iou": 0.9945
+    }
+   ],
+   "best_iou_any": 0.9945,
+   "proposal_hit": true,
+   "correct_category_hit": true,
+   "incorrect_category_proposals": 0,
+   "selected": {
+    "source": "detector",
+    "label": "laptop",
+    "score": 0.49279123544692993,
+    "box": [
+     0.9590774774551392,
+     427.0552673339844,
+     887.6631469726562,
+     1594.0458984375
+    ],
+    "iou": 0.9945,
+    "reason": "highest_scoring_valid_detection"
+   },
+   "selected_correct": true,
+   "wrong_category": false,
+   "wrong_object": false,
+   "missed": false
+  },
+  {
+   "record": "laptop_app_u002/view_01",
+   "category": "laptop",
+   "n_proposals": 3,
+   "proposals": [
+    {
+     "label": "laptop",
+     "canonical": "laptop",
+     "score": 0.6656,
+     "box": [
+      65.0,
+      95.7,
+      545.2,
+      1082.5
+     ],
+     "iou": 0.9951
+    },
+    {
+     "label": "mobile phone",
+     "canonical": "mobile_phone",
+     "score": 0.636,
+     "box": [
+      518.8,
+      787.7,
+      673.2,
+      1066.4
+     ],
+     "iou": 0.0148
+    },
+    {
+     "label": "book",
+     "canonical": "book",
+     "score": 0.32,
+     "box": [
+      248.8,
+      975.7,
+      476.0,
+      1148.5
+     ],
+     "iou": 0.0492
+    }
+   ],
+   "best_iou_any": 0.9951,
+   "proposal_hit": true,
+   "correct_category_hit": true,
+   "incorrect_category_proposals": 2,
+   "selected": {
+    "source": "detector",
+    "label": "laptop",
+    "score": 0.6655530333518982,
+    "box": [
+     65.01944732666016,
+     95.71128845214844,
+     545.2457885742188,
+     1082.5306396484375
+    ],
+    "iou": 0.9951,
+    "reason": "highest_scoring_valid_detection"
+   },
+   "selected_correct": true,
+   "wrong_category": false,
+   "wrong_object": false,
+   "missed": false
+  },
+  {
+   "record": "laptop_app_u002/view_02",
+   "category": "laptop",
+   "n_proposals": 6,
+   "proposals": [
+    {
+     "label": "laptop",
+     "canonical": "laptop",
+     "score": 0.5509,
+     "box": [
+      0.7,
+      464.7,
+      718.8,
+      1239.5
+     ],
+     "iou": 0.9977
+    },
+    {
+     "label": "mobile phone",
+     "canonical": "mobile_phone",
+     "score": 0.7929,
+     "box": [
+      465.7,
+      203.5,
+      602.8,
+      408.8
+     ],
+     "iou": 0.0
+    },
+    {
+     "label": "book",
+     "canonical": "book",
+     "score": 0.5614,
+     "box": [
+      617.1,
+      325.6,
+      719.3,
+      401.6
+     ],
+     "iou": 0.0
+    },
+    {
+     "label": "laptop",
+     "canonical": "laptop",
+     "score": 0.3129,
+     "box": [
+      0.4,
+      463.8,
+      719.0,
+      1041.4
+     ],
+     "iou": 0.7434
+    },
+    {
+     "label": "##phonesphones",
+     "canonical": null,
+     "score": 0.3141,
+     "box": [
+      1.9,
+      77.2,
+      605.3,
+      407.0
+     ],
+     "iou": 0.0
+    },
+    {
+     "label": "earphones headphones",
+     "canonical": "headphones",
+     "score": 0.3368,
+     "box": [
+      1.1,
+      78.5,
+      524.4,
+      217.7
+     ],
+     "iou": 0.0
+    }
+   ],
+   "best_iou_any": 0.9977,
+   "proposal_hit": true,
+   "correct_category_hit": true,
+   "incorrect_category_proposals": 3,
+   "selected": {
+    "source": "detector",
+    "label": "mobile_phone",
+    "score": 0.7929328083992004,
+    "box": [
+     465.69775390625,
+     203.460205078125,
+     602.7899780273438,
+     408.8032531738281
+    ],
+    "iou": 0.0,
+    "reason": "highest_scoring_valid_detection"
+   },
+   "selected_correct": false,
+   "wrong_category": false,
+   "wrong_object": true,
+   "missed": false
+  }
+ ],
+ "synthetic_diagnostic": {
+  "evidence_level": "SYNTHETIC_QUALITATIVE",
+  "images": [
+   {
+    "image": "data/uploads/mocks/mock_backpack_1790169091092.jpg",
+    "intended_object": "backpack",
+    "intended_canonical": null,
+    "selected": {
+     "source": "full_image_fallback",
+     "box": [
+      0,
+      0,
+      1024,
+      1024
+     ],
+     "raw_box": null,
+     "label": null,
+     "raw_label": null,
+     "score": null,
+     "reason": "no_detections",
+     "image_size": [
+      1024,
+      1024
+     ]
+    },
+    "proposals": []
+   },
+   {
+    "image": "data/uploads/mocks/mock_bottle_1790169172963.jpg",
+    "intended_object": "bottle",
+    "intended_canonical": null,
+    "selected": {
+     "source": "detector",
+     "box": [
+      377,
+      117,
+      648,
+      1006
+     ],
+     "raw_box": [
+      399.6607971191406,
+      191.23077392578125,
+      625.59326171875,
+      932.0790405273438
+     ],
+     "label": "mobile_phone",
+     "raw_label": "mobile phone",
+     "score": 0.3414822518825531,
+     "reason": "highest_scoring_valid_detection",
+     "image_size": [
+      1024,
+      1024
+     ]
+    },
+    "proposals": [
+     {
+      "label": "mobile phone",
+      "score": 0.341,
+      "box": [
+       400,
+       191,
+       626,
+       932
+      ]
+     }
+    ]
+   },
+   {
+    "image": "data/uploads/mocks/mock_calculator_1790169293752.jpg",
+    "intended_object": "calculator",
+    "intended_canonical": null,
+    "selected": {
+     "source": "detector",
+     "box": [
+      287,
+      80,
+      737,
+      945
+     ],
+     "raw_box": [
+      324.83612060546875,
+      152.1270751953125,
+      699.6619262695312,
+      873.0267333984375
+     ],
+     "label": "mobile_phone",
+     "raw_label": "mobile phone",
+     "score": 0.6465340256690979,
+     "reason": "highest_scoring_valid_detection",
+     "image_size": [
+      1024,
+      1024
+     ]
+    },
+    "proposals": [
+     {
+      "label": "mobile phone",
+      "score": 0.647,
+      "box": [
+       325,
+       152,
+       700,
+       873
+      ]
+     },
+     {
+      "label": "keys",
+      "score": 0.339,
+      "box": [
+       370,
+       449,
+       655,
+       829
+      ]
+     }
+    ]
+   },
+   {
+    "image": "data/uploads/mocks/mock_headphones_1790169189094.jpg",
+    "intended_object": "headphones",
+    "intended_canonical": "headphones",
+    "selected": {
+     "source": "detector",
+     "box": [
+      35,
+      136,
+      993,
+      924
+     ],
+     "raw_box": [
+      114.62152099609375,
+      201.3485107421875,
+      913.2893676757812,
+      857.9190673828125
+     ],
+     "label": "headphones",
+     "raw_label": "##phones headphones",
+     "score": 0.6219794750213623,
+     "reason": "highest_scoring_valid_detection",
+     "image_size": [
+      1024,
+      1024
+     ]
+    },
+    "proposals": [
+     {
+      "label": "##phones headphones",
+      "score": 0.622,
+      "box": [
+       115,
+       201,
+       913,
+       858
+      ]
+     },
+     {
+      "label": "keys",
+      "score": 0.347,
+      "box": [
+       538,
+       587,
+       610,
+       667
+      ]
+     }
+    ]
+   },
+   {
+    "image": "data/uploads/mocks/mock_keys_1790169205948.jpg",
+    "intended_object": "keys",
+    "intended_canonical": "keys",
+    "selected": {
+     "source": "detector",
+     "box": [
+      0,
+      0,
+      349,
+      343
+     ],
+     "raw_box": [
+      0.37457275390625,
+      0.1923675537109375,
+      317.5083923339844,
+      311.649658203125
+     ],
+     "label": "mobile_phone",
+     "raw_label": "mobile phone",
+     "score": 0.6367956399917603,
+     "reason": "highest_scoring_valid_detection",
+     "image_size": [
+      1024,
+      1024
+     ]
+    },
+    "proposals": [
+     {
+      "label": "wallet",
+      "score": 0.575,
+      "box": [
+       373,
+       684,
+       523,
+       847
+      ]
+     },
+     {
+      "label": "mobile phone",
+      "score": 0.637,
+      "box": [
+       0,
+       0,
+       318,
+       312
+      ]
+     },
+     {
+      "label": "book",
+      "score": 0.389,
+      "box": [
+       447,
+       0,
+       579,
+       370
+      ]
+     },
+     {
+      "label": "keys",
+      "score": 0.36,
+      "box": [
+       483,
+       651,
+       585,
+       873
+      ]
+     },
+     {
+      "label": "book",
+      "score": 0.327,
+      "box": [
+       585,
+       0,
+       757,
+       438
+      ]
+     },
+     {
+      "label": "keys",
+      "score": 0.33,
+      "box": [
+       484,
+       651,
+       585,
+       934
+      ]
+     },
+     {
+      "label": "keys",
+      "score": 0.304,
+      "box": [
+       417,
+       593,
+       641,
+       935
+      ]
+     }
+    ]
+   },
+   {
+    "image": "data/uploads/mocks/mock_notebook_1790169229644.jpg",
+    "intended_object": "notebook",
+    "intended_canonical": null,
+    "selected": {
+     "source": "detector",
+     "box": [
+      137,
+      308,
+      895,
+      719
+     ],
+     "raw_box": [
+      199.86239624023438,
+      342.23541259765625,
+      831.79443359375,
+      684.6936645507812
+     ],
+     "label": "mobile_phone",
+     "raw_label": "laptop mobile phone",
+     "score": 0.38712769746780396,
+     "reason": "highest_scoring_valid_detection",
+     "image_size": [
+      1024,
+      1024
+     ]
+    },
+    "proposals": [
+     {
+      "label": "laptop mobile phone",
+      "score": 0.387,
+      "box": [
+       200,
+       342,
+       832,
+       685
+      ]
+     },
+     {
+      "label": "mobile",
+      "score": 0.303,
+      "box": [
+       97,
+       298,
+       878,
+       740
+      ]
+     }
+    ]
+   },
+   {
+    "image": "data/uploads/mocks/mock_phone_1790169310833.jpg",
+    "intended_object": "phone",
+    "intended_canonical": "mobile_phone",
+    "selected": {
+     "source": "detector",
+     "box": [
+      251,
+      89,
+      793,
+      952
+     ],
+     "raw_box": [
+      296.13800048828125,
+      161.02880859375,
+      748.0015258789062,
+      880.4764404296875
+     ],
+     "label": "mobile_phone",
+     "raw_label": "mobile phone",
+     "score": 0.4566420316696167,
+     "reason": "highest_scoring_valid_detection",
+     "image_size": [
+      1024,
+      1024
+     ]
+    },
+    "proposals": [
+     {
+      "label": "mobile phone",
+      "score": 0.457,
+      "box": [
+       296,
+       161,
+       748,
+       880
+      ]
+     },
+     {
+      "label": "earphones headphones",
+      "score": 0.382,
+      "box": [
+       513,
+       192,
+       627,
+       351
+      ]
+     },
+     {
+      "label": "mobile phone",
+      "score": 0.357,
+      "box": [
+       303,
+       169,
+       490,
+       874
+      ]
+     }
+    ]
+   },
+   {
+    "image": "data/uploads/mocks/mock_wallet_1790169324604.jpg",
+    "intended_object": "wallet",
+    "intended_canonical": "wallet",
+    "selected": {
+     "source": "detector",
+     "box": [
+      187,
+      204,
+      834,
+      827
+     ],
+     "raw_box": [
+      241.25949096679688,
+      255.6019287109375,
+      780.02099609375,
+      774.94677734375
+     ],
+     "label": "wallet",
+     "raw_label": "wallet",
+     "score": 0.5951472520828247,
+     "reason": "highest_scoring_valid_detection",
+     "image_size": [
+      1024,
+      1024
+     ]
+    },
+    "proposals": [
+     {
+      "label": "wallet",
+      "score": 0.595,
+      "box": [
+       241,
+       256,
+       780,
+       775
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

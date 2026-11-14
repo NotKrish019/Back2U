@@ -1,0 +1,17 @@
+{
+ "category": "keys",
+ "physical_instance_id": "keys_c0001",
+ "source": "campus_collection_2026",
+ "image_kind": "original_photo",
+ "description": "Free-text description of the physical object (brand, colour, distinguishing marks)",
+ "identity_status": "TRUSTWORTHY",
+ "identity_basis": "Photographed by collector in one session; object never left collector's hands between views",
+ "owner_confirmed": false,
+ "training_overlap_risk": "NONE_KNOWN",
+ "originals_local": true,
+ "split": "eval_pilot",
+ "views": {
+  "view_01.jpg": {"bbox": [0, 0, 100, 100], "bbox_status": "human_verified", "background": "library desk", "lighting": "daylight"},
+  "view_02.jpg": {"bbox": null, "bbox_status": "pending"}
+ }
+}

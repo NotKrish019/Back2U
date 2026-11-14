@@ -1,0 +1,241 @@
+{
+ "status": "SUBMITTED",
+ "reviewer": "Anika Jain",
+ "review_date": "2026-11-02",
+ "final_approval": true,
+ "sequences": {
+  "30_1202_3579": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "209_22089_45167": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "209_22183_45213": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "212_22391_44980": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "372_41337_82330": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "514_73764_143591": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "379_44389_88397": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "372_40878_81136": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "378_44211_88110": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "378_44207_88121": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "372_41242_82155": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "372_41062_82211": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "375_42571_85394": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "209_22150_45214": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "209_22156_45173": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "209_22166_45183": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "209_22168_45185": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "209_22170_45187": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "209_22174_45191": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "209_22175_45193": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "209_22181_45211": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "209_22184_45215": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "372_41085_81815": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "373_41416_82673": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "373_41558_82973": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "373_41656_83408": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "374_41860_83920": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "374_41891_83927": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "374_42105_84199": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "378_43855_87425": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "378_43976_87640": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "378_44220_88123": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "391_47265_93997": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "391_47271_94003": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  },
+  "391_47273_94005": {
+   "decision": "APPROVE",
+   "flags": [],
+   "notes": ""
+  }
+ },
+ "pairs": {
+  "372_40878_81136|378_44211_88110": {
+   "decision": "same_physical_unit",
+   "notes": ""
+  },
+  "378_44207_88121|378_44211_88110": {
+   "decision": "different_physical_units",
+   "notes": ""
+  },
+  "372_40878_81136|372_41242_82155": {
+   "decision": "different_physical_units",
+   "notes": ""
+  },
+  "372_41062_82211|378_44211_88110": {
+   "decision": "same_physical_unit",
+   "notes": ""
+  },
+  "372_40878_81136|375_42571_85394": {
+   "decision": "different_physical_units",
+   "notes": ""
+  },
+  "372_40878_81136|372_41337_82330": {
+   "decision": "different_physical_units",
+   "notes": ""
+  }
+ },
+ "groups": {
+  "book:209": {
+   "reviewed": true,
+   "same_unit_sets": [],
+   "notes": ""
+  },
+  "laptop:372": {
+   "reviewed": true,
+   "same_unit_sets": [],
+   "notes": ""
+  },
+  "laptop:373": {
+   "reviewed": true,
+   "same_unit_sets": [],
+   "notes": ""
+  },
+  "laptop:374": {
+   "reviewed": true,
+   "same_unit_sets": [],
+   "notes": ""
+  },
+  "laptop:378": {
+   "reviewed": true,
+   "same_unit_sets": [],
+   "notes": ""
+  },
+  "laptop:391": {
+   "reviewed": true,
+   "same_unit_sets": [],
+   "notes": ""
+  }
+ }
+}

@@ -1,0 +1,242 @@
+{
+ "status": "PENDING",
+ "note": "Fill via qc_review/index.html (export) or by hand. Every decision must be explicit; nothing is approved by default. Apply with scripts/evaluation/co3d_apply_qc.py.",
+ "reviewer": null,
+ "review_date": null,
+ "final_approval": false,
+ "sequences": {
+  "30_1202_3579": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "209_22089_45167": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "209_22183_45213": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "212_22391_44980": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "372_41337_82330": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "514_73764_143591": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "379_44389_88397": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "372_40878_81136": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "378_44211_88110": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "378_44207_88121": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "372_41242_82155": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "372_41062_82211": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "375_42571_85394": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "209_22150_45214": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "209_22156_45173": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "209_22166_45183": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "209_22168_45185": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "209_22170_45187": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "209_22174_45191": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "209_22175_45193": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "209_22181_45211": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "209_22184_45215": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "372_41085_81815": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "373_41416_82673": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "373_41558_82973": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "373_41656_83408": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "374_41860_83920": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "374_41891_83927": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "374_42105_84199": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "378_43855_87425": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "378_43976_87640": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "378_44220_88123": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "391_47265_93997": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "391_47271_94003": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  },
+  "391_47273_94005": {
+   "decision": null,
+   "flags": [],
+   "notes": ""
+  }
+ },
+ "pairs": {
+  "372_40878_81136|378_44211_88110": {
+   "decision": null,
+   "notes": ""
+  },
+  "378_44207_88121|378_44211_88110": {
+   "decision": null,
+   "notes": ""
+  },
+  "372_40878_81136|372_41242_82155": {
+   "decision": null,
+   "notes": ""
+  },
+  "372_41062_82211|378_44211_88110": {
+   "decision": null,
+   "notes": ""
+  },
+  "372_40878_81136|375_42571_85394": {
+   "decision": null,
+   "notes": ""
+  },
+  "372_40878_81136|372_41337_82330": {
+   "decision": null,
+   "notes": ""
+  }
+ },
+ "groups": {
+  "book:209": {
+   "reviewed": false,
+   "same_unit_sets": [],
+   "notes": ""
+  },
+  "laptop:372": {
+   "reviewed": false,
+   "same_unit_sets": [],
+   "notes": ""
+  },
+  "laptop:373": {
+   "reviewed": false,
+   "same_unit_sets": [],
+   "notes": ""
+  },
+  "laptop:374": {
+   "reviewed": false,
+   "same_unit_sets": [],
+   "notes": ""
+  },
+  "laptop:378": {
+   "reviewed": false,
+   "same_unit_sets": [],
+   "notes": ""
+  },
+  "laptop:391": {
+   "reviewed": false,
+   "same_unit_sets": [],
+   "notes": ""
+  }
+ }
+}

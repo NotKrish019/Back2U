@@ -1,0 +1,12 @@
+{
+ "run_name": "co3d_pilot",
+ "evidence_level": "PILOT (CO3D v2 few-view dev holdout, 150 sequences; research-only CC BY-NC 4.0)",
+ "manifest": "data/processed/co3d_phase2_pilot_manifest.jsonl",
+ "checkpoint": "models/checkpoints/m4_c/best_val_recall_at_1.pt",
+ "expected_checkpoint_sha256": "7aef423c63a258de9da6301cb545c993cb64c81bd7f75fcf3ef73381455881eb",
+ "sources": ["CO3D"],
+ "conditions": ["A_full_image", "B_detector_crop", "C_ground_truth_crop", "D_detector_crop_letterbox", "A_full_image_letterbox"],
+ "inputs_are_precropped": false,
+ "ks": [1, 5, 10],
+ "output_dir": "reports/evaluation/phase2_runs"
+}

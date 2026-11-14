@@ -1,0 +1,200 @@
+{
+ "model_version": "lp-riem-mm1-phase1-crop-v1+m4c.7aef423c",
+ "conditions": {
+  "C_lb_ground_truth_crop_letterbox": {
+   "overall": {
+    "n_queries": 853,
+    "n_query_instances": 141,
+    "mrr": 0.819466,
+    "hard_negative_top1_accuracy": 0.791325,
+    "n_queries_with_eligible_negative": 853,
+    "top1_errors": {
+     "within_category": 141,
+     "uncertain_identity": 60,
+     "cross_category": 6
+    },
+    "recall@1": 0.757327,
+    "recall@5": 0.889801,
+    "recall@10": 0.941383,
+    "n_skipped_queries": 0
+   },
+   "per_category": {
+    "book": {
+     "n_queries": 327,
+     "n_query_instances": 50,
+     "mrr": 0.817928,
+     "hard_negative_top1_accuracy": 0.825688,
+     "n_queries_with_eligible_negative": 327,
+     "top1_errors": {
+      "within_category": 38,
+      "uncertain_identity": 37,
+      "cross_category": 1
+     },
+     "recall@1": 0.767584,
+     "recall@5": 0.87156,
+     "recall@10": 0.926606
+    },
+    "laptop": {
+     "n_queries": 266,
+     "n_query_instances": 47,
+     "mrr": 0.711702,
+     "hard_negative_top1_accuracy": 0.639098,
+     "n_queries_with_eligible_negative": 266,
+     "top1_errors": {
+      "within_category": 78,
+      "uncertain_identity": 23,
+      "cross_category": 4
+     },
+     "recall@1": 0.605263,
+     "recall@5": 0.834586,
+     "recall@10": 0.913534
+    },
+    "mobile_phone": {
+     "n_queries": 260,
+     "n_query_instances": 44,
+     "mrr": 0.931652,
+     "hard_negative_top1_accuracy": 0.903846,
+     "n_queries_with_eligible_negative": 260,
+     "top1_errors": {
+      "within_category": 25,
+      "cross_category": 1
+     },
+     "recall@1": 0.9,
+     "recall@5": 0.969231,
+     "recall@10": 0.988462
+    }
+   },
+   "skipped_queries": []
+  },
+  "F_object_on_flat": {
+   "overall": {
+    "n_queries": 853,
+    "n_query_instances": 141,
+    "mrr": 0.722223,
+    "hard_negative_top1_accuracy": 0.662368,
+    "n_queries_with_eligible_negative": 853,
+    "top1_errors": {
+     "within_category": 241,
+     "uncertain_identity": 57,
+     "cross_category": 11
+    },
+    "recall@1": 0.637749,
+    "recall@5": 0.818288,
+    "recall@10": 0.885111,
+    "n_skipped_queries": 0
+   },
+   "per_category": {
+    "book": {
+     "n_queries": 327,
+     "n_query_instances": 50,
+     "mrr": 0.801762,
+     "hard_negative_top1_accuracy": 0.792049,
+     "n_queries_with_eligible_negative": 327,
+     "top1_errors": {
+      "within_category": 47,
+      "uncertain_identity": 33,
+      "cross_category": 1
+     },
+     "recall@1": 0.752294,
+     "recall@5": 0.844037,
+     "recall@10": 0.914373
+    },
+    "laptop": {
+     "n_queries": 266,
+     "n_query_instances": 47,
+     "mrr": 0.545996,
+     "hard_negative_top1_accuracy": 0.447368,
+     "n_queries_with_eligible_negative": 266,
+     "top1_errors": {
+      "within_category": 123,
+      "cross_category": 6,
+      "uncertain_identity": 24
+     },
+     "recall@1": 0.424812,
+     "recall@5": 0.68797,
+     "recall@10": 0.774436
+    },
+    "mobile_phone": {
+     "n_queries": 260,
+     "n_query_instances": 44,
+     "mrr": 0.802481,
+     "hard_negative_top1_accuracy": 0.719231,
+     "n_queries_with_eligible_negative": 260,
+     "top1_errors": {
+      "within_category": 71,
+      "cross_category": 4
+     },
+     "recall@1": 0.711538,
+     "recall@5": 0.919231,
+     "recall@10": 0.961538
+    }
+   },
+   "skipped_queries": []
+  },
+  "F_lb_object_on_flat_letterbox": {
+   "overall": {
+    "n_queries": 853,
+    "n_query_instances": 141,
+    "mrr": 0.739389,
+    "hard_negative_top1_accuracy": 0.692849,
+    "n_queries_with_eligible_negative": 853,
+    "top1_errors": {
+     "within_category": 218,
+     "uncertain_identity": 61,
+     "cross_category": 8
+    },
+    "recall@1": 0.66354,
+    "recall@5": 0.825322,
+    "recall@10": 0.892145,
+    "n_skipped_queries": 0
+   },
+   "per_category": {
+    "book": {
+     "n_queries": 327,
+     "n_query_instances": 50,
+     "mrr": 0.783985,
+     "hard_negative_top1_accuracy": 0.7737,
+     "n_queries_with_eligible_negative": 327,
+     "top1_errors": {
+      "within_category": 54,
+      "uncertain_identity": 36,
+      "cross_category": 1
+     },
+     "recall@1": 0.721713,
+     "recall@5": 0.853211,
+     "recall@10": 0.905199
+    },
+    "laptop": {
+     "n_queries": 266,
+     "n_query_instances": 47,
+     "mrr": 0.539376,
+     "hard_negative_top1_accuracy": 0.443609,
+     "n_queries_with_eligible_negative": 266,
+     "top1_errors": {
+      "within_category": 125,
+      "uncertain_identity": 25,
+      "cross_category": 4
+     },
+     "recall@1": 0.421053,
+     "recall@5": 0.672932,
+     "recall@10": 0.800752
+    },
+    "mobile_phone": {
+     "n_queries": 260,
+     "n_query_instances": 44,
+     "mrr": 0.887929,
+     "hard_negative_top1_accuracy": 0.846154,
+     "n_queries_with_eligible_negative": 260,
+     "top1_errors": {
+      "within_category": 39,
+      "cross_category": 3
+     },
+     "recall@1": 0.838462,
+     "recall@5": 0.946154,
+     "recall@10": 0.969231
+    }
+   },
+   "skipped_queries": []
+  }
+ }
+}

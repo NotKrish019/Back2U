@@ -1,0 +1,113 @@
+{
+ "download_date": "2026-11-02",
+ "seconds": 781.7,
+ "transfer_bytes": {
+  "metadata_bytes": 365917362,
+  "directory_bytes": 439645556,
+  "candidate_bytes": 400620305
+ },
+ "per_category": {
+  "cellphone": {
+   "selected_sequences": 50,
+   "accepted": 44,
+   "rejected": [
+    {
+     "sequence": "558_80461_157719",
+     "reason": "only_1_usable_views"
+    },
+    {
+     "sequence": "558_80449_157686",
+     "reason": "only_1_usable_views"
+    },
+    {
+     "sequence": "558_80460_157712",
+     "reason": "only_2_usable_views"
+    },
+    {
+     "sequence": "614_98725_198544",
+     "reason": "only_1_usable_views"
+    },
+    {
+     "sequence": "76_7542_15807",
+     "reason": "only_0_usable_views"
+    },
+    {
+     "sequence": "622_102390_205671",
+     "reason": "only_2_usable_views"
+    }
+   ],
+   "views": 260,
+   "views_hist": {
+    "3": 1,
+    "4": 4,
+    "5": 13,
+    "6": 11,
+    "7": 10,
+    "8": 5
+   },
+   "relaxed_15deg": 20,
+   "frame_rejection_reasons": {
+    "crop_side_below_64px": 36,
+    "exposure_out_of_range": 4,
+    "object_truncated_3plus_borders": 74,
+    "sharpness_bottom_25pct_of_sequence": 268
+   }
+  },
+  "laptop": {
+   "selected_sequences": 50,
+   "accepted": 47,
+   "rejected": [
+    {
+     "sequence": "612_97824_196798",
+     "reason": "only_2_usable_views"
+    },
+    {
+     "sequence": "372_40947_81629",
+     "reason": "only_0_usable_views"
+    },
+    {
+     "sequence": "624_102975_206937",
+     "reason": "only_2_usable_views"
+    }
+   ],
+   "views": 266,
+   "views_hist": {
+    "3": 2,
+    "4": 6,
+    "5": 15,
+    "6": 11,
+    "7": 9,
+    "8": 4
+   },
+   "relaxed_15deg": 19,
+   "frame_rejection_reasons": {
+    "crop_side_below_64px": 24,
+    "exposure_out_of_range": 2,
+    "object_truncated_3plus_borders": 32,
+    "sharpness_bottom_25pct_of_sequence": 290
+   }
+  },
+  "book": {
+   "selected_sequences": 50,
+   "accepted": 50,
+   "rejected": [],
+   "views": 327,
+   "views_hist": {
+    "3": 0,
+    "4": 2,
+    "5": 8,
+    "6": 10,
+    "7": 21,
+    "8": 9
+   },
+   "relaxed_15deg": 8,
+   "frame_rejection_reasons": {
+    "crop_side_below_64px": 1,
+    "exposure_out_of_range": 5,
+    "object_truncated_3plus_borders": 1,
+    "sharpness_bottom_25pct_of_sequence": 297
+   }
+  }
+ },
+ "manifest_records": 853
+}

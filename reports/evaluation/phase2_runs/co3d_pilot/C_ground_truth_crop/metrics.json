@@ -1,0 +1,49 @@
+{
+ "overall": {
+  "hard_negative_top1_accuracy": 0.706917,
+  "mrr": 0.775121,
+  "n_gallery_images": 853,
+  "n_gallery_instances": 141,
+  "n_queries": 853,
+  "n_queries_with_same_category_negative": 853,
+  "n_query_instances": 141,
+  "n_skipped_queries": 0,
+  "recall@1": 0.69871,
+  "recall@10": 0.922626,
+  "recall@5": 0.869871,
+  "trivial_recall_ks": []
+ },
+ "per_category": {
+  "book": {
+   "hard_negative_top1_accuracy": 0.795107,
+   "mrr": 0.834572,
+   "n_queries": 327,
+   "n_queries_with_same_category_negative": 327,
+   "n_query_instances": 50,
+   "recall@1": 0.795107,
+   "recall@10": 0.911315,
+   "recall@5": 0.868502
+  },
+  "laptop": {
+   "hard_negative_top1_accuracy": 0.496241,
+   "mrr": 0.612589,
+   "n_queries": 266,
+   "n_queries_with_same_category_negative": 266,
+   "n_query_instances": 47,
+   "recall@1": 0.477444,
+   "recall@10": 0.883459,
+   "recall@5": 0.793233
+  },
+  "mobile_phone": {
+   "hard_negative_top1_accuracy": 0.811538,
+   "mrr": 0.866632,
+   "n_queries": 260,
+   "n_queries_with_same_category_negative": 260,
+   "n_query_instances": 44,
+   "recall@1": 0.803846,
+   "recall@10": 0.976923,
+   "recall@5": 0.95
+  }
+ },
+ "skipped_queries": []
+}
