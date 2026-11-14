@@ -1,3 +1,4 @@
+/* eslint-disable */
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -30,6 +31,15 @@ export function Back2ULoader() {
   });
 
   useEffect(() => {
+    try {
+      if (typeof window !== "undefined" && sessionStorage.getItem("back2u-loader-played") === "true") {
+        setStage("done");
+        return;
+      }
+    } catch (error) {
+      console.warn("sessionStorage is not accessible", error);
+    }
+
     // Check for reduced motion
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     stateRef.current.reducedMotion = mediaQuery.matches;
@@ -58,6 +68,14 @@ export function Back2ULoader() {
 
     doneTimer = setTimeout(() => {
       setStage("done");
+      try {
+        if (typeof window !== "undefined") {
+          document.cookie = "back2u-loader-played=true; path=/";
+          sessionStorage.setItem("back2u-loader-played", "true");
+        }
+      } catch (error) {
+        console.warn("storage set failed", error);
+      }
     }, totalTime);
 
     return () => {

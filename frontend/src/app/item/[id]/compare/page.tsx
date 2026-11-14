@@ -3,14 +3,18 @@
 import { use, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Check, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
-import { SectionLabel, PageTop, Button } from '@/components/ManusUI';
-import { api, ReportOut } from '../../../../services/api';
+import { SectionLabel, PageTop, Button } from '../../../report/lost/ManusUILab';
+import { api, ReportOut } from '@/services/api';
+import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
+import '../../../report/lost/report.css';
 
-export default function ComparePage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default function ComparePage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const router = useRouter();
   const [value, setValue] = useState(52);
-  const [choice, setChoice] = useState<"mine" | "not" | null>(null);
+  const [choice, setChoice] = useState<"mine" | "not" | "claiming" | null>(null);
+  const [proofText, setProofText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const [item, setItem] = useState<ReportOut | null>(null);
   const [loading, setLoading] = useState(true);
@@ -41,6 +45,7 @@ export default function ComparePage({ params }: { params: Promise<{ id: string }
 
   return (
     <div className="page-shell compare-page">
+      <GlobalMeshBackground />
       <PageTop 
         eyebrow="Compare" 
         title={<>Could this be<br /><em>yours?</em></>} 
@@ -75,16 +80,50 @@ export default function ComparePage({ params }: { params: Promise<{ id: string }
              <p>{item.description || "No description provided."}</p>
           </div>
           <div className="compare-vote" style={{ marginTop: '2rem' }}>
-            {choice ? (
-              <div className="vote-thanks">
+            {choice === "mine" ? (
+              <div className="vote-thanks" style={{ background: 'rgba(233,109,89,.13)', color: 'var(--coral-dark)', padding: '13px' }}>
                 <Check size={18} />
-                {choice === "mine" ? "We’ve saved this as a possible match." : "Got it — we’ll keep looking."}
+                Your claim has been submitted to the admin for review!
+              </div>
+            ) : choice === "not" ? (
+              <div className="vote-thanks" style={{ background: 'rgba(233,109,89,.13)', color: 'var(--coral-dark)', padding: '13px' }}>
+                <Check size={18} />
+                Got it — we’ll keep looking.
+              </div>
+            ) : choice === "claiming" ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <p style={{ margin: '0 0 10px', fontSize: '14px', fontWeight: 'bold' }}>Provide Proof of Ownership</p>
+                <textarea 
+                  value={proofText}
+                  onChange={e => setProofText(e.target.value)}
+                  placeholder="Describe unique scratches, a serial number, or password..."
+                  style={{ width: '100%', minHeight: '100px', padding: '12px', background: 'transparent', border: '1px solid var(--line)', outline: 'none' }}
+                />
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <Button 
+                    variant="solid" 
+                    onClick={async () => {
+                      setIsSubmitting(true);
+                      try {
+                        await api.createClaim({ report_id: id, proof_text: proofText });
+                        setChoice("mine");
+                      } catch (err) {
+                        alert("Failed to submit claim. You may already have a pending claim for this item.");
+                      } finally {
+                        setIsSubmitting(false);
+                      }
+                    }}
+                  >
+                    {isSubmitting ? "Submitting..." : "Submit Claim"}
+                  </Button>
+                  <Button onClick={() => setChoice(null)} variant="text">Cancel</Button>
+                </div>
               </div>
             ) : (
               <>
                 <p>Does this feel like a match?</p>
-                <div className="vote-buttons">
-                  <Button onClick={() => setChoice("mine")} variant="solid">This might be mine</Button>
+                <div className="vote-buttons" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <Button onClick={() => setChoice("claiming")} variant="solid">This might be mine</Button>
                   <Button onClick={() => setChoice("not")} variant="outline">Not my item</Button>
                 </div>
               </>

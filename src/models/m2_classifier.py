@@ -20,3 +20,19 @@ class M2CategoryHead(nn.Module):
         features = self.encoder(x) # [B, 384]
         logits = self.head(features)
         return logits
+
+
+def load_m2_weights(model: M2CategoryHead, path, map_location="cpu") -> M2CategoryHead:
+    """Load M2 weights from either checkpoint format.
+
+    The DINOv2 encoder is frozen during training, so it is identical to the public
+    pretrained weights that ``torch.hub`` already loads in ``__init__``. Checkpoints
+    therefore only need the trained ``head``. Older checkpoints that also stored the
+    encoder (``encoder.*`` keys) are still accepted.
+    """
+    state = torch.load(path, map_location=map_location)
+    if any(k.startswith("encoder.") for k in state):
+        model.load_state_dict(state)
+    else:
+        model.head.load_state_dict(state)
+    return model

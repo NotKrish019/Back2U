@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 from src.api.main import app
 from src.api.config import settings
@@ -20,7 +21,12 @@ def mock_get_current_user():
     db.close()
     return user
 
-app.dependency_overrides[get_current_user] = mock_get_current_user
+@pytest.fixture(autouse=True)
+def _authenticated_user():
+    # Set per test: other test modules change/remove this override.
+    app.dependency_overrides[get_current_user] = mock_get_current_user
+    yield
+    app.dependency_overrides.pop(get_current_user, None)
 
 def test_invalid_retrieval_request(client):
     response = client.post(

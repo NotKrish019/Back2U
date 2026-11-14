@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 from src.api.main import app
 from src.api.config import settings
@@ -16,7 +17,12 @@ def mock_get_current_user():
     db.close()
     return user
 
-app.dependency_overrides[get_current_user] = mock_get_current_user
+@pytest.fixture(autouse=True)
+def _authenticated_user():
+    # Set per test: other test modules change/remove this override.
+    app.dependency_overrides[get_current_user] = mock_get_current_user
+    yield
+    app.dependency_overrides.pop(get_current_user, None)
 
 def test_read_main(client):
     response = client.get("/")
@@ -24,15 +30,23 @@ def test_read_main(client):
     assert response.json() == {"message": f"Welcome to {settings.PROJECT_NAME} API"}
 
 def test_search_retrieval(client):
-    response = client.post(
-        f"{settings.API_V1_STR}/retrieval/search",
-        json={"text": "black backpack", "top_k": 3},
-        headers={"Authorization": "Bearer TEST_TOKEN_123"}
-    )
+    # Use the offline mock so the test does not need the ML service on port 8001.
+    from src.api.routers import retrieval
+    from src.api.services.retrieval_service import MockRetrievalService, MOCK_MODEL_VERSION
+    previous = retrieval.get_retrieval_service()
+    retrieval.set_retrieval_service(MockRetrievalService())
+    try:
+        response = client.post(
+            f"{settings.API_V1_STR}/retrieval/search",
+            json={"text": "black backpack", "top_k": 3},
+            headers={"Authorization": "Bearer TEST_TOKEN_123"}
+        )
+    finally:
+        retrieval.set_retrieval_service(previous)
     assert response.status_code == 200
     data = response.json()
-    assert data["model_version"] == "ml-pending"
-    assert len(data["results"]) == 0
+    assert data["model_version"] == MOCK_MODEL_VERSION
+    assert isinstance(data["results"], list)
 
 def test_search_retrieval_invalid(client):
     response = client.post(

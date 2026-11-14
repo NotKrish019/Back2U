@@ -17,7 +17,7 @@
 | Disk | 239 GB free on the data volume. A 6 GB processed-data budget is conservative; transient download space is not a constraint. |
 | Python | 3.14.3, torch 2.14.0, protobuf available. **No video decoder** (no ffmpeg, OpenCV, PyAV, decord) and no TensorFlow. |
 | Referenced files | `PRIORITY_DATA_FOUNDATION_FINAL.md`, `REAL_WORLD_DATA_COLLECTION_MASTER_GUIDE.md` and `validate_real_world_instances.py` **do not exist** (same finding as Phase 2). |
-| Existing adapters | `src/data/adapters/paco_adapter.py` **does not read PACO: it fabricates mock records** (`mock_paco_<cat>_*.jpg`, constant boxes). Any historical "PACO" figures built through it are not real data. `objectron_adapter.py` reads `data/interim/objectron_manifest.jsonl`, which no longer exists. `scripts/ingest_objectron_tfrecords.py` needs TensorFlow and the empty `scratch/Objectron` checkout. |
+| Existing adapters | `src/data/adapters/paco_adapter.py` **does not read PACO: it fabricates mock records** (`mock_paco_<cat>_*.jpg`, constant boxes). Any historical "PACO" figures built through it are not real data. `objectron_adapter.py` reads `data/interim/objectron_manifest.jsonl`, which no longer exists. `scripts/datasets/ingest_objectron_tfrecords.py` needs TensorFlow and the empty `third_party/Objectron` checkout. |
 | Local public data | None. `data/raw/` holds only the Phase 2 staging copies (2 app laptops, 10 Objectron laptop crops). |
 | Storage convention | Raw → `data/raw/<source>/…`, interim → `data/interim/`, manifests → `data/processed/*.jsonl` (all git-ignored). Phase 2 manifest schema: `src/evaluation/phase2/manifest.py`. |
 

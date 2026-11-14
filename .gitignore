@@ -1,38 +1,56 @@
-# Data
-data/raw/
-data/interim/
-data/processed/
-
-# Models and Checkpoints
-checkpoints/
-
-# Virtual Environment
-.venv/
-env/
-venv/
-
-# Caches and temporary files
+# ---------- Python ----------
 __pycache__/
 *.pyc
+.pytest_cache/
 .ipynb_checkpoints/
-.DS_Store
+venv/
+.venv/
+env/
 
-# Secrets and local config
+# ---------- Node / Next.js ----------
+node_modules/
+.next/
+out/
+
+# ---------- Secrets & local config ----------
 .env
+.env*.local
 local_config.yaml
+*service-account*.json
 
-# IDE
+# ---------- OS / IDE ----------
+.DS_Store
 .vscode/
 .idea/
+*.log
+
+# ---------- Data (large / regenerable) ----------
+data/raw/
+data/interim/
 data/uploads/
-
-
-# Phase 1: persistent ML gallery, quarantined stores, DB backups
 data/gallery/
 data/gallery.incompatible-*/
-app.db.bak-*
+# Processed manifests are regenerable; the category list is needed at runtime.
+data/processed/*
+!data/processed/m2_categories.json
 
-# CO3D (CC BY-NC 4.0, research only): never commit imagery derived from it
+# ---------- Models ----------
+# Only the small trained heads are committed; pretrained backbones
+# (DINOv2, Grounding DINO, SigLIP2) download automatically on first run.
+models/checkpoints/*
+!models/checkpoints/m2_category_head.pth
+!models/checkpoints/m4_c/
+models/checkpoints/m4_c/*
+!models/checkpoints/m4_c/best_val_recall_at_1.pt
+
+# ---------- Database ----------
+app.db.bak-*
+test_app.db
+
+# ---------- Optional third-party code ----------
+third_party/
+
+# ---------- CO3D (CC BY-NC 4.0, research only): never commit derived imagery ----------
 reports/evaluation/co3d_pilot/contact_sheets/
 reports/evaluation/co3d_pilot/qc_review/
 reports/evaluation/phase2_runs/co3d_pilot/**/*.npy

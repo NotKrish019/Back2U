@@ -3,32 +3,16 @@
 import { Suspense, useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Search, ImagePlus, Sparkles, ArrowRight, Filter, ArrowLeft, ZoomIn, ArrowUpRight, ShieldCheck, CircleHelp } from 'lucide-react';
-import { SectionLabel, PageTop, Button } from '@/components/ManusUI';
-import { api, RetrievalResult } from '../../services/api';
+import { SectionLabel, PageTop, Button } from '../report/lost/ManusUILab';
+import { ResultCard } from '@/components/ResultCard';
+import { api, RetrievalResult } from '@/services/api';
+import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
+import '../report/lost/report.css';
 import Link from 'next/link';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function ResultCard({ item, primary = false, onClick }: { item: any; primary?: boolean; onClick: () => void }) {
-  // item is the API result
-  return (
-    <button className={`result-card ${primary ? "result-primary" : ""}`} onClick={onClick}>
-      <div className="result-image">
-        <img src={item.image_url || "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1100&q=85"} alt="Result" />
-        <span className={`match-tag tag-${primary ? 'coral' : 'yellow'}`}>{item.similarity_score > 0.8 ? "Strong match" : "Possible match"}</span>
-        <span className="zoom-hint"><ZoomIn size={14} /></span>
-      </div>
-      <div className="result-card-body">
-        <div>
-          <span className="result-kicker">{primary ? "TOP MATCH" : "ANOTHER POSSIBILITY"}</span>
-          <h3>{item.item_instance_id}</h3>
-        </div>
-        <ArrowUpRight size={18} />
-        <p>{(item.similarity_score * 100).toFixed(0)}% Match</p>
-      </div>
-    </button>
-  );
-}
+
 
 function SearchFlowContent() {
   const router = useRouter();
@@ -49,7 +33,16 @@ function SearchFlowContent() {
   const [result, setResult] = useState<RetrievalResult | null>(null);
   const [filter, setFilter] = useState("All");
 
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => { const file = e.target.files?.[0]; if (file) setImage(URL.createObjectURL(file)); };
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSearch = () => {
     const newErrors = {
@@ -86,7 +79,19 @@ function SearchFlowContent() {
             setReportCreated(true);
           }
           
-          const res = await api.search({ text: description, top_k: 6 });
+          // Send the photo when we have one (from this page or handed over by Report Lost);
+          // the ML service falls back to text-only search otherwise.
+          let queryImage = image;
+          if (!queryImage) {
+            try { queryImage = sessionStorage.getItem('back2u:lostQueryImage'); } catch { /* storage unavailable */ }
+          }
+          const res = await api.search({
+            image: queryImage && queryImage.startsWith('data:image') ? queryImage : undefined,
+            text: description.trim() || undefined,
+            top_k: 6,
+          });
+          // Clear the hand-over only once results arrive (dev-mode effects can run twice).
+          try { sessionStorage.removeItem('back2u:lostQueryImage'); } catch { /* storage unavailable */ }
           setResult(res);
           setProgress(100);
           setTimeout(() => setView('results'), 500);
@@ -107,6 +112,7 @@ function SearchFlowContent() {
   if (view === 'find') {
     return (
       <div className="page-shell">
+        <GlobalMeshBackground />
         <PageTop 
           eyebrow="I lost something" 
           title={<>Show us what<br /><em>you remember.</em></>} 
@@ -228,6 +234,7 @@ function SearchFlowContent() {
   if (view === 'searching') {
     return (
       <div className="searching-page">
+        <GlobalMeshBackground />
         <div className="searching-orbit">
           <div className="orbit-dot dot-one" />
           <div className="orbit-dot dot-two" />
@@ -249,6 +256,7 @@ function SearchFlowContent() {
   
   return (
     <div className="page-shell results-page">
+      <GlobalMeshBackground />
       <PageTop 
         eyebrow="Search results" 
         title={<>A few things<br /><em>look familiar.</em></>} 
@@ -264,7 +272,7 @@ function SearchFlowContent() {
           ))}
         </div>
       </section>
-      <section className="results-grid container-wide">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-mono container-wide mt-6 mb-16">
         {items.length > 0 ? (
           items.map((item, index) => (
             <ResultCard key={item.item_instance_id} item={item} primary={index === 0} onClick={() => router.push(`/item/${item.report_id || item.item_instance_id}`)} />

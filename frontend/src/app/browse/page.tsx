@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Filter, ArrowUpRight, Map as MapIcon } from 'lucide-react';
-import { SectionLabel, PageTop, Button } from '@/components/ManusUI';
-import { api, ReportOut } from '../../services/api';
+import { SectionLabel, PageTop, Button } from '../report/lost/ManusUILab';
+import { api, ReportOut } from '@/services/api';
+import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
+import '../report/lost/report.css';
 
 export default function BrowsePage() {
   const router = useRouter();
@@ -39,6 +41,7 @@ export default function BrowsePage() {
 
   return (
     <div className="page-shell browse-page">
+      <GlobalMeshBackground />
       <PageTop 
         eyebrow="Browse found items" 
         title={<>A visual map of<br /><em>what’s been found.</em></>} 

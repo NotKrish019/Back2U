@@ -40,7 +40,7 @@ The previously reported **35** Objectron laptop instances could not be found. On
 | objectron_laptop_batch-29_3 | Objectron crop | 2 | **1** | 1 near-duplicate (consecutive frame, dHash 0, mean pixel diff 6.9) | TRUSTWORTHY | no | UNVERIFIED |
 | objectron_laptop_batch-17_27 | Objectron crop | 1 | 1 | — | TRUSTWORTHY | no | UNVERIFIED |
 
-- **Training overlap (Objectron crops):** these images came from the historical `test_split.jsonl` used by `scripts/run_m2_perception.py`. By the original design that split was instance-disjoint from M4-C training, but the split files are gone, so **non-overlap cannot be proven**. Results on them must not be presented as independent test evidence.
+- **Training overlap (Objectron crops):** these images came from the historical `test_split.jsonl` used by `scripts/training/run_m2_perception.py`. By the original design that split was instance-disjoint from M4-C training, but the split files are gone, so **non-overlap cannot be proven**. Results on them must not be presented as independent test evidence.
 - **View order:** the `view_recNN` index is the order of the old test loop, not the video frame number.
 
 ## 3. Readiness

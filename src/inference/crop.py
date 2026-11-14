@@ -2,7 +2,7 @@
 
 The crop (not the full photograph) is what the M4-C retrieval embedder and the
 SigLIP2 gallery image embedder should see, matching how M4-C was trained
-(object crops, see scripts/preprocess_object_crops.py).
+(object crops, see scripts/datasets/preprocess_object_crops.py).
 """
 from __future__ import annotations
 

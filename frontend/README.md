@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Back2U Frontend
 
-## Getting Started
+The Next.js 14 (App Router) web app for Back2U. It talks to the FastAPI backend at
+`http://127.0.0.1:8000/api/v1` and uses Firebase Authentication for login.
 
-First, run the development server:
+## Run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local   # fill in the Firebase web config (skip if .env.local already exists)
+npm install
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`npm run build && npm start` runs a production build.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route | Purpose |
+|---|---|
+| `/` | Landing page: hero, how it works, research section |
+| `/login` | Sign in / sign up (Firebase email or phone) |
+| `/report/lost`, `/report/found` | File a lost or found report with photo, description, location and date |
+| `/search` | Search by photo, text, or both; shows ranked matches from the ML pipeline |
+| `/browse` | Public list of open reports |
+| `/item/[id]`, `/item/[id]/compare` | Item detail and side-by-side comparison with a candidate match |
+| `/reports`, `/reports/[id]` | The signed-in user's reports and their match status |
+| `/matches` | Candidate matches and claim submission |
+| `/map` | Campus hotspots with active reports |
+| `/staff`, `/staff/login` | Staff dashboard: review candidate matches and approve/reject claims |
+| `/notifications`, `/profile`, `/settings`, `/support`, `/privacy`, `/terms` | Account, help and legal pages |
 
-## Learn More
+## Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/            # routes (one folder per page)
+├── components/     # page sections (hero, navigation, result card, ...)
+│   └── ui/         # reusable UI pieces (buttons, footer, animations)
+├── lib/firebase/   # Firebase config, auth service, AuthContext
+└── services/api.ts # typed client for the backend REST API
+public/             # images, icons and animation assets
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Tech: Next.js 14, React 18, TypeScript, Tailwind CSS 4, Framer Motion, GSAP, Firebase JS SDK, Lucide icons.

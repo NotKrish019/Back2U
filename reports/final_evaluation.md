@@ -23,7 +23,7 @@
 
 ## 4. Best Checkpoints
 - `models/checkpoints/m4_c/best_val_recall_at_1.pt` (Instance Embeddings)
-- `models/checkpoints/m2_category_head_best.pth` (Category Gate)
+- `models/checkpoints/m2_category_head.pth` (Category Gate)
 - `models/reranker_calibration.pkl` (Calibrated Reranker)
 
 ## 5. Final Metrics
@@ -52,4 +52,4 @@
 `python scripts/run_inference.py --image path/to/img.jpg --text "black laptop"`
 
 **Ownership Verification:**
-`python scripts/verify_ownership.py --item_id objectron_123 --evidence "scratch on lid"`
+`python scripts/demo/verify_ownership.py --item_id objectron_123 --evidence "scratch on lid"`

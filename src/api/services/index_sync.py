@@ -21,7 +21,7 @@ from src.api.services.retrieval_service import RetrievalService, decode_data_url
 log = logging.getLogger(__name__)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_IMAGE_ROOTS = (PROJECT_ROOT / "back2u-ui-lab" / "public", PROJECT_ROOT / "frontend" / "public")
+DEFAULT_IMAGE_ROOTS = (PROJECT_ROOT / "frontend" / "public",)
 
 
 def image_roots_from_env() -> list[Path]:

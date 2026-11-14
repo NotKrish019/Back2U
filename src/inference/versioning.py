@@ -8,7 +8,7 @@ MODEL_NAME = "lp-riem-mm1"
 # Bump whenever preprocessing changes the stored embeddings (e.g. crop policy).
 PIPELINE_REVISION = "phase1-crop-v1"
 
-M2_CHECKPOINT = "models/checkpoints/m2_category_head_best.pth"
+M2_CHECKPOINT = "models/checkpoints/m2_category_head.pth"
 M2_CATEGORIES = "data/processed/m2_categories.json"
 M4C_CHECKPOINT = "models/checkpoints/m4_c/best_val_recall_at_1.pt"
 RERANKER_CHECKPOINT = "models/reranker_calibration.pkl"

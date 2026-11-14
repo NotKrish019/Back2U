@@ -80,7 +80,7 @@ class LiveModels:
         from torchvision import transforms
         from transformers import AutoModel, AutoModelForZeroShotObjectDetection, AutoProcessor
         from src.embeddings.dinov2_model import Dinov2ImageEncoder
-        from src.models.m2_classifier import M2CategoryHead
+        from src.models.m2_classifier import M2CategoryHead, load_m2_weights
         from src.models.m4_projection import M4ProjectionHead
 
         self.device = device if torch.cuda.is_available() else "cpu"
@@ -97,7 +97,7 @@ class LiveModels:
         with open(p(V.M2_CATEGORIES)) as f:
             self.idx_to_cat = json.load(f)
         self.m2_clf = M2CategoryHead(num_categories=len(self.idx_to_cat)).to(self.device)
-        self.m2_clf.load_state_dict(torch.load(p(V.M2_CHECKPOINT), map_location=self.device))
+        load_m2_weights(self.m2_clf, p(V.M2_CHECKPOINT), map_location=self.device)
         self.m2_clf.eval()
         self.clf_transform = transforms.Compose([
             transforms.Resize((224, 224)),

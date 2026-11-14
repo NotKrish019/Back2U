@@ -55,7 +55,7 @@
      "originals_local": false,
      "physical_instance_id": "objectron_laptop_batch-13_12",
      "source": "objectron_historical_m2_visualization",
-     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/training/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
      "unreadable_files": [],
      "valid_genuine_views": 3
     },
@@ -73,7 +73,7 @@
      "originals_local": false,
      "physical_instance_id": "objectron_laptop_batch-13_35",
      "source": "objectron_historical_m2_visualization",
-     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/training/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
      "unreadable_files": [],
      "valid_genuine_views": 2
     },
@@ -91,7 +91,7 @@
      "originals_local": false,
      "physical_instance_id": "objectron_laptop_batch-17_27",
      "source": "objectron_historical_m2_visualization",
-     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/training/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
      "unreadable_files": [],
      "valid_genuine_views": 1
     },
@@ -109,7 +109,7 @@
      "originals_local": false,
      "physical_instance_id": "objectron_laptop_batch-17_6",
      "source": "objectron_historical_m2_visualization",
-     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/training/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
      "unreadable_files": [],
      "valid_genuine_views": 2
     },
@@ -127,7 +127,7 @@
      "originals_local": false,
      "physical_instance_id": "objectron_laptop_batch-22_4",
      "source": "objectron_historical_m2_visualization",
-     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/training/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
      "unreadable_files": [],
      "valid_genuine_views": 2
     },
@@ -145,7 +145,7 @@
      "originals_local": false,
      "physical_instance_id": "objectron_laptop_batch-24_13",
      "source": "objectron_historical_m2_visualization",
-     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/training/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
      "unreadable_files": [],
      "valid_genuine_views": 2
     },
@@ -168,7 +168,7 @@
      "originals_local": false,
      "physical_instance_id": "objectron_laptop_batch-29_3",
      "source": "objectron_historical_m2_visualization",
-     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/training/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
      "unreadable_files": [],
      "valid_genuine_views": 1
     },
@@ -186,7 +186,7 @@
      "originals_local": false,
      "physical_instance_id": "objectron_laptop_batch-2_41",
      "source": "objectron_historical_m2_visualization",
-     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/training/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
      "unreadable_files": [],
      "valid_genuine_views": 2
     },
@@ -204,7 +204,7 @@
      "originals_local": false,
      "physical_instance_id": "objectron_laptop_batch-5_37",
      "source": "objectron_historical_m2_visualization",
-     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/training/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
      "unreadable_files": [],
      "valid_genuine_views": 2
     },
@@ -222,7 +222,7 @@
      "originals_local": false,
      "physical_instance_id": "objectron_laptop_batch-9_39",
      "source": "objectron_historical_m2_visualization",
-     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
+     "training_overlap_risk": "UNVERIFIED: images come from the historical test_split used by scripts/training/run_m2_perception.py; M4-C train/val/test split files are missing, so non-overlap with M4-C training cannot be proven.",
      "unreadable_files": [],
      "valid_genuine_views": 2
     }

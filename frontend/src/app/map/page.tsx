@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Navigation, MoreHorizontal, ChevronRight, ArrowRight } from 'lucide-react';
-import { PageTop, Button } from '@/components/ManusUI';
-import { api, ReportOut } from '../../services/api';
+import { PageTop, Button } from '../report/lost/ManusUILab';
+import { api, ReportOut } from '@/services/api';
+import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
+import '../report/lost/report.css';
 
 export default function MapPage() {
   const router = useRouter();
@@ -42,6 +44,7 @@ export default function MapPage() {
 
   return (
     <div className="page-shell map-page">
+      <GlobalMeshBackground />
       <PageTop 
         eyebrow="Campus signal" 
         title={<>Where things<br /><em>turn up.</em></>} 

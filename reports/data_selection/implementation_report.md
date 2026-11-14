@@ -36,22 +36,22 @@ Provides attribute variance (color, texture) and natural clutter (COCO backgroun
 `backpack`, `keys`, `umbrella`. (Recommendation: Objects365 or Ego4D to fill these gaps later).
 
 **11. Data leakage validation result**  
-`scripts/build_splits.py` successfully completed intersection checks: `train ∩ val = empty`, `train ∩ test = empty`. No leakage detected.
+`scripts/datasets/build_splits.py` successfully completed intersection checks: `train ∩ val = empty`, `train ∩ test = empty`. No leakage detected.
 
 **12. Duplicate/corruption validation result**  
-`scripts/preprocess_object_crops.py` skips missing/corrupted files using Pillow `try/except`.
+`scripts/datasets/preprocess_object_crops.py` skips missing/corrupted files using Pillow `try/except`.
 
 **13. Training-pair statistics**  
-`scripts/build_training_pairs.py` generates dynamic triplets:  
+`scripts/datasets/build_training_pairs.py` generates dynamic triplets:  
 - Positive pairs enforced from Objectron's multi-view frames.  
 - Hard negatives sampled (20% probability) from different instances of the *same* category.
 
 **14. Files created/modified**  
-- `scripts/audit_dataset_metadata.py`
+- `scripts/datasets/audit_dataset_metadata.py`
 - `scripts/estimate_storage.py`
-- `scripts/download_selected_data.py`
-- `scripts/preprocess_object_crops.py`
-- `scripts/build_training_pairs.py`
+- `scripts/datasets/download_selected_data.py`
+- `scripts/datasets/preprocess_object_crops.py`
+- `scripts/datasets/build_training_pairs.py`
 - `context.md`
 
 **15. Tests passed**  

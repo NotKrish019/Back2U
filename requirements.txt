@@ -1,20 +1,40 @@
-torch
-torchvision
-numpy
-pandas
-requests
-jupyter
-tqdm
-fastapi
-uvicorn
-sqlalchemy
-pydantic
-python-dotenv
-pytest
-httpx
-alembic
-psycopg2-binary
-firebase-admin
-faiss-cpu
-scikit-learn
-pillow-heif
+# Back2U Python dependencies (tested with Python 3.14).
+# Install with:  pip install -r requirements.txt
+
+# --- Deep learning / ML pipeline ---
+torch==2.14.0
+torchvision==0.29.0
+transformers==5.17.0          # Grounding DINO + SigLIP2
+safetensors==0.8.0
+faiss-cpu==1.15.1             # vector search
+scikit-learn==1.9.1           # reranker / calibrator
+numpy==2.5.3
+pillow==12.3.0
+pillow-heif==1.8.1            # iPhone HEIC/HEIF uploads
+
+# --- Backend API ---
+fastapi==0.141.1
+uvicorn==0.53.0
+python-multipart==0.0.32      # file uploads
+pydantic==2.13.5
+pydantic-settings==2.15.0
+SQLAlchemy==2.0.54
+alembic==1.20.0
+psycopg2-binary==2.9.13       # only needed when DATABASE_URL points to PostgreSQL
+firebase-admin==7.7.0
+PyJWT==2.15.0
+python-dotenv==1.2.3
+requests==2.34.2
+
+# --- Research scripts (dataset preparation, evaluation) ---
+pandas==3.0.6
+tqdm==4.70.1
+
+# --- Tests ---
+pytest==9.1.1
+httpx==0.28.1
+
+# Optional, only for re-running specific research scripts (not installed by default):
+#   matplotlib                -> scripts/training/run_m2_perception.py plots
+#   tensorflow + Objectron    -> scripts/datasets/ingest_objectron_tfrecords.py, ingest_unknown.py
+#                                (clone https://github.com/google-research-datasets/Objectron into third_party/Objectron)

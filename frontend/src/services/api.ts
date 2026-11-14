@@ -56,6 +56,7 @@ export interface ReportOut {
   item_instance_id?: string;
   status: string;
   created_at: string;
+  match_count: number; // pending candidate matches (always sent by the backend, default 0)
 }
 
 export const api = {
@@ -105,6 +106,27 @@ export const api = {
       headers,
     });
     if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+  createClaim: async (data: { report_id: string, proof_text: string }) => {
+    const headers = await getHeaders();
+    const res = await fetch(`${API_BASE}/claims`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+  deleteReport: async (id: string) => {
+    const headers = await getHeaders();
+    const res = await fetch(`${API_BASE}/reports/${id}`, {
+      method: 'DELETE',
+      headers,
+    });
+    if (!res.ok) throw new Error(await res.text());
+    // 204 No Content doesn't have a JSON body
+    if (res.status === 204) return true;
     return res.json();
   },
   
@@ -163,6 +185,16 @@ export const api = {
     let url = `${API_BASE}/admin/items`;
     if (resolved !== undefined) url += `?resolved=${resolved}`;
     const res = await fetch(url, { method: 'GET', headers });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+
+  getReportMatches: async (reportId: string) => {
+    const headers = await getHeaders();
+    const res = await fetch(`${API_BASE}/reports/${reportId}/matches`, {
+      method: 'GET',
+      headers,
+    });
     if (!res.ok) throw new Error(await res.text());
     return res.json();
   }

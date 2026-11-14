@@ -7,7 +7,7 @@
   - **Visual Retriever:** DINOv2 ViT-S/14 (Frozen) + M4-C SupCon Projection Head (256D)
   - **Semantic Evidence:** SigLIP2 (google/siglip2-base-patch16-224)
   - **Calibration/Reranking:** Logistic Regression Calibrator
-- **Developed by:** Antigravity Autonomous Agent
+- **Developed by:** Back2U project team
 
 ## Intended Use
 - **Primary Use Case:** Multimodal Lost Property Re-Identification. Given an image (and optional text description) of a lost item, retrieve physically identical candidate items from a found-property gallery.

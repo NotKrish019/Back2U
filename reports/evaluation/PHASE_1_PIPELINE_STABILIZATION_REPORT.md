@@ -120,7 +120,7 @@ Findings that drove the fixes below:
 - **Load-time checks:** format, `model_version`, visual/SigLIP dimensions, and vector-count consistency.
   - On mismatch or corruption, the store is **moved aside** to `data/gallery.incompatible-<ts>/` (never overwritten or deleted).
   - The service then starts empty and `/api/health` reports `status: degraded` with `quarantined_to`.
-- **Database is the source of truth.** `sync_reports_to_index()` indexes every report whose image resolves (data URL, or a file under `back2u-ui-lab/public` / `frontend/public` with a path-traversal guard). It upserts `report_embeddings(report_id, model_version)` and lists every skipped or failed report with a reason; nothing is dropped silently. It runs:
+- **Database is the source of truth.** `sync_reports_to_index()` indexes every report whose image resolves (data URL, or a file under `frontend/public` with a path-traversal guard). It upserts `report_embeddings(report_id, model_version)` and lists every skipped or failed report with a reason; nothing is dropped silently. It runs:
   - automatically in a background thread at backend startup, retrying for up to 10 minutes while the ML service loads (`BACKEND_INDEX_SYNC_ON_STARTUP=1`, the default)
   - via `POST /api/v1/admin/reindex` (admin)
   - via `python scripts/reindex_reports.py [--ml-url …]`
