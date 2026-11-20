@@ -196,6 +196,7 @@ function SearchFlowContent() {
           image: queryImage && queryImage.startsWith('data:image') ? queryImage : undefined,
           text: description.trim() || undefined,
           top_k: 6,
+          query_type: 'lost',  // a lost-item search only ever returns open FOUND reports
         });
         if (cancelled) return;
         // Clear the hand-over only once results arrive (dev-mode effects can run twice).
@@ -447,9 +448,19 @@ function SearchFlowContent() {
               {items.length === 0 ? (
                 <section className="b2-container">
                   <div className="b2-empty">
-                    <span className="b2-label">No matches yet</span>
-                    <h2 className="b2-display b2-d2">Your item hasn&rsquo;t been reported found yet.</h2>
-                    <p className="b2-body">Your lost report is saved. When someone files a found report that matches it, it will appear under My reports.</p>
+                    {result?.status === 'UNSUPPORTED_ITEM' ? (
+                      <>
+                        <span className="b2-label">Photo not recognised</span>
+                        <h2 className="b2-display b2-d2">We can&rsquo;t match this kind of item yet.</h2>
+                        <p className="b2-body">{result.message || "Back2U currently matches laptops, phones, wallets, earphones, headphones, keys and books."} Your lost report is saved, and staff can still help you find it.</p>
+                      </>
+                    ) : (
+                      <>
+                        <span className="b2-label">No matches yet</span>
+                        <h2 className="b2-display b2-d2">Your item hasn&rsquo;t been reported found yet.</h2>
+                        <p className="b2-body">Your lost report is saved. When someone files a found report that matches it, it will appear under My reports.</p>
+                      </>
+                    )}
                     <div className="flex flex-wrap gap-3 mt-4">
                       <B2Button href="/reports">Go to my reports</B2Button>
                       <B2Button variant="ghost" onClick={() => setView('find')}>Edit search</B2Button>

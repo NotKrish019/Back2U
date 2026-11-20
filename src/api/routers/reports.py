@@ -7,8 +7,20 @@ from src.api.database import get_db
 from src.api.auth import get_current_user
 from src.categories import normalize_category
 from src.api.services.retrieval_service import to_browser_image
+from src.api.schemas import RetrievalQuery
+from src.api.auth import get_optional_user
+from src.api.services.privacy import image_for_viewer
+import logging
 
+log = logging.getLogger(__name__)
 router = APIRouter()
+
+
+def _public_report(report: models.Report, viewer, db: Session) -> schemas.ReportOut:
+    """ReportOut with the found-photo privacy rule applied for this viewer."""
+    out = schemas.ReportOut.model_validate(report)
+    out.image_reference, out.image_blurred = image_for_viewer(report, viewer, db)
+    return out
 
 
 def _normalized_category_and_attributes(raw_category, attributes):
@@ -56,64 +68,70 @@ def create_report(
     db.commit()
     db.refresh(db_report)
     
-    # Auto-match logic using REAL ML MODEL
-    try:
-        from src.api.routers.retrieval import get_retrieval_service
-        from src.api.schemas import RetrievalQuery
-        
-        retrieval_service = get_retrieval_service()
-        
-        # Dynamically add the new report's image to the ML model's FAISS index
-        if report.image_reference and report.image_reference.startswith("data:image"):
-            from src.api.services.index_sync import record_indexed
-            index_result = retrieval_service.index_report(db_report, report.image_reference)
-            record_indexed(db, db_report, index_result)
-            db.commit()
-            
-        # Pass the image and description to the ML model
-        query = RetrievalQuery(
-            image=report.image_reference,
-            text=report.description,
-            top_k=5
-        )
-        
-        ml_result = retrieval_service.search(query)
-        
-        for item in ml_result.results:
-            match_report = db.query(models.Report).filter(
-                models.Report.item_instance_id == item.item_instance_id,
-                models.Report.report_type != report.report_type,
-                models.Report.status == "open"
-            ).first()
-            
-            if match_report:
-                lost_id = db_report.report_id if db_report.report_type == "lost" else match_report.report_id
-                found_id = match_report.report_id if db_report.report_type == "lost" else db_report.report_id
-                
-                existing_match = db.query(models.CandidateMatch).filter(
-                    models.CandidateMatch.lost_report_id == lost_id,
-                    models.CandidateMatch.found_report_id == found_id
-                ).first()
-                
-                if not existing_match:
-                    new_match = models.CandidateMatch(
-                        lost_report_id=lost_id,
-                        found_report_id=found_id,
-                        similarity_score=item.similarity_score,
-                        status="pending"
-                    )
-                    db.add(new_match)
-        db.commit()
-    except Exception as e:
-        print(f"ML auto-match failed: {e}")
-        
+    index_and_auto_match(db, db_report)
     return db_report
+
+
+def index_and_auto_match(db: Session, db_report: models.Report) -> dict:
+    """Index the new report's photo, then suggest matches in the correct direction.
+
+    lost report  → compared with OPEN FOUND reports only
+    found report → compared with OPEN LOST reports only
+    A CandidateMatch is created only when ``matching.should_auto_match`` agrees (calibrated
+    score threshold, ML decision "candidate", supported item, image query). Matches are
+    suggestions for staff review, never proof of ownership. ML failures never fail the report.
+    """
+    from src.api.routers.retrieval import get_retrieval_service, run_search
+    from src.api.services.index_sync import record_indexed
+    from src.api.services.matching import AutoMatchPolicy, should_auto_match
+
+    outcome = {"indexed": False, "matches_created": 0, "status": None}
+    service = get_retrieval_service()
+    image = db_report.image_reference
+    has_image = bool(image and image.startswith("data:image"))
+    try:
+        if has_image:
+            record_indexed(db, db_report, service.index_report(db_report, image))
+            db.commit()
+            outcome["indexed"] = True
+    except Exception:
+        log.exception("Indexing report %s failed; the startup/reindex sync will retry", db_report.report_id)
+
+    if not has_image and not db_report.description:
+        return outcome
+    try:
+        result = run_search(RetrievalQuery(image=image if has_image else None, text=db_report.description,
+                                           top_k=5, query_type=db_report.report_type,
+                                           exclude_report_id=db_report.report_id), service, db)
+    except Exception:
+        log.exception("Auto-match search for report %s failed", db_report.report_id)
+        return outcome
+    outcome["status"] = result.status
+    policy = AutoMatchPolicy.load()
+    perception_decision = (result.perception or {}).get("decision")
+    for item in result.results:
+        if not should_auto_match(item.similarity_score, item.decision, result.mode or "image",
+                                 perception_decision, policy):
+            continue
+        lost_id, found_id = ((db_report.report_id, item.report_id) if db_report.report_type == "lost"
+                             else (item.report_id, db_report.report_id))
+        exists = db.query(models.CandidateMatch).filter(
+            models.CandidateMatch.lost_report_id == lost_id,
+            models.CandidateMatch.found_report_id == found_id).first()
+        if not exists:
+            db.add(models.CandidateMatch(lost_report_id=lost_id, found_report_id=found_id,
+                                         similarity_score=item.similarity_score, status="pending"))
+            outcome["matches_created"] += 1
+    db.commit()
+    return outcome
+
 
 @router.get("", response_model=List[schemas.ReportOut])
 def list_reports(
     report_type: Optional[str] = Query(None, description="Filter by 'lost' or 'found'"),
     status: Optional[str] = Query(None, description="Filter by status e.g. 'open'"),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    viewer: Optional[models.User] = Depends(get_optional_user),
 ):
     """
     Public listing of reports (with pagination/filters).
@@ -124,11 +142,12 @@ def list_reports(
         query = query.filter(models.Report.report_type == report_type)
     if status:
         query = query.filter(models.Report.status == status)
-        
-    return query.all()
+
+    return [_public_report(r, viewer, db) for r in query.all()]
 
 @router.get("/{report_id}", response_model=schemas.ReportOut)
-def get_report(report_id: str, db: Session = Depends(get_db)):
+def get_report(report_id: str, db: Session = Depends(get_db),
+               viewer: Optional[models.User] = Depends(get_optional_user)):
     report = db.query(models.Report).filter(models.Report.report_id == report_id).first()
     if not report:
         raise HTTPException(
@@ -138,7 +157,7 @@ def get_report(report_id: str, db: Session = Depends(get_db)):
                 "message": "The requested report was not found."
             }
         )
-    return report
+    return _public_report(report, viewer, db)
 
 @router.put("/{report_id}", response_model=schemas.ReportOut)
 def update_report(
@@ -167,10 +186,27 @@ def update_report(
     report.image_reference = to_browser_image(update_data.image_reference)
     report.location = update_data.location
     report.attributes = attributes
-        
+
     db.commit()
     db.refresh(report)
+    _reindex_after_update(db, report)
     return report
+
+
+def _reindex_after_update(db: Session, report: models.Report):
+    """Keep the gallery in step with an edited report (new photo → replace stored content)."""
+    from src.api.routers.retrieval import get_retrieval_service
+    from src.api.services.index_sync import record_indexed
+    from src.api.services.matching import is_index_eligible
+    service = get_retrieval_service()
+    try:
+        if is_index_eligible(report) and report.image_reference and report.image_reference.startswith("data:image"):
+            record_indexed(db, report, service.index_report(report, report.image_reference, replace=True))
+            db.commit()
+        elif report.item_instance_id:
+            service.remove_report(report.item_instance_id)
+    except Exception:
+        log.exception("Re-indexing report %s after update failed; reindex sync will repair it", report.report_id)
 
 @router.delete("/{report_id}", status_code=204)
 def delete_report(
@@ -190,8 +226,8 @@ def delete_report(
             from src.api.routers.retrieval import get_retrieval_service
             retrieval_service = get_retrieval_service()
             retrieval_service.remove_report(report.item_instance_id)
-        except Exception as e:
-            print(f"Failed to remove {report.item_instance_id} from gallery store: {e}")
+        except Exception:
+            log.exception("Failed to remove %s from gallery store", report.item_instance_id)
         
     db.delete(report)
     db.commit()
@@ -225,7 +261,7 @@ def get_report_matches(
                         "item_category": fr.item_category,
                         "description": fr.description,
                         "location": fr.location,
-                        "image_reference": f"BLURRED_{fr.image_reference}" if fr.image_reference else None,
+                        "image_reference": image_for_viewer(fr, current_user, db)[0],
                         "created_at": fr.created_at
                     }
                 })

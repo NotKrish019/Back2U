@@ -30,20 +30,30 @@ def create_claim(
     # Verify the target report exists and is a "found" report
     report = db.query(Report).filter(Report.report_id == claim_data.report_id).first()
     if not report:
-        raise HTTPException(status_code=404, detail="Target report not found.")
+        raise HTTPException(status_code=404, detail={"code": "REPORT_NOT_FOUND",
+                                                     "message": "Target report not found."})
     if report.report_type != "found":
-        raise HTTPException(status_code=400, detail="You can only claim 'found' reports.")
+        raise HTTPException(status_code=400, detail={"code": "NOT_A_FOUND_REPORT",
+                                                     "message": "You can only claim 'found' reports."})
     if report.user_id == current_user.id:
-        raise HTTPException(status_code=400, detail="You cannot claim your own found report.")
+        raise HTTPException(status_code=400, detail={"code": "OWN_REPORT",
+                                                     "message": "You cannot claim your own found report."})
+    if report.status != "open":
+        raise HTTPException(status_code=409, detail={"code": "REPORT_NOT_OPEN",
+                                                     "message": "This item has already been returned or closed."})
+    if not (claim_data.proof_text or "").strip():
+        raise HTTPException(status_code=400, detail={"code": "PROOF_REQUIRED",
+                                                     "message": "Describe something only the owner would know."})
 
-    # Check for existing pending claim by this user
+    # One active claim per user and report (pending or already approved)
     existing_claim = db.query(Claim).filter(
         Claim.report_id == claim_data.report_id,
         Claim.claimer_user_id == current_user.id,
-        Claim.status == "pending"
+        Claim.status.in_(["pending", "approved"])
     ).first()
     if existing_claim:
-        raise HTTPException(status_code=400, detail="You already have a pending claim for this report.")
+        raise HTTPException(status_code=409, detail={"code": "DUPLICATE_CLAIM",
+                                                     "message": "You already have a claim for this report."})
 
     new_claim = Claim(
         report_id=claim_data.report_id,

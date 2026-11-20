@@ -164,3 +164,12 @@ def test_delete_item_removes_from_gallery(svc):
     # Deleting non-existent returns 404
     del_resp2 = client.delete("/api/items/non_existent")
     assert del_resp2.status_code == 404
+
+
+def test_gallery_images_are_not_served_by_url(tmp_path, monkeypatch):
+    """M9: original found photos in the gallery must not be reachable by direct URL."""
+    from fastapi.testclient import TestClient
+    import src.app.main as ml
+    c = TestClient(ml.app)
+    assert c.get("/data/gallery/manifest.json").status_code == 404
+    assert c.get("/data/gallery/images/anything.jpg").status_code == 404

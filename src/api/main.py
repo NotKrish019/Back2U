@@ -11,6 +11,14 @@ import os
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
+
+@app.exception_handler(Exception)
+async def _unhandled_error(request, exc):  # never leak stack traces or internals to clients
+    import logging
+    logging.getLogger("back2u.api").exception("Unhandled error on %s %s", request.method, request.url.path)
+    return JSONResponse(status_code=500, content={"detail": {"code": "INTERNAL_ERROR",
+                        "message": "Something went wrong on our side. Please try again."}})
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:3001,http://127.0.0.1:3000,http://127.0.0.1:3001").split(","),

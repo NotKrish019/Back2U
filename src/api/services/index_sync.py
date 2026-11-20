@@ -70,39 +70,109 @@ def record_indexed(db: Session, report: models.Report, ml_response: dict):
             report.attributes = json.dumps(attrs)
 
 
-def sync_reports_to_index(db: Session, service: RetrievalService, image_roots: Optional[Iterable[Path]] = None) -> dict:
-    image_roots = list(image_roots) if image_roots is not None else image_roots_from_env()
-    model_version, indexed = service.list_indexed()
-    summary = {"model_version": model_version, "already_indexed": [], "indexed": [],
-               "skipped": [], "failed": [], "total_reports": 0}
+def plan_sync(db: Session, service: RetrievalService, image_roots: Optional[Iterable[Path]] = None) -> dict:
+    """Compare the DB (source of truth) with the ML gallery. Read-only.
 
+    Keyed on (item id, image sha256, eligibility). The model version is enforced by the ML
+    service itself: a gallery built with another model version is quarantined at load, so
+    after a model change every eligible report shows up here as ``to_add``.
+    """
+    import hashlib
+    from src.api.services.matching import is_index_eligible
+
+    image_roots = list(image_roots) if image_roots is not None else image_roots_from_env()
+    model_version, indexed = service.list_indexed_detail()
+    plan = {"model_version": model_version, "to_add": [], "to_replace": [], "up_to_date": [],
+            "to_remove": [], "missing_image": [], "not_eligible": [], "total_reports": 0,
+            "gallery_items": len(indexed)}
+    wanted: set[str] = set()
+    rows_by_item: dict[str, list] = {}
     reports = db.query(models.Report).order_by(models.Report.created_at).all()
-    summary["total_reports"] = len(reports)
+    plan["total_reports"] = len(reports)
     for r in reports:
-        if not r.item_instance_id:
-            summary["skipped"].append({"report_id": r.report_id, "reason": "no_item_instance"})
-            continue
-        if r.item_instance_id in indexed:
-            _ensure_embedding_row(db, r.report_id, model_version)
-            summary["already_indexed"].append(r.report_id)
+        if not is_index_eligible(r):
+            plan["not_eligible"].append({"report_id": r.report_id, "status": r.status,
+                                         "reason": "no_item_instance" if not r.item_instance_id else f"status_{r.status}"})
             continue
         data, how = resolve_report_image(r.image_reference, image_roots)
         if data is None:
-            summary["skipped"].append({"report_id": r.report_id, "reason": how})
+            plan["missing_image"].append({"report_id": r.report_id, "reason": how})
             continue
+        wanted.add(r.item_instance_id)
+        rows_by_item.setdefault(r.item_instance_id, []).append(
+            {"report_id": r.report_id, "item_id": r.item_instance_id,
+             "sha256": hashlib.sha256(data).hexdigest(), "source": how.split(":")[0]})
+    # Several reports may share one item instance (e.g. a lost and a found report already linked
+    # to the same physical item). Compare the SET of hashes per item so they never fight.
+    for item_id, rows in rows_by_item.items():
+        have = indexed.get(item_id)
+        want = {r["sha256"] for r in rows}
+        if have is None:
+            plan["to_add"].extend(rows)
+        elif not have["sha256"] or set(have["sha256"]) == want:  # old ML service reports no sha
+            plan["up_to_date"].extend(rows)
+        else:
+            for i, row in enumerate(rows):
+                plan["to_replace"].append({**row, "indexed_sha256": have["sha256"], "replace_first": i == 0})
+    for item_id in sorted(set(indexed) - wanted):
+        owner = db.query(models.Report).filter(models.Report.item_instance_id == item_id).first()
+        plan["to_remove"].append({"item_id": item_id, "report_id": owner.report_id if owner else None,
+                                  "reason": "orphan_no_report" if owner is None else
+                                  ("not_eligible_" + owner.status if not is_index_eligible(owner) else "image_missing")})
+    return plan
+
+
+def sync_reports_to_index(db: Session, service: RetrievalService, image_roots: Optional[Iterable[Path]] = None,
+                          dry_run: bool = False, remove_stale: bool = True) -> dict:
+    """Make the ML gallery match the DB. Idempotent: a second run changes nothing.
+
+    - eligible report, not in gallery           → add
+    - eligible report, gallery holds other bytes → replace (photo edited)
+    - gallery item with no eligible report       → remove (deleted / resolved / closed / orphan)
+    - eligible report whose image cannot be read → reported in ``skipped``; its gallery entry
+      (if any) is kept, because removing it would lose the only copy of the embedding.
+    """
+    image_roots = list(image_roots) if image_roots is not None else image_roots_from_env()
+    plan = plan_sync(db, service, image_roots)
+    summary = {"model_version": plan["model_version"], "dry_run": dry_run,
+               "already_indexed": [r["report_id"] for r in plan["up_to_date"]],
+               "indexed": [], "replaced": [], "removed": [], "skipped": list(plan["missing_image"]),
+               "not_eligible": plan["not_eligible"], "failed": [], "total_reports": plan["total_reports"],
+               "plan": {k: len(v) if isinstance(v, list) else v for k, v in plan.items()}}
+    # items whose report exists but whose image is missing are not removed (see docstring)
+    removals = [x for x in plan["to_remove"] if x["reason"] != "image_missing"] if remove_stale else []
+    if dry_run:
+        summary["would_add"] = plan["to_add"]
+        summary["would_replace"] = plan["to_replace"]
+        summary["would_remove"] = removals
+        return summary
+
+    by_id = {r.report_id: r for r in db.query(models.Report).all()}
+    for row in plan["up_to_date"]:
+        _ensure_embedding_row(db, row["report_id"], plan["model_version"])
+    jobs = [(r, False, False) for r in plan["to_add"]] + [(r, True, r.get("replace_first", True)) for r in plan["to_replace"]]
+    for row, is_replace, drop_old in jobs:
+        report = by_id[row["report_id"]]
+        data, _ = resolve_report_image(report.image_reference, image_roots)
         try:
-            res = service.index_report(r, data)
-            record_indexed(db, r, res)
-            indexed.add(r.item_instance_id)
-            summary["indexed"].append({"report_id": r.report_id, "status": res.get("status"),
-                                       "duplicate_of": res.get("duplicate_of", [])})
+            res = service.index_report(report, data, replace=drop_old)
+            record_indexed(db, report, res)
+            (summary["replaced"] if is_replace else summary["indexed"]).append(
+                {"report_id": report.report_id, "status": res.get("status"),
+                 "duplicate_of": res.get("duplicate_of", [])})
         except Exception as e:  # keep going; report every failure
-            summary["failed"].append({"report_id": r.report_id, "error": str(e)[:300]})
+            summary["failed"].append({"report_id": report.report_id, "error": str(e)[:300]})
+    for row in removals:
+        res = service.remove_report(row["item_id"])
+        if res.get("status") in ("success", "not_found"):
+            summary["removed"].append(row)
+        else:
+            summary["failed"].append({"item_id": row["item_id"], "error": str(res.get("detail", res))[:300]})
     db.commit()
     for s in summary["skipped"]:
         log.warning("Report %s not indexed: %s", s["report_id"], s["reason"])
     for f in summary["failed"]:
-        log.error("Report %s failed to index: %s", f["report_id"], f["error"])
+        log.error("Index sync failure: %s", f)
     return summary
 
 
@@ -114,9 +184,11 @@ def start_background_sync(session_factory, service_factory, retry_seconds: float
             db = session_factory()
             try:
                 summary = sync_reports_to_index(db, service_factory())
-                log.info("Startup index sync: %d already, %d indexed, %d skipped, %d failed (model %s)",
-                         len(summary["already_indexed"]), len(summary["indexed"]),
-                         len(summary["skipped"]), len(summary["failed"]), summary["model_version"])
+                log.info("Startup index sync: %d up to date, %d added, %d replaced, %d removed, "
+                         "%d skipped, %d failed (model %s)",
+                         len(summary["already_indexed"]), len(summary["indexed"]), len(summary["replaced"]),
+                         len(summary["removed"]), len(summary["skipped"]), len(summary["failed"]),
+                         summary["model_version"])
                 return
             except Exception as e:
                 if time.time() > deadline:

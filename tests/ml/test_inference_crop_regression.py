@@ -101,6 +101,7 @@ def test_query_crop_matches_gallery_crop_of_same_object_in_different_photo(tmp_p
         return [{"label": "book", "score": 0.5, "box": box}]
 
     fake = FakeModels(detect_fn=detect)
+    fake.gate_label = "book"  # classifier agrees with the detector, so the crop is used
     pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery", crop_policy="detector_crop")
     pipe.add_image_bytes(to_jpeg_bytes(gallery_img), "item_blue", "book")
     pipe.add_image_bytes(to_jpeg_bytes(make_image((400, 300), seed=1)), "item_noise", "book")
@@ -114,7 +115,7 @@ def test_query_crop_matches_gallery_crop_of_same_object_in_different_photo(tmp_p
 def test_full_image_fallback_is_reported(tmp_path, photo):
     _, path = photo
     fake = FakeModels(detections=[])
-    pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery")
+    pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery", crop_policy="detector_crop")
     res = pipe.infer(str(path))
     assert res["crop"]["source"] == "full_image_fallback"
     assert res["crop"]["reason"] == "no_detections"
@@ -146,3 +147,40 @@ def test_real_models_encoder_receives_crop(tmp_path):
     assert received == [(x1 - x0, y1 - y0)]
     assert received[0] != full_size
     print("REAL crop:", res["crop"], "full:", full_size)
+
+
+def test_full_image_policy_skips_detector_entirely(tmp_path, photo):
+    """M5: in full_image mode Grounding DINO must not run, for queries or gallery adds."""
+    img, path = photo
+    fake = FakeModels(detections=[{"label": "laptop", "score": 0.9, "box": OBJ_BOX}])
+    pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery")  # full_image default
+    pipe.add_image_bytes(to_jpeg_bytes(img), "item_x", "laptop")
+    res = pipe.infer(str(path))
+    assert fake.detect_prompts == []
+    assert res["crop"]["source"] == "full_image"
+    assert res["crop"]["reason"] == "full_image_policy_detector_skipped"
+    assert res["timings"]["detector_s"] == 0.0
+    # the full-image SigLIP embedding is computed once and reused for gate + retrieval
+    assert len(fake.siglip_image_inputs) == 2  # 1 gallery add + 1 query
+
+
+def test_detector_mode_always_restores_detection(tmp_path, photo, monkeypatch):
+    _, path = photo
+    monkeypatch.setenv("ML_DETECTOR_MODE", "always")
+    fake = FakeModels(detections=[{"label": "laptop", "score": 0.9, "box": OBJ_BOX}])
+    pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery")
+    res = pipe.infer(str(path))
+    assert len(fake.detect_prompts) == 1
+    assert res["crop"]["reason"] == "full_image_policy"
+
+
+def test_detector_cannot_override_uncertain_classifier(tmp_path, photo):
+    """M4: a confident detector box must not turn an uncertain/unsupported gate into SUPPORTED."""
+    _, path = photo
+    fake = FakeModels(detections=[{"label": "laptop", "score": 0.99, "box": OBJ_BOX}])
+    fake.gate_label = "backpack"
+    pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery", crop_policy="detector_crop")
+    res = pipe.infer(str(path))
+    assert res["perception"]["decision"] == "UNSUPPORTED_ITEM"
+    assert res["status"] == "UNSUPPORTED_ITEM"
+    assert res["matches"] == []

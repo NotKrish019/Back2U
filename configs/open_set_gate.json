@@ -1,0 +1,13 @@
+{
+ "temperature": 0.009403702978599705,
+ "min_prob": 0.3,
+ "min_margin": 0.05,
+ "unsupported_min_prob": 0.8,
+ "provenance": "calibrated 2026-11-20 by scripts/evaluation/calibrate_open_set.py on 229 calib / 193 test real photos (Wikimedia Commons + CO3D); see reports/calibration/open_set_gate_calibration.json",
+ "metrics": {
+  "test_supported_correct_SUPPORTED": 0.8852,
+  "test_unsupported_accepted_as_SUPPORTED": 0.0141,
+  "test_held_out_accepted_as_SUPPORTED": 0.0357,
+  "test_precision_of_SUPPORTED": 0.931
+ }
+}

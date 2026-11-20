@@ -14,6 +14,9 @@ export interface RetrievalQuery {
   image?: string;
   text?: string;
   top_k?: number;
+  /** 'lost' (default): search open FOUND reports. 'found': search open LOST reports. */
+  query_type?: 'lost' | 'found';
+  exclude_report_id?: string;
 }
 
 export interface RetrievalResultItem {
@@ -25,13 +28,32 @@ export interface RetrievalResultItem {
   item_category?: string;
   location?: string;
   image_reference?: string;
+  image_blurred?: boolean;
+  decision?: 'candidate' | 'review' | 'reject';
   status?: string;
 }
 
 export interface RetrievalResult {
   model_version: string;
   results: RetrievalResultItem[];
+  /** OK | UNSUPPORTED_ITEM (photo is not a supported item; no search ran) | NO_ELIGIBLE_ITEMS */
+  status?: 'OK' | 'UNSUPPORTED_ITEM' | 'NO_ELIGIBLE_ITEMS' | string;
+  message?: string;
+  mode?: string;
+  perception?: { decision?: string; category?: string | null; candidate_category?: string | null; confidence?: number; reason?: string } | null;
 }
+
+/** Human-readable message from a structured API error ({detail: {code, message}}) or plain text. */
+export const apiErrorMessage = (raw: string): string => {
+  try {
+    const body = JSON.parse(raw);
+    const d = body?.detail;
+    if (typeof d === 'string') return d;
+    if (d?.message) return d.message;
+    if (Array.isArray(d) && d[0]?.msg) return d[0].msg;
+  } catch { /* not JSON */ }
+  return raw;
+};
 
 const getHeaders = async () => {
   const token = await auth.currentUser?.getIdToken();
@@ -57,6 +79,7 @@ export interface ReportOut {
   status: string;
   created_at: string;
   match_count: number; // pending candidate matches (always sent by the backend, default 0)
+  image_blurred?: boolean; // true when the server returned a blurred derivative (found items)
 }
 
 export const api = {
@@ -67,7 +90,7 @@ export const api = {
       headers,
       body: JSON.stringify(data),
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
   search: async (query: RetrievalQuery): Promise<RetrievalResult> => {
@@ -77,7 +100,7 @@ export const api = {
       headers,
       body: JSON.stringify(query),
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
   getUserReports: async (): Promise<ReportOut[]> => {
@@ -86,17 +109,16 @@ export const api = {
       method: 'GET',
       headers,
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
   getAllReports: async (): Promise<ReportOut[]> => {
+    const headers = await getHeaders();  // signed-in owners/staff see their own originals
     const res = await fetch(`${API_BASE}/reports`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
+      headers,
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
   getReport: async (id: string): Promise<ReportOut> => {
@@ -105,7 +127,7 @@ export const api = {
       method: 'GET',
       headers,
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
   createClaim: async (data: { report_id: string, proof_text: string }) => {
@@ -115,7 +137,7 @@ export const api = {
       headers,
       body: JSON.stringify(data),
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
   deleteReport: async (id: string) => {
@@ -124,7 +146,7 @@ export const api = {
       method: 'DELETE',
       headers,
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     // 204 No Content doesn't have a JSON body
     if (res.status === 204) return true;
     return res.json();
@@ -134,14 +156,14 @@ export const api = {
   getAdminOverview: async () => {
     const headers = await getHeaders();
     const res = await fetch(`${API_BASE}/admin/overview`, { method: 'GET', headers });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
   getAdminClaims: async (status?: string) => {
     const headers = await getHeaders();
     const url = status ? `${API_BASE}/admin/claims?status=${status}` : `${API_BASE}/admin/claims`;
     const res = await fetch(url, { method: 'GET', headers });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
   updateAdminClaim: async (id: string, status: string) => {
@@ -151,7 +173,7 @@ export const api = {
       headers,
       body: JSON.stringify({ status })
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
   getAdminCandidates: async (status?: string, uncertain?: boolean) => {
@@ -160,7 +182,7 @@ export const api = {
     if (status) url += `status=${status}&`;
     if (uncertain) url += `uncertain=true`;
     const res = await fetch(url, { method: 'GET', headers });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
   updateAdminCandidate: async (id: string, status: string) => {
@@ -170,14 +192,14 @@ export const api = {
       headers,
       body: JSON.stringify({ status })
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
   getAdminReports: async (type?: string) => {
     const headers = await getHeaders();
     const url = type ? `${API_BASE}/admin/reports?report_type=${type}` : `${API_BASE}/admin/reports`;
     const res = await fetch(url, { method: 'GET', headers });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
   getAdminItems: async (resolved?: boolean) => {
@@ -185,7 +207,7 @@ export const api = {
     let url = `${API_BASE}/admin/items`;
     if (resolved !== undefined) url += `?resolved=${resolved}`;
     const res = await fetch(url, { method: 'GET', headers });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   },
 
@@ -195,7 +217,7 @@ export const api = {
       method: 'GET',
       headers,
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(apiErrorMessage(await res.text()));
     return res.json();
   }
 };

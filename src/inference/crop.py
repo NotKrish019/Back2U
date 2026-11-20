@@ -98,6 +98,18 @@ def select_crop(
                 break
 
     if policy == "full_image":
+        if detections is None:
+            # Detector deliberately not run (full_image policy needs no box): not a fallback.
+            return image, CropInfo(
+                source="full_image",
+                box=[0, 0, width, height],
+                raw_box=None,
+                label=None,
+                raw_label=None,
+                score=None,
+                reason="full_image_policy_detector_skipped",
+                image_size=[width, height],
+            )
         if best_det is not None:
             return image, CropInfo(
                 source="full_image",

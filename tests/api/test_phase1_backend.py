@@ -178,7 +178,7 @@ def test_duplicate_image_upload_is_flagged(stack):
 # ---------------------------------------------------------------- restart persistence
 def test_reports_survive_ml_and_backend_restart(stack, monkeypatch):
     api, tmp = stack["api"], stack["tmp"]
-    reps = [_create(api, "laptop", image=_data_url(20 + i)) for i in range(3)]
+    reps = [_create(api, "laptop", image=_data_url(20 + i), report_type="found") for i in range(3)]
     ids = {r["item_instance_id"] for r in reps}
 
     # 1) ML service restarts with its persistent store → nothing lost, nothing re-embedded
@@ -254,7 +254,7 @@ def test_text_only_search_through_backend(stack):
 
 
 def test_search_skips_gallery_items_without_a_report(stack):
-    rep = _create(stack["api"], "laptop", image=_data_url(31))
+    rep = _create(stack["api"], "laptop", image=_data_url(31), report_type="found")
     orphan = base64.b64decode(_data_url(32).split(",", 1)[1])
     stack["ml"].post("/api/add", data={"item_id": "orphan_item", "category": "laptop"},
                      files={"file": ("o.jpg", orphan, "image/jpeg")})

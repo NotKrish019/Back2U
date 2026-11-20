@@ -107,7 +107,7 @@ def save_evaluation(res, image_path, text_query, is_item_correct, is_cat_correct
         top_item_id = res["matches"][0]["item_id"] if res.get("matches") else ""
         top_item_score = res["matches"][0]["final_score"] if res.get("matches") else ""
         final_decision = res["matches"][0]["decision"] if res.get("matches") else "reject"
-        if res["perception"]["decision"] == "UNKNOWN":
+        if res["perception"]["decision"] == "UNSUPPORTED_ITEM":
             final_decision = "reject"
             
         writer.writerow([

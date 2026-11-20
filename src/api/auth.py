@@ -27,6 +27,7 @@ except Exception as e:
     logger.error(f"Error initializing Firebase Admin: {e}")
 
 security = HTTPBearer()
+optional_security = HTTPBearer(auto_error=False)
 
 import jwt
 
@@ -61,11 +62,8 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
         )
 
 def get_current_user(decoded_token: dict = Depends(verify_token), db: Session = Depends(get_db)) -> User:
-    print(f"DEBUG AUTH: decoded_token type = {type(decoded_token)}")
-    print(f"DEBUG AUTH: decoded_token content = {decoded_token}")
     # firebase-admin verify_id_token gives us "uid". Raw JWT gives "user_id" or "sub".
     firebase_uid = decoded_token.get("uid") or decoded_token.get("user_id") or decoded_token.get("sub")
-    print(f"DEBUG AUTH: extracted firebase_uid = {firebase_uid}")
     if not firebase_uid:
         raise HTTPException(status_code=401, detail="Invalid token structure")
     
@@ -91,3 +89,21 @@ def get_admin_user(current_user: User = Depends(get_current_user)) -> User:
         )
     return current_user
 
+
+
+def get_optional_user(credentials: HTTPAuthorizationCredentials = Depends(optional_security),
+                      db: Session = Depends(get_db)):
+    """The signed-in user, or None for anonymous / invalid credentials (public endpoints).
+
+    Used where the response differs by viewer (e.g. found-item photos), never to authorise writes.
+    """
+    if credentials is None:
+        return None
+    try:
+        decoded = verify_token(credentials)
+    except HTTPException:
+        return None
+    firebase_uid = decoded.get("uid") or decoded.get("user_id") or decoded.get("sub")
+    if not firebase_uid:
+        return None
+    return db.query(User).filter(User.firebase_uid == firebase_uid).first()

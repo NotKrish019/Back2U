@@ -58,3 +58,8 @@ back2u-ui-lab/
 reports/evaluation/co3d_pilot/contact_sheets/
 reports/evaluation/co3d_pilot/qc_review/
 reports/evaluation/phase2_runs/co3d_pilot/**/*.npy
+
+# Index-sync / rebuild backups (reproducible from app.db via scripts/reindex_reports.py)
+data/gallery.backup-*/
+data/gallery.rebuild-*/
+data/gallery.pre-rebuild-*/

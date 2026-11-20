@@ -55,15 +55,56 @@ def get_claims(status: Optional[str] = None, db: Session = Depends(get_db), curr
         })
     return result
 
+CLAIM_TRANSITIONS = {"pending": {"approved", "denied"}}
+CANDIDATE_TRANSITIONS = {"pending": {"accepted", "rejected"}}
+
+
+def _bad_transition(kind: str, current: str, requested: str, allowed: dict):
+    raise HTTPException(status_code=409, detail={
+        "code": "INVALID_STATUS_TRANSITION",
+        "message": f"A {kind} cannot move from '{current}' to '{requested}'.",
+        "allowed": sorted(allowed.get(current, set())),
+    })
+
+
 @router.patch("/claims/{claim_id}")
 def update_claim(claim_id: str, update: StatusUpdate, db: Session = Depends(get_db), current_admin: models.User = Depends(get_admin_user)):
+    """Staff decision on a claim. pending → approved | denied (final states are immutable).
+
+    Approving returns the item: the found report becomes "resolved", its item instance gets
+    ``resolved_at``, competing pending claims are denied, and the report leaves the ML gallery.
+    """
+    from datetime import datetime, timezone
     claim = db.query(models.Claim).filter(models.Claim.claim_id == claim_id).first()
     if not claim:
-        raise HTTPException(status_code=404, detail="Claim not found")
+        raise HTTPException(status_code=404, detail={"code": "CLAIM_NOT_FOUND", "message": "Claim not found"})
+    if update.status not in CLAIM_TRANSITIONS.get(claim.status, set()):
+        _bad_transition("claim", claim.status, update.status, CLAIM_TRANSITIONS)
     claim.status = update.status
+    removed_from_gallery = None
+    if update.status == "approved":
+        report = claim.report
+        if report is None or report.status != "open":
+            raise HTTPException(status_code=409, detail={
+                "code": "REPORT_NOT_OPEN", "message": "The found report is no longer open."})
+        report.status = "resolved"
+        if report.item_instance is not None:
+            report.item_instance.resolved_at = datetime.now(timezone.utc)
+        for other in db.query(models.Claim).filter(models.Claim.report_id == report.report_id,
+                                                   models.Claim.claim_id != claim.claim_id,
+                                                   models.Claim.status == "pending"):
+            other.status = "denied"
+        for m in db.query(models.CandidateMatch).filter(models.CandidateMatch.found_report_id == report.report_id,
+                                                        models.CandidateMatch.status == "pending"):
+            m.status = "rejected"
+        removed_from_gallery = report.item_instance_id
     db.commit()
     db.refresh(claim)
-    return {"claim_id": claim.claim_id, "status": claim.status}
+    if removed_from_gallery:
+        from src.api.routers.retrieval import get_retrieval_service
+        get_retrieval_service().remove_report(removed_from_gallery)  # never raises
+    return {"claim_id": claim.claim_id, "status": claim.status,
+            "report_status": claim.report.status if claim.report else None}
 
 @router.get("/candidates")
 def get_candidates(status: Optional[str] = None, uncertain: bool = False, db: Session = Depends(get_db), current_admin: models.User = Depends(get_admin_user)):
@@ -100,7 +141,11 @@ def get_candidates(status: Optional[str] = None, uncertain: bool = False, db: Se
 def update_candidate(match_id: str, update: StatusUpdate, db: Session = Depends(get_db), current_admin: models.User = Depends(get_admin_user)):
     match = db.query(models.CandidateMatch).filter(models.CandidateMatch.match_id == match_id).first()
     if not match:
-        raise HTTPException(status_code=404, detail="Candidate Match not found")
+        raise HTTPException(status_code=404, detail={"code": "MATCH_NOT_FOUND", "message": "Candidate Match not found"})
+    if update.status not in CANDIDATE_TRANSITIONS.get(match.status, set()):
+        _bad_transition("candidate match", match.status, update.status, CANDIDATE_TRANSITIONS)
+    # Accepting a match only confirms that staff think the two reports describe the same item.
+    # Ownership is established separately through an approved claim.
     match.status = update.status
     db.commit()
     db.refresh(match)
@@ -138,5 +183,6 @@ def reindex_reports(db: Session = Depends(get_db), current_admin: models.User = 
     from src.api.services.index_sync import sync_reports_to_index
     try:
         return sync_reports_to_index(db, get_retrieval_service())
-    except Exception as e:
-        raise HTTPException(status_code=503, detail=f"ML service unavailable for reindex: {str(e)[:200]}")
+    except Exception:
+        raise HTTPException(status_code=503, detail={"code": "ML_UNAVAILABLE",
+                                                     "message": "ML service unavailable for reindex"})

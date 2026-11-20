@@ -1,0 +1,569 @@
+{
+ "date": "2026-11-20",
+ "data": {
+  "n_images": 422,
+  "calib": 229,
+  "test": 193,
+  "by_source": {
+   "wikimedia_commons": 281,
+   "co3d_research_only": 141
+  },
+  "classes": [
+   "backpack",
+   "basketball",
+   "book",
+   "cellphone",
+   "earphones",
+   "headphones",
+   "keys",
+   "laptop",
+   "mobile_phone",
+   "mug",
+   "scissors",
+   "sneaker",
+   "stapler",
+   "sunglasses",
+   "teddy_bear",
+   "umbrella",
+   "wallet",
+   "water_bottle"
+  ],
+  "held_out_classes": [
+   "basketball",
+   "scissors",
+   "stapler",
+   "teddy_bear"
+  ],
+  "split_rule": "sha256 (Commons) / sequence name (CO3D) -> 60% calib / 40% test"
+ },
+ "temperature": {
+  "fitted": 0.009403702978599705,
+  "previous_pipeline_equivalent": 0.1,
+  "nll_fitted": 0.2595,
+  "nll_previous": 2.3227
+ },
+ "ood_score_auroc": {
+  "calib": {
+   "msp_full_softmax": 0.9976,
+   "energy_supported": 0.9988,
+   "max_cosine": 0.9989,
+   "supported_mass": 0.9988
+  },
+  "test": {
+   "msp_full_softmax": 0.9957,
+   "energy_supported": 0.9976,
+   "max_cosine": 0.9982,
+   "supported_mass": 0.9953
+  },
+  "test_held_out_only": {
+   "msp_full_softmax": 0.9892,
+   "energy_supported": 0.9959,
+   "max_cosine": 0.9965,
+   "supported_mass": 0.988
+  }
+ },
+ "chosen_config": {
+  "temperature": 0.009403702978599705,
+  "min_prob": 0.3,
+  "min_margin": 0.05,
+  "unsupported_min_prob": 0.8
+ },
+ "calib_metrics": {
+  "n": 229,
+  "supported_n": 143,
+  "supported_correct_SUPPORTED": 0.9231,
+  "supported_wrong_category_SUPPORTED": 0.028,
+  "supported_UNCERTAIN": 0.042,
+  "supported_rejected_UNSUPPORTED": 0.007,
+  "supported_top1_category_accuracy": 0.951,
+  "unsupported_n": 86,
+  "unsupported_accepted_as_SUPPORTED": 0.0,
+  "unsupported_UNCERTAIN": 0.0465,
+  "unsupported_rejected": 0.9535,
+  "held_out_n": 33,
+  "held_out_accepted_as_SUPPORTED": 0.0,
+  "held_out_rejected": 0.8788,
+  "precision_of_SUPPORTED": 0.9706,
+  "per_class": {
+   "wallet": {
+    "n": 10,
+    "SUPPORTED_correct": 10,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 0
+   },
+   "keys": {
+    "n": 5,
+    "SUPPORTED_correct": 5,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 0
+   },
+   "mug": {
+    "n": 9,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 9,
+    "SUPPORTED_wrong": 0
+   },
+   "sneaker": {
+    "n": 6,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 6,
+    "SUPPORTED_wrong": 0
+   },
+   "sunglasses": {
+    "n": 12,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 12,
+    "SUPPORTED_wrong": 0
+   },
+   "laptop": {
+    "n": 38,
+    "SUPPORTED_correct": 33,
+    "UNCERTAIN": 4,
+    "UNSUPPORTED_ITEM": 1,
+    "SUPPORTED_wrong": 0
+   },
+   "mobile_phone": {
+    "n": 8,
+    "SUPPORTED_correct": 8,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 0
+   },
+   "earphones": {
+    "n": 16,
+    "SUPPORTED_correct": 16,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 0
+   },
+   "headphones": {
+    "n": 11,
+    "SUPPORTED_correct": 11,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 0
+   },
+   "book": {
+    "n": 35,
+    "SUPPORTED_correct": 30,
+    "UNCERTAIN": 1,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 4
+   },
+   "backpack": {
+    "n": 13,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 13,
+    "SUPPORTED_wrong": 0
+   },
+   "water_bottle": {
+    "n": 6,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 6,
+    "SUPPORTED_wrong": 0
+   },
+   "umbrella": {
+    "n": 7,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 7,
+    "SUPPORTED_wrong": 0
+   },
+   "stapler": {
+    "n": 10,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 4,
+    "UNSUPPORTED_ITEM": 6,
+    "SUPPORTED_wrong": 0
+   },
+   "scissors": {
+    "n": 11,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 11,
+    "SUPPORTED_wrong": 0
+   },
+   "teddy_bear": {
+    "n": 7,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 7,
+    "SUPPORTED_wrong": 0
+   },
+   "basketball": {
+    "n": 5,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 5,
+    "SUPPORTED_wrong": 0
+   },
+   "cellphone": {
+    "n": 20,
+    "SUPPORTED_correct": 19,
+    "UNCERTAIN": 1,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 0
+   }
+  }
+ },
+ "test_metrics": {
+  "n": 193,
+  "supported_n": 122,
+  "supported_correct_SUPPORTED": 0.8852,
+  "supported_wrong_category_SUPPORTED": 0.0574,
+  "supported_UNCERTAIN": 0.0328,
+  "supported_rejected_UNSUPPORTED": 0.0246,
+  "supported_top1_category_accuracy": 0.9262,
+  "unsupported_n": 71,
+  "unsupported_accepted_as_SUPPORTED": 0.0141,
+  "unsupported_UNCERTAIN": 0.0423,
+  "unsupported_rejected": 0.9437,
+  "held_out_n": 28,
+  "held_out_accepted_as_SUPPORTED": 0.0357,
+  "held_out_rejected": 0.8571,
+  "precision_of_SUPPORTED": 0.931,
+  "per_class": {
+   "wallet": {
+    "n": 12,
+    "SUPPORTED_correct": 10,
+    "UNCERTAIN": 1,
+    "UNSUPPORTED_ITEM": 1,
+    "SUPPORTED_wrong": 0
+   },
+   "keys": {
+    "n": 6,
+    "SUPPORTED_correct": 6,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 0
+   },
+   "mug": {
+    "n": 9,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 9,
+    "SUPPORTED_wrong": 0
+   },
+   "sneaker": {
+    "n": 9,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 9,
+    "SUPPORTED_wrong": 0
+   },
+   "sunglasses": {
+    "n": 8,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 8,
+    "SUPPORTED_wrong": 0
+   },
+   "laptop": {
+    "n": 23,
+    "SUPPORTED_correct": 18,
+    "UNCERTAIN": 2,
+    "UNSUPPORTED_ITEM": 2,
+    "SUPPORTED_wrong": 1
+   },
+   "mobile_phone": {
+    "n": 9,
+    "SUPPORTED_correct": 9,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 0
+   },
+   "earphones": {
+    "n": 7,
+    "SUPPORTED_correct": 7,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 0
+   },
+   "headphones": {
+    "n": 9,
+    "SUPPORTED_correct": 9,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 0
+   },
+   "book": {
+    "n": 32,
+    "SUPPORTED_correct": 26,
+    "UNCERTAIN": 1,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 5
+   },
+   "backpack": {
+    "n": 5,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 5,
+    "SUPPORTED_wrong": 0
+   },
+   "water_bottle": {
+    "n": 9,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 9,
+    "SUPPORTED_wrong": 0
+   },
+   "umbrella": {
+    "n": 3,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 3,
+    "SUPPORTED_wrong": 0
+   },
+   "stapler": {
+    "n": 9,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 3,
+    "UNSUPPORTED_ITEM": 5,
+    "SUPPORTED_wrong": 1
+   },
+   "scissors": {
+    "n": 5,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 5,
+    "SUPPORTED_wrong": 0
+   },
+   "teddy_bear": {
+    "n": 12,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 12,
+    "SUPPORTED_wrong": 0
+   },
+   "basketball": {
+    "n": 2,
+    "SUPPORTED_correct": 0,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 2,
+    "SUPPORTED_wrong": 0
+   },
+   "cellphone": {
+    "n": 24,
+    "SUPPORTED_correct": 23,
+    "UNCERTAIN": 0,
+    "UNSUPPORTED_ITEM": 0,
+    "SUPPORTED_wrong": 1
+   }
+  }
+ },
+ "test_metrics_by_source": {
+  "wikimedia_commons": {
+   "n": 130,
+   "supported_n": 59,
+   "supported_correct_SUPPORTED": 0.8644,
+   "supported_wrong_category_SUPPORTED": 0.0847,
+   "supported_UNCERTAIN": 0.0339,
+   "supported_rejected_UNSUPPORTED": 0.0169,
+   "supported_top1_category_accuracy": 0.9153,
+   "unsupported_n": 71,
+   "unsupported_accepted_as_SUPPORTED": 0.0141,
+   "unsupported_UNCERTAIN": 0.0423,
+   "unsupported_rejected": 0.9437,
+   "held_out_n": 28,
+   "held_out_accepted_as_SUPPORTED": 0.0357,
+   "held_out_rejected": 0.8571,
+   "precision_of_SUPPORTED": 0.8947,
+   "per_class": {
+    "wallet": {
+     "n": 12,
+     "SUPPORTED_correct": 10,
+     "UNCERTAIN": 1,
+     "UNSUPPORTED_ITEM": 1,
+     "SUPPORTED_wrong": 0
+    },
+    "keys": {
+     "n": 6,
+     "SUPPORTED_correct": 6,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 0,
+     "SUPPORTED_wrong": 0
+    },
+    "mug": {
+     "n": 9,
+     "SUPPORTED_correct": 0,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 9,
+     "SUPPORTED_wrong": 0
+    },
+    "sneaker": {
+     "n": 9,
+     "SUPPORTED_correct": 0,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 9,
+     "SUPPORTED_wrong": 0
+    },
+    "sunglasses": {
+     "n": 8,
+     "SUPPORTED_correct": 0,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 8,
+     "SUPPORTED_wrong": 0
+    },
+    "laptop": {
+     "n": 7,
+     "SUPPORTED_correct": 6,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 0,
+     "SUPPORTED_wrong": 1
+    },
+    "mobile_phone": {
+     "n": 9,
+     "SUPPORTED_correct": 9,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 0,
+     "SUPPORTED_wrong": 0
+    },
+    "earphones": {
+     "n": 7,
+     "SUPPORTED_correct": 7,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 0,
+     "SUPPORTED_wrong": 0
+    },
+    "headphones": {
+     "n": 9,
+     "SUPPORTED_correct": 9,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 0,
+     "SUPPORTED_wrong": 0
+    },
+    "book": {
+     "n": 9,
+     "SUPPORTED_correct": 4,
+     "UNCERTAIN": 1,
+     "UNSUPPORTED_ITEM": 0,
+     "SUPPORTED_wrong": 4
+    },
+    "backpack": {
+     "n": 5,
+     "SUPPORTED_correct": 0,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 5,
+     "SUPPORTED_wrong": 0
+    },
+    "water_bottle": {
+     "n": 9,
+     "SUPPORTED_correct": 0,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 9,
+     "SUPPORTED_wrong": 0
+    },
+    "umbrella": {
+     "n": 3,
+     "SUPPORTED_correct": 0,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 3,
+     "SUPPORTED_wrong": 0
+    },
+    "stapler": {
+     "n": 9,
+     "SUPPORTED_correct": 0,
+     "UNCERTAIN": 3,
+     "UNSUPPORTED_ITEM": 5,
+     "SUPPORTED_wrong": 1
+    },
+    "scissors": {
+     "n": 5,
+     "SUPPORTED_correct": 0,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 5,
+     "SUPPORTED_wrong": 0
+    },
+    "teddy_bear": {
+     "n": 12,
+     "SUPPORTED_correct": 0,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 12,
+     "SUPPORTED_wrong": 0
+    },
+    "basketball": {
+     "n": 2,
+     "SUPPORTED_correct": 0,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 2,
+     "SUPPORTED_wrong": 0
+    }
+   }
+  },
+  "co3d_research_only": {
+   "n": 63,
+   "supported_n": 63,
+   "supported_correct_SUPPORTED": 0.9048,
+   "supported_wrong_category_SUPPORTED": 0.0317,
+   "supported_UNCERTAIN": 0.0317,
+   "supported_rejected_UNSUPPORTED": 0.0317,
+   "supported_top1_category_accuracy": 0.9365,
+   "unsupported_n": 0,
+   "unsupported_accepted_as_SUPPORTED": null,
+   "unsupported_UNCERTAIN": null,
+   "unsupported_rejected": null,
+   "held_out_n": 0,
+   "held_out_accepted_as_SUPPORTED": null,
+   "held_out_rejected": null,
+   "precision_of_SUPPORTED": 0.9661,
+   "per_class": {
+    "laptop": {
+     "n": 16,
+     "SUPPORTED_correct": 12,
+     "UNCERTAIN": 2,
+     "UNSUPPORTED_ITEM": 2,
+     "SUPPORTED_wrong": 0
+    },
+    "cellphone": {
+     "n": 24,
+     "SUPPORTED_correct": 23,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 0,
+     "SUPPORTED_wrong": 1
+    },
+    "book": {
+     "n": 23,
+     "SUPPORTED_correct": 22,
+     "UNCERTAIN": 0,
+     "UNSUPPORTED_ITEM": 0,
+     "SUPPORTED_wrong": 1
+    }
+   }
+  }
+ },
+ "robustness_test_split": {
+  "gaussian_blur_r6": {
+   "n": 59,
+   "SUPPORTED": 0.7966,
+   "UNCERTAIN": 0.1356,
+   "UNSUPPORTED_ITEM": 0.0678
+  },
+  "centre_crop_40pct": {
+   "n": 59,
+   "SUPPORTED": 0.8305,
+   "UNCERTAIN": 0.1356,
+   "UNSUPPORTED_ITEM": 0.0339
+  },
+  "two_object_collage": {
+   "n": 59,
+   "SUPPORTED": 0.9492,
+   "UNCERTAIN": 0.0508,
+   "UNSUPPORTED_ITEM": 0.0
+  },
+  "blank_and_noise_images": [
+   "UNSUPPORTED_ITEM",
+   "UNSUPPORTED_ITEM",
+   "UNSUPPORTED_ITEM",
+   "UNSUPPORTED_ITEM",
+   "UNSUPPORTED_ITEM",
+   "UNSUPPORTED_ITEM"
+  ]
+ }
+}

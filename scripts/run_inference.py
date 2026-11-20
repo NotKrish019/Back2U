@@ -36,6 +36,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.categories import detector_prompt, normalize_category, normalize_detector_label
 from src.inference.crop import select_crop
 from src.inference import versioning as V
+from src.inference import open_set as OS
 from src.retrieval.gallery_store import GalleryStore
 
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -142,11 +143,32 @@ class LiveModels:
             self.category_text_embs = out.text_embeds / out.text_embeds.norm(dim=-1, keepdim=True)
         self.siglip_idx_to_cat = {str(i): cat for i, cat in enumerate(self.canonical_categories)}
 
+        # Open-set gate prompts (supported + unsupported objects), see src/inference/open_set.py
+        self.gate_prompts, self.gate_labels, _ = OS.prompt_table()
+        self.gate_text_embs = self._embed_prompts(self.gate_prompts)
+
         print("Loading Multimodal Reranker & Calibrator...", file=sys.stderr)
         self.reranker = None
         if os.path.exists(p(V.RERANKER_CHECKPOINT)):
             with open(p(V.RERANKER_CHECKPOINT), "rb") as f:
                 self.reranker = pickle.load(f)
+
+    def _embed_prompts(self, prompts: list[str]) -> torch.Tensor:
+        dummy = Image.new("RGB", (224, 224))
+        embs = []
+        for i in range(0, len(prompts), 16):
+            chunk = prompts[i:i + 16]
+            inputs = self.siglip_proc(images=[dummy] * len(chunk), text=chunk, padding="max_length",
+                                      return_tensors="pt").to(self.device)
+            with torch.no_grad():
+                out = self.siglip(**inputs)
+            embs.append(out.text_embeds / out.text_embeds.norm(dim=-1, keepdim=True))
+        return torch.cat(embs, dim=0)
+
+    def gate_cosines(self, siglip_image_emb: np.ndarray) -> np.ndarray:
+        """Cosine of an (L2-normalised) SigLIP2 image embedding with every gate prompt."""
+        t = self.gate_text_embs.cpu().numpy().astype(np.float32)
+        return t @ np.asarray(siglip_image_emb, dtype=np.float32)
 
     def detect(self, pil: Image.Image, prompt: str) -> list[dict]:
         inputs = self.gdino_proc(images=pil, text=prompt, return_tensors="pt").to(self.device)
@@ -218,6 +240,10 @@ class FinalInferencePipeline:
         self.known_categories = list(self.idx_to_cat.values())
         self.known_canonical = {normalize_category(c) for c in self.known_categories} - {None}
         self.gdino_prompt = detector_prompt()
+        self.gate = OS.GateConfig.load()
+        # The detector only provides crop boxes. In full_image mode it is not needed at all
+        # (it cost ~1-1.5 s per request on CPU). ML_DETECTOR_MODE=always restores the old behaviour.
+        self.detector_mode = os.environ.get("ML_DETECTOR_MODE", "auto")
 
         store_dir = store_dir or os.environ.get("ML_GALLERY_DIR", str(PROJECT_ROOT / "data" / "gallery"))
         self.store = GalleryStore(store_dir, self.model_version, V.VISUAL_DIM, V.SIGLIP_DIM).load()
@@ -227,71 +253,45 @@ class FinalInferencePipeline:
     def entropy(probs: torch.Tensor) -> float:
         return -torch.sum(probs * torch.log(probs + 1e-8)).item()
 
-    def run_perception(self, pil_img: Image.Image) -> dict:
-        detections = self.models.detect(pil_img, self.gdino_prompt)
+    def needs_detector(self) -> bool:
+        return self.detector_mode == "always" or self.crop_policy != "full_image"
+
+    def run_detector(self, pil_img: Image.Image):
+        """Detections for cropping, or None when the crop policy does not need them."""
+        if not self.needs_detector():
+            return None
+        return self.models.detect(pil_img, self.gdino_prompt)
+
+    def run_perception(self, pil_img: Image.Image, siglip_emb: np.ndarray | None = None,
+                       detections=None) -> dict:
+        """Open-set gate. Classification only — the detector never changes the decision."""
+        if siglip_emb is None:
+            siglip_emb = self.models.embed_siglip_image(pil_img)
+        prompt_cos = self.models.gate_cosines(siglip_emb)
+        names, cos = OS.label_cosines(prompt_cos, self.models.gate_labels)
+        gate = OS.decide(names, cos, self.gate)
 
         det_cat, det_conf = None, 0.0
         if detections:
-            valid_dets = []
-            for d in detections:
-                c = normalize_detector_label(d.get("label"))
-                if c in self.known_canonical and d.get("score", 0.0) >= 0.35:
-                    valid_dets.append((d, c))
-            if valid_dets:
-                best, det_cat = max(valid_dets, key=lambda pair: pair[0]["score"])
-                det_conf = best["score"]
-            else:
-                best = max(detections, key=lambda d: d.get("score", 0.0))
-                det_conf = best.get("score", 0.0)
-                det_cat = normalize_detector_label(best.get("label"))
-                if det_cat not in self.known_canonical:
-                    det_cat = None
-
-        probs = self.models.classify_probs(pil_img)
-        sorted_probs, sorted_indices = torch.sort(probs, descending=True)
-        top1 = sorted_probs[0].item()
-        top2 = sorted_probs[1].item() if len(sorted_probs) > 1 else 0.0
-        margin = top1 - top2
-        ent = self.entropy(probs)
-        idx_str = str(sorted_indices[0].item())
-        clf_raw = self.idx_to_cat.get(idx_str, "unknown")
-        clf_cat = normalize_category(clf_raw)
-
-        # Robust decision logic
-        agreement = det_cat is not None and det_cat == clf_cat
-        decision = "UNCERTAIN"
-        final_cat = None
-
-        if agreement:
-            decision = "KNOWN"
-            final_cat = clf_cat
-        elif clf_cat is not None and det_cat is None and top1 >= 0.6:
-            decision = "KNOWN"
-            final_cat = clf_cat
-        elif det_cat is not None and (clf_cat is None or top1 < 0.6):
-            decision = "KNOWN" if det_conf >= 0.6 else "UNCERTAIN"
-            final_cat = det_cat
-        elif clf_raw in ("other", "unknown") and det_cat is None:
-            decision = "UNKNOWN"
-            final_cat = None
-        elif ent >= OPEN_SET_ENTROPY and not agreement:
-            decision = "UNKNOWN"
-            final_cat = None
-        else:
-            final_cat = det_cat or clf_cat
+            best = max(detections, key=lambda d: d.get("score", 0.0))
+            det_conf = float(best.get("score", 0.0))
+            det_cat = normalize_detector_label(best.get("label"))
 
         return {
-            "category": final_cat,
-            "confidence": top1,
-            "decision": decision,
-            "margin": margin,
-            "entropy": ent,
-            "detector_category": det_cat,
+            "category": gate["category"],
+            "candidate_category": gate["candidate_category"],
+            "confidence": gate["confidence"],
+            "decision": gate["decision"],
+            "reason": gate["reason"],
+            "margin": gate["margin"],
+            "unsupported_prob": gate["unsupported_prob"],
+            "closest_unsupported": gate["closest_unsupported"],
+            "probs": gate["probs"],
+            "detector_category": det_cat,          # informational only
             "detector_confidence": det_conf,
-            "detections": detections,
-            "classifier_top1": top1,
-            "classifier_top2": top2,
-            "classifier_label_raw": clf_raw,
+            "detections": detections or [],
+            "detector_ran": detections is not None,
+            "gate_provenance": self.gate.provenance,
         }
 
     # ------------------------------------------------------------------ search
@@ -302,33 +302,67 @@ class FinalInferencePipeline:
             return {"error": "Invalid image"}
         return self.infer_pil(pil_img, text_query=text_query, top_k=top_k, return_debug=return_debug)
 
-    def infer_pil(self, pil_img: Image.Image, text_query=None, top_k=5, return_debug=False):
-        perception = self.run_perception(pil_img)
+    def infer_pil(self, pil_img: Image.Image, text_query=None, top_k=5, return_debug=False,
+                  allowed_ids=None, timings: dict | None = None):
+        """Image (+ optional text) search.
+
+        ``allowed_ids``: only these gallery items may be returned (the backend passes the
+        eligible opposite-type open reports). ``None`` means unrestricted.
+        """
+        import time as _t
+        timings = timings if timings is not None else {}
+        t0 = _t.perf_counter()
+        detections = self.run_detector(pil_img)
+        timings["detector_s"] = round(_t.perf_counter() - t0, 4) if detections is not None else 0.0
+
+        # Full-image SigLIP2 embedding is computed once and reused for the gate and retrieval.
+        t0 = _t.perf_counter()
+        full_siglip = self.models.embed_siglip_image(pil_img)
+        timings["siglip_image_s"] = round(_t.perf_counter() - t0, 4)
+        t0 = _t.perf_counter()
+        perception = self.run_perception(pil_img, siglip_emb=full_siglip, detections=detections)
+        timings["gate_s"] = round(_t.perf_counter() - t0, 4)
         crop_img, crop_info = select_crop(
-            pil_img, perception["detections"], policy=self.crop_policy, expected_category=perception["category"]
+            pil_img, detections, policy=self.crop_policy,
+            expected_category=perception["category"] or perception["candidate_category"]
         )
 
         response = {
             "model_version": self.model_version,
+            "status": "OK",
             "perception": {
                 "category": perception["category"],
+                "candidate_category": perception["candidate_category"],
                 "confidence": round(perception["confidence"], 4),
                 "decision": perception["decision"],
+                "reason": perception["reason"],
+                "unsupported_prob": perception["unsupported_prob"],
+                "closest_unsupported": perception["closest_unsupported"],
             },
             "crop": crop_info.to_dict(),
             "matches": [],
+            "timings": timings,
         }
-        # NOTE: UNKNOWN is not used to reject the query (pre-existing UI-lab bypass, kept as-is
-        # in Phase 1 — the 2-class laptop/Laptop head makes every image UNKNOWN).
+        if perception["decision"] == OS.UNSUPPORTED_ITEM:
+            # Hard stop: no retrieval, therefore no candidates and no auto-matches.
+            response["status"] = OS.UNSUPPORTED_ITEM
+            return response
 
+        t0 = _t.perf_counter()
         visual_emb = self.models.embed_visual(crop_img)
-        siglip_emb = self.models.embed_siglip_image(crop_img)
+        timings["visual_s"] = round(_t.perf_counter() - t0, 4)
+        if crop_img is pil_img:  # full-image policy/fallback: reuse the embedding
+            siglip_emb = full_siglip
+        else:
+            siglip_emb = self.models.embed_siglip_image(crop_img)
 
         # Primary retrieval: SigLIP2 baseline by default, or M4-C visual
+        t0 = _t.perf_counter()
         if self.retrieval_mode == "siglip":
-            sims, indices = self.store.search_siglip(siglip_emb, top_k * 2)
+            sims, indices = self.store.search_siglip(siglip_emb, top_k * 2, allowed_ids=allowed_ids)
         else:
-            sims, indices = self.store.search(visual_emb, top_k * 2)
+            sims, indices = self.store.search(visual_emb, top_k * 2, allowed_ids=allowed_ids)
+        timings["search_s"] = round(_t.perf_counter() - t0, 4)
 
         if not indices:
             return response
@@ -346,6 +380,7 @@ class FinalInferencePipeline:
             t_sim = float(np.dot(t_emb, self.store.siglip[idx])) if t_emb is not None else 0.0
             text_missing = 1.0 if t_emb is None else 0.0
             decision = "review"
+            prob = float(primary_sim)
             if self.reranker is not None:
                 try:
                     prob = float(self.reranker.predict_proba([[s_sim, v_sim, t_sim, text_missing]])[0][1])
@@ -355,8 +390,8 @@ class FinalInferencePipeline:
                     decision = "candidate"
                 elif prob < REJECT_PROB:
                     decision = "reject"
-            else:
-                prob = float(primary_sim)
+            if perception["decision"] != OS.SUPPORTED and decision == "candidate":
+                decision = "review"  # uncertain category: a human must look, never auto-match
             candidates.append({
                 "item_id": g.item_id,
                 "category": g.category,
@@ -381,28 +416,37 @@ class FinalInferencePipeline:
         if return_debug:
             response["debug"] = {
                 "perception": {k: perception[k] for k in (
-                    "detections", "classifier_top1", "classifier_top2", "margin", "entropy",
-                    "detector_category", "classifier_label_raw")},
+                    "detections", "probs", "margin", "unsupported_prob", "detector_category",
+                    "detector_confidence", "detector_ran")},
                 "candidates_raw": [c.get("_debug") for c in aggregated[:top_k]],
             }
+        for m in response["matches"]:
+            m.pop("_debug", None)
         return response
 
-    def search_text(self, text_query: str, top_k=5) -> dict:
+    def search_text(self, text_query: str, top_k=5, allowed_ids=None) -> dict:
         """Text-only search: SigLIP2 text embedding vs. stored SigLIP2 gallery image embeddings.
 
         The calibrator was fitted on (visual, text) pairs and cannot score text alone, so the
         score here is SigLIP2's own sigmoid match probability, and every match is "review".
         """
         response = {"model_version": self.model_version, "perception": None, "crop": None,
-                    "mode": "text_only", "matches": []}
-        if len(self.store) == 0:
+                    "mode": "text_only", "status": "OK", "matches": []}
+        rows = self.store.allowed_rows(allowed_ids)
+        if len(self.store) == 0 or (rows is not None and rows.size == 0):
             return response
         t_emb = self.models.embed_siglip_text(text_query, Image.new("RGB", (224, 224)))
         sims = np.asarray(self.store.siglip, dtype=np.float32) @ t_emb
+        if rows is not None:
+            mask = np.full(sims.shape, -np.inf, dtype=np.float32)
+            mask[rows] = 0.0
+            sims = sims + mask
         # Calibrated text probability aligned with visual retrieval scale
         probs = 1.0 / (1.0 + np.exp(-(sims - 0.20) * 15.0))
         best = {}
         for idx in np.argsort(-sims):
+            if not np.isfinite(sims[idx]):
+                break
             g = self.store.entries[int(idx)]
             if g.item_id in best:
                 best[g.item_id]["supporting_views"] += 1
@@ -420,9 +464,18 @@ class FinalInferencePipeline:
         with open(image_path, "rb") as f:
             return self.add_image_bytes(f.read(), item_id, item_cat)
 
-    def add_image_bytes(self, data: bytes, item_id: str, item_cat=None) -> dict:
+    def add_image_bytes(self, data: bytes, item_id: str, item_cat=None, replace: bool = False) -> dict:
+        """Embed and store a gallery image.
+
+        ``replace=True`` drops any other content already indexed under ``item_id`` (used when a
+        report's photo changed); otherwise a second photo is stored as an extra view.
+        """
         sha = hashlib.sha256(data).hexdigest()
         category = normalize_category(item_cat)
+        if replace:
+            stale = [e for e in self.store.entries if e.item_id == item_id and e.sha256 != sha]
+            if stale:
+                self.store.remove(item_id)
         for e in self.store.find_by_sha(sha):
             if e.item_id == item_id:  # idempotent re-index: skip the embedding work
                 return {"status": "already_indexed", "item_id": item_id, "sha256": sha,
@@ -434,7 +487,7 @@ class FinalInferencePipeline:
                "HEIF": ".heic", "HEIC": ".heic"}.get(fmt, ".img")
         stored_path = self.store.store_image(data, sha, ext)
 
-        detections = self.models.detect(pil, self.gdino_prompt)
+        detections = self.run_detector(pil)
         crop_img, crop_info = select_crop(pil, detections, policy=self.crop_policy, expected_category=category)
         visual = self.models.embed_visual(crop_img)
         siglip = self.models.embed_siglip_image(crop_img)

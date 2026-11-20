@@ -38,7 +38,7 @@ def test_invalid_retrieval_request(client):
     assert response.status_code == 400
     data = response.json()
     assert "detail" in data
-    assert data["detail"] == "A query image or text is required."
+    assert data["detail"]["message"] == "A query image or text is required."
 
 def test_valid_report_creation(client):
     response = client.post(

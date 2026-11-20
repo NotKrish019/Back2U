@@ -1,0 +1,53 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "back2u/campus_validation/instance.schema.json",
+ "title": "Campus validation object (one physical item, 4 views)",
+ "type": "object",
+ "required": ["category", "physical_instance_id", "consent", "views", "identity_basis", "collected_by", "collected_on"],
+ "properties": {
+  "category": {"enum": ["laptop", "mobile_phone", "wallet", "earphones", "headphones", "keys", "book"]},
+  "physical_instance_id": {"type": "string", "pattern": "^campus_val:(laptop|mobile_phone|wallet|earphones|headphones|keys|book)_0[1-4]$"},
+  "lookalike_of": {"type": ["string", "null"], "description": "physical_instance_id of the look-alike twin (slots 01<->02)"},
+  "description": {"type": "string", "description": "brand, colour, distinguishing marks; no personal data"},
+  "identity_basis": {"type": "string", "description": "why all views are the same physical object"},
+  "collected_by": {"type": "string", "description": "collector pseudonym, not a real name"},
+  "collected_on": {"type": "string", "format": "date"},
+  "consent": {
+   "type": "object", "required": ["granted", "form_version"],
+   "properties": {
+    "granted": {"type": "boolean"},
+    "form_version": {"type": "string"},
+    "owner_pseudonym": {"type": "string"},
+    "allows_publication_of_photos": {"type": "boolean", "default": false},
+    "withdrawn_on": {"type": ["string", "null"], "format": "date"}
+   }
+  },
+  "privacy_review": {
+   "type": "object",
+   "properties": {
+    "faces_absent": {"type": "boolean"}, "screens_off_or_blank": {"type": "boolean"},
+    "no_names_ids_or_addresses": {"type": "boolean"}, "exif_gps_stripped": {"type": "boolean"},
+    "reviewed_by": {"type": "string"}
+   }
+  },
+  "views": {
+   "type": "object",
+   "propertyNames": {"pattern": "^view_0[1-4]\\.(jpg|jpeg|png|heic)$"},
+   "additionalProperties": {
+    "type": "object",
+    "required": ["role", "background", "viewpoint", "clutter"],
+    "properties": {
+     "role": {"enum": ["owner", "found"]},
+     "background": {"type": "string", "description": "e.g. 'hostel desk', 'library table'"},
+     "background_id": {"enum": ["A", "B", "C"]},
+     "viewpoint": {"enum": ["top_down", "front", "oblique_45", "back", "side", "low_angle", "other"]},
+     "clutter": {"type": "boolean"},
+     "lighting": {"enum": ["daylight", "indoor_warm", "indoor_cool", "mixed", "low_light"]},
+     "device": {"type": "string", "description": "phone model, e.g. 'iPhone 13'"},
+     "bbox": {"type": ["array", "null"], "items": {"type": "number"}, "minItems": 4, "maxItems": 4},
+     "bbox_status": {"enum": ["pending", "human_verified"]}
+    }
+   }
+  }
+ }
+}

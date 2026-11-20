@@ -1,17 +1,75 @@
 {
  "category": "keys",
- "physical_instance_id": "keys_c0001",
+ "physical_instance_id": "campus_val:keys_01",
  "source": "campus_collection_2026",
  "image_kind": "original_photo",
  "description": "Free-text description of the physical object (brand, colour, distinguishing marks)",
  "identity_status": "TRUSTWORTHY",
  "identity_basis": "Photographed by collector in one session; object never left collector's hands between views",
- "owner_confirmed": false,
  "training_overlap_risk": "NONE_KNOWN",
  "originals_local": true,
  "split": "eval_pilot",
  "views": {
-  "view_01.jpg": {"bbox": [0, 0, 100, 100], "bbox_status": "human_verified", "background": "library desk", "lighting": "daylight"},
-  "view_02.jpg": {"bbox": null, "bbox_status": "pending"}
+  "view_01.jpg": {
+   "role": "owner",
+   "background": "hostel desk",
+   "background_id": "A",
+   "viewpoint": "top_down",
+   "clutter": false,
+   "lighting": "daylight",
+   "device": "",
+   "bbox": null,
+   "bbox_status": "pending"
+  },
+  "view_02.jpg": {
+   "role": "owner",
+   "background": "hostel desk",
+   "background_id": "A",
+   "viewpoint": "oblique_45",
+   "clutter": false,
+   "lighting": "daylight",
+   "device": "",
+   "bbox": null,
+   "bbox_status": "pending"
+  },
+  "view_03.jpg": {
+   "role": "found",
+   "background": "library table",
+   "background_id": "B",
+   "viewpoint": "side",
+   "clutter": false,
+   "lighting": "indoor_cool",
+   "device": "",
+   "bbox": null,
+   "bbox_status": "pending"
+  },
+  "view_04.jpg": {
+   "role": "found",
+   "background": "cafeteria table",
+   "background_id": "C",
+   "viewpoint": "low_angle",
+   "clutter": true,
+   "lighting": "indoor_warm",
+   "device": "",
+   "bbox": null,
+   "bbox_status": "pending"
+  }
+ },
+ "lookalike_of": "campus_val:keys_02",
+ "collected_by": "collector_A",
+ "collected_on": "2026-12-01",
+ "consent": {
+  "granted": false,
+  "form_version": "v1",
+  "owner_pseudonym": "owner_07",
+  "allows_publication_of_photos": false,
+  "withdrawn_on": null
+ },
+ "privacy_review": {
+  "faces_absent": false,
+  "screens_off_or_blank": false,
+  "no_names_ids_or_addresses": false,
+  "exif_gps_stripped": false,
+  "reviewed_by": ""
  }
 }

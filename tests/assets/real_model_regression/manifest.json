@@ -1,0 +1,992 @@
+[
+ {
+  "file": "images/backpack_02.jpg",
+  "class": "backpack",
+  "kind": "unsupported",
+  "label": null,
+  "sha256": "07f21d139617f1dd0641f87d02a9b062474dfce36c05ae510e89c6c6dceab0cc",
+  "source": "wikimedia_commons",
+  "title": "File:Backpack (AM 2014.66.1-1).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Backpack_(AM_2014.66.1-1).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/Backpack_%28AM_2014.66.1-1%29.jpg/500px-Backpack_%28AM_2014.66.1-1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 4.0",
+  "author": "Alexto Production",
+  "original_size": [
+   4572,
+   3278
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/backpack_14.jpg",
+  "class": "backpack",
+  "kind": "unsupported",
+  "label": null,
+  "sha256": "d3a900c517c4feae0c2c72db2a6d88ffe82416c7fb3209d7b235349ca23b6989",
+  "source": "wikimedia_commons",
+  "title": "File:Fjallraven, OutDoor 2018, Friedrichshafen (1X7A0438).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Fjallraven,_OutDoor_2018,_Friedrichshafen_(1X7A0438).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Fjallraven%2C_OutDoor_2018%2C_Friedrichshafen_%281X7A0438%29.jpg/500px-Fjallraven%2C_OutDoor_2018%2C_Friedrichshafen_%281X7A0438%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Matti Blume",
+  "original_size": [
+   4480,
+   5600
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/basketball_10.jpg",
+  "class": "basketball",
+  "kind": "held_out_unsupported",
+  "label": null,
+  "sha256": "c9b2ec5736668b438465f0435324d5f0ec9796144abe1fd11b13fabfed575e40",
+  "source": "wikimedia_commons",
+  "title": "File:Basketball (Ball).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Basketball_(Ball).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/Basketball_%28Ball%29.jpg/500px-Basketball_%28Ball%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 3.0",
+  "author": "see page",
+  "original_size": [
+   822,
+   755
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/basketball_14.jpg",
+  "class": "basketball",
+  "kind": "held_out_unsupported",
+  "label": null,
+  "sha256": "3b25b361672cbc8bb70bc2609e9f9ca259e9357039d8f6c26f7aae8f02391648",
+  "source": "wikimedia_commons",
+  "title": "File:Beach of bantayan 2017 garbage ball.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Beach_of_bantayan_2017_garbage_ball.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/93/Beach_of_bantayan_2017_garbage_ball.jpg/500px-Beach_of_bantayan_2017_garbage_ball.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "\u00d8yvind Holmstad",
+  "original_size": [
+   5472,
+   3648
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/book_01.jpg",
+  "class": "book",
+  "kind": "supported",
+  "label": "book",
+  "sha256": "62792c8321e8248c89d4dc00badbeb0619dfe57467dec86f05ed2998b9c9fa02",
+  "source": "wikimedia_commons",
+  "title": "File:Anonymous - Binding from Prayer Book - Walters W578binding - Closed Top.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Anonymous_-_Binding_from_Prayer_Book_-_Walters_W578binding_-_Closed_Top.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Anonymous_-_Binding_from_Prayer_Book_-_Walters_W578binding_-_Closed_Top.jpg/500px-Anonymous_-_Binding_from_Prayer_Book_-_Walters_W578binding_-_Closed_Top.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "Public domain",
+  "author": "<span title='unknown creator of a",
+  "original_size": [
+   1787,
+   1799
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/book_06.jpg",
+  "class": "book",
+  "kind": "supported",
+  "label": "book",
+  "sha256": "940aedcf972b7c3b863ba28dac2c730e753364e416577226ab8055a3b9f3a36a",
+  "source": "wikimedia_commons",
+  "title": "File:Bamboo book - closed - UCR.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Bamboo_book_-_closed_-_UCR.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Bamboo_book_-_closed_-_UCR.jpg/500px-Bamboo_book_-_closed_-_UCR.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 2.0",
+  "author": "vlasta2, bluefootedbooby o",
+  "original_size": [
+   2448,
+   1880
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/book_10.jpg",
+  "class": "book",
+  "kind": "supported",
+  "label": "book",
+  "sha256": "ae1d8b5fd19186ff90bbd18123974c7cef2a5fef0524752ab0e7974282769d05",
+  "source": "wikimedia_commons",
+  "title": "File:Book cover (AM 2016.56.15-5).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Book_cover_(AM_2016.56.15-5).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/Book_cover_%28AM_2016.56.15-5%29.jpg/500px-Book_cover_%28AM_2016.56.15-5%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 4.0",
+  "author": "not researched",
+  "original_size": [
+   3020,
+   4134
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/book_14.jpg",
+  "class": "book",
+  "kind": "supported",
+  "label": "book",
+  "sha256": "ca7ec0263bb0c06a0904384182d1593de5a7a966e8c7e003e4c34affcbc1fedd",
+  "source": "wikimedia_commons",
+  "title": "File:Cover, book (AM 1995.101.12-3).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Cover,_book_(AM_1995.101.12-3).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Cover%2C_book_%28AM_1995.101.12-3%29.jpg/500px-Cover%2C_book_%28AM_1995.101.12-3%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 4.0",
+  "author": "Unknown authorUnknown author",
+  "original_size": [
+   1716,
+   1311
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/book_15.jpg",
+  "class": "book",
+  "kind": "supported",
+  "label": "book",
+  "sha256": "e8d2fda6560c1dc42188d3112c7910af4ea84d0ad58ab7330df1a9dd46888688",
+  "source": "wikimedia_commons",
+  "title": "File:Cover, book (AM 1995.101.12-4).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Cover,_book_(AM_1995.101.12-4).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Cover%2C_book_%28AM_1995.101.12-4%29.jpg/500px-Cover%2C_book_%28AM_1995.101.12-4%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 4.0",
+  "author": "Unknown authorUnknown author",
+  "original_size": [
+   1261,
+   1399
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/earphones_00.jpg",
+  "class": "earphones",
+  "kind": "supported",
+  "label": "earphones",
+  "sha256": "bbbd11b4a85e034670c29acf8a078e52498f6679073d10586634ce0be21440f3",
+  "source": "wikimedia_commons",
+  "title": "File:ActiveSound wireless earbuds by Hykker (POJM200483) Brand of Biedronka.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:ActiveSound_wireless_earbuds_by_Hykker_(POJM200483)_Brand_of_Biedronka.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/ActiveSound_wireless_earbuds_by_Hykker_%28POJM200483%29_Brand_of_Biedronka.jpg/500px-ActiveSound_wireless_earbuds_by_Hykker_%28POJM200483%29_Brand_of_Biedronka.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "Public domain",
+  "author": "Warszawska r\u00f3g Szerokiej w Tomaszowie Mazow",
+  "original_size": [
+   1852,
+   1712
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/earphones_04.jpg",
+  "class": "earphones",
+  "kind": "supported",
+  "label": "earphones",
+  "sha256": "aa405f5e2e85db005993f95cce6d4174309ca892346c165ddcd8da311907592c",
+  "source": "wikimedia_commons",
+  "title": "File:Bose Ultra Open Earbuds - 1.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Bose_Ultra_Open_Earbuds_-_1.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Bose_Ultra_Open_Earbuds_-_1.jpg/500px-Bose_Ultra_Open_Earbuds_-_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Kyu3a",
+  "original_size": [
+   2462,
+   1516
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/earphones_06.jpg",
+  "class": "earphones",
+  "kind": "supported",
+  "label": "earphones",
+  "sha256": "f84c5ee5aabad21f237a822cb6aaa408b9e0958f3356042aad739f0ee95a222e",
+  "source": "wikimedia_commons",
+  "title": "File:Bose Ultra Open Earbuds - 5.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Bose_Ultra_Open_Earbuds_-_5.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Bose_Ultra_Open_Earbuds_-_5.jpg/500px-Bose_Ultra_Open_Earbuds_-_5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Kyu3a",
+  "original_size": [
+   1943,
+   2591
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/earphones_11.jpg",
+  "class": "earphones",
+  "kind": "supported",
+  "label": "earphones",
+  "sha256": "bbc82cb55852a2c47f0161df05f7f1684ae5b194dbb613faf7671d245e339ce6",
+  "source": "wikimedia_commons",
+  "title": "File:Earbuds with UKCA marking.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Earbuds_with_UKCA_marking.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Earbuds_with_UKCA_marking.jpg/500px-Earbuds_with_UKCA_marking.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:159753&action=edit&redlink=1\" class=\"new\" title=\"User:15",
+  "original_size": [
+   1000,
+   1176
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/earphones_16.jpg",
+  "class": "earphones",
+  "kind": "supported",
+  "label": "earphones",
+  "sha256": "fb0b399ba75710121f3e0f2f64bddab101582a023b429ddc3cd9f4890d4cfe10",
+  "source": "wikimedia_commons",
+  "title": "File:IPod earbuds earpieces.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:IPod_earbuds_earpieces.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/IPod_earbuds_earpieces.jpg/500px-IPod_earbuds_earpieces.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:L33th4x0r&action=edit&redlink=1\" class=\"new\" title=\"User",
+  "original_size": [
+   3024,
+   4032
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/headphones_03.jpg",
+  "class": "headphones",
+  "kind": "supported",
+  "label": "headphones",
+  "sha256": "5f0f3a297331288831868cd4296463fd47109a696b6da719625d7a479c3a8abd",
+  "source": "wikimedia_commons",
+  "title": "File:2023 S\u0142uchawki Sennheiser HD 540.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:2023_S%C5%82uchawki_Sennheiser_HD_540.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/2023_S%C5%82uchawki_Sennheiser_HD_540.jpg/500px-2023_S%C5%82uchawki_Sennheiser_HD_540.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Jacek Halick",
+  "original_size": [
+   4783,
+   3340
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/headphones_08.jpg",
+  "class": "headphones",
+  "kind": "supported",
+  "label": "headphones",
+  "sha256": "41d6663e1fff5d980478c2d6e70f6a777849b947503ff9f47e70d04bfcf7801f",
+  "source": "wikimedia_commons",
+  "title": "File:A Headphone.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:A_Headphone.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/A_Headphone.jpg/120px-A_Headphone.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Kid Keen 47",
+  "original_size": [
+   240,
+   320
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/headphones_09.jpg",
+  "class": "headphones",
+  "kind": "supported",
+  "label": "headphones",
+  "sha256": "01e1da5e00460b6713290a5f220cd187bc574eba79ae5a22ca57a03f9945a0e5",
+  "source": "wikimedia_commons",
+  "title": "File:AudioQuest NightHawk Carbon headphones (33582571334).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:AudioQuest_NightHawk_Carbon_headphones_(33582571334).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/AudioQuest_NightHawk_Carbon_headphones_%2833582571334%29.jpg/500px-AudioQuest_NightHawk_Carbon_headphones_%2833582571334%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 2.0",
+  "author": "david falkner from Birmingh",
+  "original_size": [
+   1544,
+   1600
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/headphones_10.jpg",
+  "class": "headphones",
+  "kind": "supported",
+  "label": "headphones",
+  "sha256": "4796198f9a9806c4f8d176900fde840c28b49d4e05ac262accda3f2fa3e56068",
+  "source": "wikimedia_commons",
+  "title": "File:AudioQuest NightHawk Carbon headphones (34424584065).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:AudioQuest_NightHawk_Carbon_headphones_(34424584065).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/AudioQuest_NightHawk_Carbon_headphones_%2834424584065%29.jpg/500px-AudioQuest_NightHawk_Carbon_headphones_%2834424584065%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 2.0",
+  "author": "david falkner from Birmingh",
+  "original_size": [
+   2156,
+   1600
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/headphones_13.jpg",
+  "class": "headphones",
+  "kind": "supported",
+  "label": "headphones",
+  "sha256": "66e96a1f310094fe72e27aab33144f8653fa07d53b8a904f710b96ef348197cc",
+  "source": "wikimedia_commons",
+  "title": "File:Black brown headphones wired.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Black_brown_headphones_wired.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Black_brown_headphones_wired.jpg/500px-Black_brown_headphones_wired.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 4.0",
+  "author": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Marcus-richardson&action=edit&redlink=1\" class=\"new\" tit",
+  "original_size": [
+   2560,
+   1920
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/keys_01.jpg",
+  "class": "keys",
+  "kind": "supported",
+  "label": "keys",
+  "sha256": "c62a17ef2f204a7cf765e72d75df83ea08b44f371e565e04f373039213e7dd18",
+  "source": "wikimedia_commons",
+  "title": "File:Car Keys 1.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Car_Keys_1.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/Car_Keys_1.jpg/500px-Car_Keys_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Gaurav Dhwaj Khadka",
+  "original_size": [
+   3024,
+   4032
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/keys_04.jpg",
+  "class": "keys",
+  "kind": "supported",
+  "label": "keys",
+  "sha256": "95ab704cd6be0ba74b782f6100a8405f9412fa15048d522e8fcfa89121955dea",
+  "source": "wikimedia_commons",
+  "title": "File:KEYS .jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:KEYS_.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/KEYS_.jpg/500px-KEYS_.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Kid Keen 47",
+  "original_size": [
+   3024,
+   4032
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/keys_05.jpg",
+  "class": "keys",
+  "kind": "supported",
+  "label": "keys",
+  "sha256": "915e96c30c23710901c11c2b9140a6d191c6b01c7317f5ad3d8e3015296b7743",
+  "source": "wikimedia_commons",
+  "title": "File:Key Ring.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Key_Ring.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Key_Ring.jpg/500px-Key_Ring.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Jubair1985",
+  "original_size": [
+   3698,
+   2465
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/keys_10.jpg",
+  "class": "keys",
+  "kind": "supported",
+  "label": "keys",
+  "sha256": "1c1d2d400ba7165a4caca1fbabfb22133187b6042fada1ab9437cf902aa6de08",
+  "source": "wikimedia_commons",
+  "title": "File:Key ring.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Key_ring.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Key_ring.jpg/500px-Key_ring.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Basile Morin",
+  "original_size": [
+   4220,
+   4220
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/keys_18.jpg",
+  "class": "keys",
+  "kind": "supported",
+  "label": "keys",
+  "sha256": "4a2939f41b19f906f5ab886343dcfb702ae3b0e16b6b9e8ce7e8dee7864a162d",
+  "source": "wikimedia_commons",
+  "title": "File:Mix of keys 2019-06-28.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Mix_of_keys_2019-06-28.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/Mix_of_keys_2019-06-28.jpg/500px-Mix_of_keys_2019-06-28.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Wcis&action=edit&redlink=1\" class=\"new\" title=\"User:Wcis",
+  "original_size": [
+   2492,
+   3323
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/laptop_07.jpg",
+  "class": "laptop",
+  "kind": "supported",
+  "label": "laptop",
+  "sha256": "8003b464011823a6edadcd3854570cd160f017a14ff7c76a4dd4d1b47f4148b9",
+  "source": "wikimedia_commons",
+  "title": "File:EFTA00000884 - Computer workstation featuring a laptop keyboard mouse and multiple monitors on a light-colored desk.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:EFTA00000884_-_Computer_workstation_featuring_a_laptop_keyboard_mouse_and_multiple_monitors_on_a_light-colored_desk.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/EFTA00000884_-_Computer_workstation_featuring_a_laptop_keyboard_mouse_and_multiple_monitors_on_a_light-colored_desk.jpg/500px-EFTA00000884_-_Computer_workstation_featuring_a_laptop_keyboard_mouse_and_multiple_monitors_on_a_light-colored_desk.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "Public domain",
+  "author": "<a href=\"//commons.wikimedia.org/wiki/Category:Federal_Bureau_of_Investigation\" title=\"Category:Federal Bureau of Invest",
+  "original_size": [
+   1152,
+   768
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/laptop_11.jpg",
+  "class": "laptop",
+  "kind": "supported",
+  "label": "laptop",
+  "sha256": "0dc5c8899bcc4a1a4601b1d807bfb17b650386ca19f982cd74c7ac6b245bb18f",
+  "source": "wikimedia_commons",
+  "title": "File:Laptop and a mug (Unsplash).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Laptop_and_a_mug_(Unsplash).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/Laptop_and_a_mug_%28Unsplash%29.jpg/500px-Laptop_and_a_mug_%28Unsplash%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC0",
+  "author": "Ryan Riggins ryan_riggins",
+  "original_size": [
+   4261,
+   2822
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/laptop_13.jpg",
+  "class": "laptop",
+  "kind": "supported",
+  "label": "laptop",
+  "sha256": "7b36e992345cca89c03daba462aa909e41f974951a8df546412f61ad06f0125c",
+  "source": "wikimedia_commons",
+  "title": "File:Laptop on a desk (Unsplash).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Laptop_on_a_desk_(Unsplash).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Laptop_on_a_desk_%28Unsplash%29.jpg/500px-Laptop_on_a_desk_%28Unsplash%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC0",
+  "author": "Aleksi Tappura a",
+  "original_size": [
+   4928,
+   3264
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/laptop_14.jpg",
+  "class": "laptop",
+  "kind": "supported",
+  "label": "laptop",
+  "sha256": "a070f22c867471c0ad23ebb4c224fcb727969ae17297ded0b576b60319e5bb5c",
+  "source": "wikimedia_commons",
+  "title": "File:Laptop on a green thumb's desk (Unsplash).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Laptop_on_a_green_thumb%27s_desk_(Unsplash).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Laptop_on_a_green_thumb%27s_desk_%28Unsplash%29.jpg/500px-Laptop_on_a_green_thumb%27s_desk_%28Unsplash%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC0",
+  "author": "Farrel Nobel farrelnobel",
+  "original_size": [
+   4353,
+   2721
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/laptop_15.jpg",
+  "class": "laptop",
+  "kind": "supported",
+  "label": "laptop",
+  "sha256": "2979cebfb3c365ff30675a0785d9a29e2efa25602be3505f84a84211b0334dc2",
+  "source": "wikimedia_commons",
+  "title": "File:Laptop on a neat desk (Unsplash).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Laptop_on_a_neat_desk_(Unsplash).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/Laptop_on_a_neat_desk_%28Unsplash%29.jpg/500px-Laptop_on_a_neat_desk_%28Unsplash%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC0",
+  "author": "Norbert Levajsics levajsics",
+  "original_size": [
+   5891,
+   3927
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/mobile_phone_00.jpg",
+  "class": "mobile_phone",
+  "kind": "supported",
+  "label": "mobile_phone",
+  "sha256": "3931b453a1f001d3f3d11b54de1c4279ff67130d0e036b7ecc910e761ddcc10b",
+  "source": "wikimedia_commons",
+  "title": "File:5 different Smartphones.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:5_different_Smartphones.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/5_different_Smartphones.jpg/500px-5_different_Smartphones.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Kskhh",
+  "original_size": [
+   6016,
+   4000
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/mobile_phone_02.jpg",
+  "class": "mobile_phone",
+  "kind": "supported",
+  "label": "mobile_phone",
+  "sha256": "d0a4999ecf50748e1d4222b37b235cd61ff31eee1253f76a502c203d7deb6f15",
+  "source": "wikimedia_commons",
+  "title": "File:Back of Galaxy Note 10, Galaxy Note 10+ and Galaxy Note 10 Lite 20200220a.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Back_of_Galaxy_Note_10,_Galaxy_Note_10%2B_and_Galaxy_Note_10_Lite_20200220a.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Back_of_Galaxy_Note_10%2C_Galaxy_Note_10%2B_and_Galaxy_Note_10_Lite_20200220a.jpg/500px-Back_of_Galaxy_Note_10%2C_Galaxy_Note_10%2B_and_Galaxy_Note_10_Lite_20200220a.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Samsung Galaxy No",
+  "original_size": [
+   4032,
+   3024
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/mobile_phone_03.jpg",
+  "class": "mobile_phone",
+  "kind": "supported",
+  "label": "mobile_phone",
+  "sha256": "5f1aa46c4c8c9b7335790f3c070b15a6274f95bc1dadda8790d0f760a6b453e8",
+  "source": "wikimedia_commons",
+  "title": "File:Blackview A60 Smartphone Android mobile phone and folio case.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Blackview_A60_Smartphone_Android_mobile_phone_and_folio_case.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Blackview_A60_Smartphone_Android_mobile_phone_and_folio_case.jpg/500px-Blackview_A60_Smartphone_Android_mobile_phone_and_folio_case.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Acabashi",
+  "original_size": [
+   4656,
+   3492
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/mobile_phone_08.jpg",
+  "class": "mobile_phone",
+  "kind": "supported",
+  "label": "mobile_phone",
+  "sha256": "d65a102eb7e597fe5a54da7f83e49578b05ecac059a0dcac1cc9ac99805b5001",
+  "source": "wikimedia_commons",
+  "title": "File:Fediverse smartphone apps (photo by Elena Rossini).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Fediverse_smartphone_apps_(photo_by_Elena_Rossini).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Fediverse_smartphone_apps_%28photo_by_Elena_Rossini%29.jpg/500px-Fediverse_smartphone_apps_%28photo_by_Elena_Rossini%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Elexfedi",
+  "original_size": [
+   4833,
+   3222
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/mobile_phone_10.jpg",
+  "class": "mobile_phone",
+  "kind": "supported",
+  "label": "mobile_phone",
+  "sha256": "086b40fdcb649d4ec556435d25b8e9a43242af376fbf65e9c7af6246e05662b7",
+  "source": "wikimedia_commons",
+  "title": "File:Huawei U8950D no cover.JPG",
+  "page": "https://commons.wikimedia.org/wiki/File:Huawei_U8950D_no_cover.JPG",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Huawei_U8950D_no_cover.JPG/500px-Huawei_U8950D_no_cover.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 3.0",
+  "author": "Ilya Plekhanov",
+  "original_size": [
+   2000,
+   1333
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/mug_00.jpg",
+  "class": "mug",
+  "kind": "unsupported",
+  "label": null,
+  "sha256": "1fd18b415d6e9db9fda55a44ffdc3762e1425f64e5168209ae825afc229cbed0",
+  "source": "wikimedia_commons",
+  "title": "File:Amazon Echo Dot (virtual digital assistant) with normal coffee mug as size comparison.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Amazon_Echo_Dot_(virtual_digital_assistant)_with_normal_coffee_mug_as_size_comparison.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Amazon_Echo_Dot_%28virtual_digital_assistant%29_with_normal_coffee_mug_as_size_comparison.jpg/500px-Amazon_Echo_Dot_%28virtual_digital_assistant%29_with_normal_coffee_mug_as_size_comparison.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Pittigrilli",
+  "original_size": [
+   3700,
+   2100
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/mug_01.jpg",
+  "class": "mug",
+  "kind": "unsupported",
+  "label": null,
+  "sha256": "e34b92468c2aa49fb1920081f86d5e1cfac64b5ea0c1fc93a84011f6de39787b",
+  "source": "wikimedia_commons",
+  "title": "File:Atom Editor coffee mug, 2025-05-04.jpeg",
+  "page": "https://commons.wikimedia.org/wiki/File:Atom_Editor_coffee_mug,_2025-05-04.jpeg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Atom_Editor_coffee_mug%2C_2025-05-04.jpeg/500px-Atom_Editor_coffee_mug%2C_2025-05-04.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Nylki",
+  "original_size": [
+   3024,
+   3305
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/scissors_01.jpg",
+  "class": "scissors",
+  "kind": "held_out_unsupported",
+  "label": null,
+  "sha256": "29e1ace6b46f2ecc1d8523b86b704dd277e355bffa1df0891d1506ce95306572",
+  "source": "wikimedia_commons",
+  "title": "File:An old type scissors at Kakinada.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:An_old_type_scissors_at_Kakinada.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/An_old_type_scissors_at_Kakinada.jpg/500px-An_old_type_scissors_at_Kakinada.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 4.0",
+  "author": "Adityamadhav83",
+  "original_size": [
+   3120,
+   4160
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/scissors_09.jpg",
+  "class": "scissors",
+  "kind": "held_out_unsupported",
+  "label": null,
+  "sha256": "a5a5e5c1a4ce27b03a41831d7b34e4406a71f5fd96dfb1996ebc057562b532bb",
+  "source": "wikimedia_commons",
+  "title": "File:Pair of scissors with black handle, 2015-06-07.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Pair_of_scissors_with_black_handle,_2015-06-07.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/Pair_of_scissors_with_black_handle%2C_2015-06-07.jpg/500px-Pair_of_scissors_with_black_handle%2C_2015-06-07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Crisco 1492",
+  "original_size": [
+   3274,
+   2729
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/sneaker_00.jpg",
+  "class": "sneaker",
+  "kind": "unsupported",
+  "label": null,
+  "sha256": "483ac248c172b71c92aaf87b41e0d905818a0a0108216d6469d749c16a4219c8",
+  "source": "wikimedia_commons",
+  "title": "File:2023 Adidas Yeezy 350 V2 EF2905 (1).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:2023_Adidas_Yeezy_350_V2_EF2905_(1).jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/69/2023_Adidas_Yeezy_350_V2_EF2905_%281%29.jpg/500px-2023_Adidas_Yeezy_350_V2_EF2905_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Jacek Halicki",
+  "original_size": [
+   4509,
+   3264
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/sneaker_01.jpg",
+  "class": "sneaker",
+  "kind": "unsupported",
+  "label": null,
+  "sha256": "bdda013dc7adcd4169efc460636dcbdda86eea02c3edea22ccef600d8a37c482",
+  "source": "wikimedia_commons",
+  "title": "File:A Vans Sneaker On The Side.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:A_Vans_Sneaker_On_The_Side.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/A_Vans_Sneaker_On_The_Side.jpg/500px-A_Vans_Sneaker_On_The_Side.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Joeltorresmejia78",
+  "original_size": [
+   1600,
+   1200
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/stapler_02.jpg",
+  "class": "stapler",
+  "kind": "held_out_unsupported",
+  "label": null,
+  "sha256": "6a832d05ed3fbd9fea2c621e4731a06959be33e143b444f0ae8212392cd01ece",
+  "source": "wikimedia_commons",
+  "title": "File:A KOKUYO Stapler.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:A_KOKUYO_Stapler.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/A_KOKUYO_Stapler.jpg/500px-A_KOKUYO_Stapler.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Tbatb&action=edit&redlink=1\" class=\"new\" title=\"User:Tba",
+  "original_size": [
+   4032,
+   3024
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/stapler_10.jpg",
+  "class": "stapler",
+  "kind": "held_out_unsupported",
+  "label": null,
+  "sha256": "aaadf51dba949c0ab7c7f07d9c9eb69bcce99464caf58adde2d4a9be54a75c76",
+  "source": "wikimedia_commons",
+  "title": "File:Imej Dawai Kokot atau Ubat Stapler 01.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Imej_Dawai_Kokot_atau_Ubat_Stapler_01.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/Imej_Dawai_Kokot_atau_Ubat_Stapler_01.jpg/500px-Imej_Dawai_Kokot_atau_Ubat_Stapler_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC0",
+  "author": "Wiki Farazi",
+  "original_size": [
+   1280,
+   768
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/sunglasses_04.jpg",
+  "class": "sunglasses",
+  "kind": "unsupported",
+  "label": null,
+  "sha256": "113110e016ac426c3e066693850213dabebb73a21f54652cc315853d06c299ad",
+  "source": "wikimedia_commons",
+  "title": "File:Costa-del-mar-caldera-sunglasses.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Costa-del-mar-caldera-sunglasses.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Costa-del-mar-caldera-sunglasses.jpg/500px-Costa-del-mar-caldera-sunglasses.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Costa Del Mar",
+  "original_size": [
+   1024,
+   1024
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/sunglasses_08.jpg",
+  "class": "sunglasses",
+  "kind": "unsupported",
+  "label": null,
+  "sha256": "0fff46ee938fc307b833939bffb80ef1acd758aff9b9650a5da269624e92f5f8",
+  "source": "wikimedia_commons",
+  "title": "File:Koh Kut, Thailand, Sunglasses.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Koh_Kut,_Thailand,_Sunglasses.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Koh_Kut%2C_Thailand%2C_Sunglasses.jpg/500px-Koh_Kut%2C_Thailand%2C_Sunglasses.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 4.0",
+  "author": "Vyacheslav Argenberg",
+  "original_size": [
+   4032,
+   2688
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/teddy_bear_03.jpg",
+  "class": "teddy_bear",
+  "kind": "held_out_unsupported",
+  "label": null,
+  "sha256": "a6b72a288667b56b79e79243cb3052c38c50c4943dec0d04c391fea2bc35618b",
+  "source": "wikimedia_commons",
+  "title": "File:Little girl hugs teddy bear toy.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Little_girl_hugs_teddy_bear_toy.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Little_girl_hugs_teddy_bear_toy.jpg/500px-Little_girl_hugs_teddy_bear_toy.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 2.0",
+  "author": "Shixart1985",
+  "original_size": [
+   4016,
+   6016
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/teddy_bear_04.jpg",
+  "class": "teddy_bear",
+  "kind": "held_out_unsupported",
+  "label": null,
+  "sha256": "667b6acad26b14ff88df0230e256e94afbb7e4c2e71dc75ef6223b883beb1bd8",
+  "source": "wikimedia_commons",
+  "title": "File:Old Teddy Bear.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Old_Teddy_Bear.jpg",
+  "download_url": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Old_Teddy_Bear.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "license": "Public domain",
+  "author": "see page",
+  "original_size": [
+   257,
+   300
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/umbrella_01.jpg",
+  "class": "umbrella",
+  "kind": "unsupported",
+  "label": null,
+  "sha256": "753a1d8f91925f7cb83f943e12942ffdd6931ed543ebde9f66cf4914f74b08ad",
+  "source": "wikimedia_commons",
+  "title": "File:202602 Orange umbrella at the emergency stairs.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:202602_Orange_umbrella_at_the_emergency_stairs.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/202602_Orange_umbrella_at_the_emergency_stairs.jpg/500px-202602_Orange_umbrella_at_the_emergency_stairs.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Junyu-K",
+  "original_size": [
+   4500,
+   3000
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/umbrella_03.jpg",
+  "class": "umbrella",
+  "kind": "unsupported",
+  "label": null,
+  "sha256": "9685b913cbe45474206f5bf5cf7d11141f44c9f15ee198716887352fb9b27029",
+  "source": "wikimedia_commons",
+  "title": "File:Folded Umbrella.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Folded_Umbrella.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Folded_Umbrella.jpg/500px-Folded_Umbrella.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC0",
+  "author": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Swethasakthivel&action=edit&redlink=1\" class=\"new\" title",
+  "original_size": [
+   1199,
+   1600
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/wallet_01.jpg",
+  "class": "wallet",
+  "kind": "supported",
+  "label": "wallet",
+  "sha256": "0cba394f6f8a3aaa914672a2774167632cc9897bf43b3b56bdaf9fa0e0289530",
+  "source": "wikimedia_commons",
+  "title": "File:Aarong leather wallet.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Aarong_leather_wallet.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Aarong_leather_wallet.jpg/500px-Aarong_leather_wallet.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY-SA 4.0",
+  "author": "Nafis Fuad Ayon",
+  "original_size": [
+   3024,
+   4032
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/wallet_02.jpg",
+  "class": "wallet",
+  "kind": "supported",
+  "label": "wallet",
+  "sha256": "62d178408d18db30e87a8e9235d688173a1411db58d1479d0ae6f78335cb4dc6",
+  "source": "wikimedia_commons",
+  "title": "File:Czech Wallet.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Czech_Wallet.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Czech_Wallet.jpg/500px-Czech_Wallet.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 3.0",
+  "author": "<table style=\"margin: 1.5em auto; width:625px; background-color:#f6f6f6; border:2px solid #cccccc; padding:1px;\" cellspa",
+  "original_size": [
+   2592,
+   1944
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/wallet_04.jpg",
+  "class": "wallet",
+  "kind": "supported",
+  "label": "wallet",
+  "sha256": "df68813419ed0fa16174c325c6e1d4933e95d3ff98f33274a229af024bc7503c",
+  "source": "wikimedia_commons",
+  "title": "File:Flap Boy Slim Wallet from JAIMIE JACOBS 01.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Flap_Boy_Slim_Wallet_from_JAIMIE_JACOBS_01.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Flap_Boy_Slim_Wallet_from_JAIMIE_JACOBS_01.jpg/500px-Flap_Boy_Slim_Wallet_from_JAIMIE_JACOBS_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 4.0",
+  "author": "www.kartenetui.info",
+  "original_size": [
+   3629,
+   3019
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/wallet_05.jpg",
+  "class": "wallet",
+  "kind": "supported",
+  "label": "wallet",
+  "sha256": "47c2fddbbeaef918cde0bed1b9b9d39b14f8bc23474d56d3c1d218a6b5a21b0f",
+  "source": "wikimedia_commons",
+  "title": "File:Flap Boy Slim Wallet from JAIMIE JACOBS 02.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Flap_Boy_Slim_Wallet_from_JAIMIE_JACOBS_02.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/80/Flap_Boy_Slim_Wallet_from_JAIMIE_JACOBS_02.jpg/500px-Flap_Boy_Slim_Wallet_from_JAIMIE_JACOBS_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 4.0",
+  "author": "www.kartenetui.info",
+  "original_size": [
+   4032,
+   3024
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/wallet_06.jpg",
+  "class": "wallet",
+  "kind": "supported",
+  "label": "wallet",
+  "sha256": "788db679712cbde5daf218da477d50be3b7d9fb2dd16376bba564fd8ee5e0270",
+  "source": "wikimedia_commons",
+  "title": "File:Flap Boy Slim Wallet from JAIMIE JACOBS 03.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Flap_Boy_Slim_Wallet_from_JAIMIE_JACOBS_03.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Flap_Boy_Slim_Wallet_from_JAIMIE_JACOBS_03.jpg/500px-Flap_Boy_Slim_Wallet_from_JAIMIE_JACOBS_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC BY 4.0",
+  "author": "www.kartenetui.info",
+  "original_size": [
+   3535,
+   2303
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/water_bottle_02.jpg",
+  "class": "water_bottle",
+  "kind": "unsupported",
+  "label": null,
+  "sha256": "852f999ee9dd56249a18b0a0bde45ce627542e4cbb612bf41221577409a00abe",
+  "source": "wikimedia_commons",
+  "title": "File:Blue Waters bottle no label.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Blue_Waters_bottle_no_label.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Blue_Waters_bottle_no_label.jpg/500px-Blue_Waters_bottle_no_label.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC0",
+  "author": "999real",
+  "original_size": [
+   4000,
+   3000
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ },
+ {
+  "file": "images/water_bottle_04.jpg",
+  "class": "water_bottle",
+  "kind": "unsupported",
+  "label": null,
+  "sha256": "50bca51ef332a14e326c732a3f977c7c112fd5ffa4e9e6123eef5dc6641186f8",
+  "source": "wikimedia_commons",
+  "title": "File:Bottle of Water.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Bottle_of_Water.jpg",
+  "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Bottle_of_Water.jpg/500px-Bottle_of_Water.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "license": "CC0",
+  "author": "Jiafei Slay Queen",
+  "original_size": [
+   3120,
+   4160
+  ],
+  "derivative": "480 px thumbnail rendered by Wikimedia"
+ }
+]

@@ -1,192 +1,178 @@
-"""Automated regression suite verifying real models and inference pipeline.
+"""Real-model regression suite (portable: no dependency on git-ignored data/raw).
 
-Validates:
-1. Category classification accuracy on genuine test images.
-2. Recall@1 and Recall@5 on genuine multi-view object instances.
-3. Calibrated reranker precision and genuine match acceptance.
-4. Detection graceful degradation on unmappable/missing detections.
-5. End-to-end inference and gallery synchronization.
+Inputs
+- Real checkpoints (models/…) and the pretrained backbones. Without them every test is skipped
+  with an explicit reason.
+- tests/assets/real_model_regression/: licensed Wikimedia Commons photographs with manifest,
+  ground-truth labels, provenance and licence (see LICENSES.md; verify with
+  ``python scripts/datasets/regression_assets.py verify``).
+- Optional CO3D (research-only, never committed) for the genuine multi-view re-ID check; skipped
+  with a reason when absent.
+
+What the asset tests can and cannot show
+- Gate tests use genuine photos of supported, unsupported and held-out unsupported objects.
+- The asset re-ID test uses *synthetic* views (crop / colour / blur / JPEG of the same photo). It
+  guards against regressions in the embedding path; it is NOT evidence of real-world re-ID.
 """
 import io
+import json
 import os
 import sys
-import json
-import pytest
-import numpy as np
 from pathlib import Path
-from PIL import Image
+
+import numpy as np
+import pytest
+from PIL import Image, ImageEnhance, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from scripts.run_inference import FinalInferencePipeline, LiveModels, open_image_bytes
-from src.categories import normalize_category, CANONICAL_CATEGORIES
-from src.retrieval.gallery_store import GalleryStore
+from scripts.run_inference import FinalInferencePipeline, LiveModels  # noqa: E402
 
-# Check if real models should run (or run conditionally if checkpoints exist)
-CHECKPOINTS_EXIST = (ROOT / "models/checkpoints/m4_c/best_val_recall_at_1.pt").exists() and \
-                    (ROOT / "models/reranker_calibration.pkl").exists()
+ASSETS = ROOT / "tests/assets/real_model_regression"
+CO3D = ROOT / "data/raw/co3d_research_only"
+CHECKPOINTS = [ROOT / "models/checkpoints/m4_c/best_val_recall_at_1.pt", ROOT / "models/reranker_calibration.pkl"]
+MISSING = [str(p.relative_to(ROOT)) for p in CHECKPOINTS if not p.exists()]
 
-pytestmark = pytest.mark.skipif(not CHECKPOINTS_EXIST, reason="Real model checkpoints required")
+pytestmark = [
+    pytest.mark.skipif(bool(MISSING), reason=f"real checkpoints not present: {MISSING}"),
+    pytest.mark.skipif(os.environ.get("SKIP_REAL_MODELS") == "1", reason="SKIP_REAL_MODELS=1"),
+    pytest.mark.skipif(not (ASSETS / "manifest.json").exists(),
+                       reason="tests/assets/real_model_regression/manifest.json missing"),
+]
+
+
+def _manifest():
+    return json.loads((ASSETS / "manifest.json").read_text())
+
+
+def _load(m):
+    return Image.open(ASSETS / m["file"]).convert("RGB")
+
+
+def _phone_view(im: Image.Image, seed: int) -> Image.Image:
+    """Deterministic 'second photo' stand-in: crop, brightness/colour shift, blur, JPEG q=40."""
+    rng = np.random.default_rng(seed)
+    w, h = im.size
+    f = 0.85
+    x, y = int(rng.integers(0, w - int(w * f) + 1)), int(rng.integers(0, h - int(h * f) + 1))
+    im = im.crop((x, y, x + int(w * f), y + int(h * f)))
+    im = ImageEnhance.Brightness(im).enhance(float(rng.uniform(0.8, 1.2)))
+    im = ImageEnhance.Color(im).enhance(float(rng.uniform(0.7, 1.3)))
+    im = im.filter(ImageFilter.GaussianBlur(1.0))
+    buf = io.BytesIO()
+    im.save(buf, "JPEG", quality=40)
+    return Image.open(io.BytesIO(buf.getvalue())).convert("RGB")
+
 
 @pytest.fixture(scope="module")
 def shared_models():
-    """Load real models once for the test module."""
     return LiveModels(device="cpu")
+
 
 @pytest.fixture
 def real_pipeline(tmp_path, shared_models):
-    """Instantiate pipeline with shared models and isolated temporary gallery."""
-    store_dir = tmp_path / "test_real_gallery"
-    return FinalInferencePipeline(models=shared_models, store_dir=store_dir,
+    return FinalInferencePipeline(models=shared_models, store_dir=tmp_path / "gallery",
                                   crop_policy="full_image", retrieval_mode="siglip")
 
-def test_real_model_category_classification_accuracy(shared_models):
-    """Verify category classification on a suite of genuine real-world images."""
-    test_cases = []
-    
-    # Earphones
-    ep_files = list((ROOT / "data/raw/earphones").glob("*.jpg"))
-    if ep_files:
-        test_cases.append((ep_files[0], "earphones"))
-        
-    # Headphones
-    hp_files = list((ROOT / "data/raw/headphones").glob("*.jpg"))
-    if hp_files:
-        test_cases.append((hp_files[0], "headphones"))
-        
-    # Smartphone
-    sp_files = list((ROOT / "data/raw/smartphones").rglob("*.jpg"))
-    if sp_files:
-        test_cases.append((sp_files[0], "mobile_phone"))
-        
-    # Laptop
-    lp_files = list((ROOT / "data/raw/objectron_images/laptop").rglob("frame_0000.jpg"))
-    if lp_files:
-        test_cases.append((lp_files[0], "laptop"))
-        
-    # Book
-    bk_files = list((ROOT / "data/raw/objectron_images/book").rglob("frame_0000.jpg"))
-    if bk_files:
-        test_cases.append((bk_files[0], "book"))
-        
-    # Bottle (Non-canonical -> other/None)
-    bt_files = list((ROOT / "data/raw/objectron_images/bottle").rglob("frame_0000.jpg"))
-    if bt_files:
-        test_cases.append((bt_files[0], None))
-        
-    # Cup (Non-canonical -> other/None)
-    cp_files = list((ROOT / "data/raw/objectron_images/cup").rglob("frame_0000.jpg"))
-    if cp_files:
-        test_cases.append((cp_files[0], None))
-    
-    assert len(test_cases) >= 5, f"Expected at least 5 test images, got {len(test_cases)}"
-    
-    correct = 0
-    for p, expected in test_cases:
-        img = Image.open(p).convert("RGB")
-        probs = shared_models.classify_probs(img)
-        pred_idx = int(probs.argmax().item())
-        pred_raw = shared_models.siglip_idx_to_cat[str(pred_idx)]
-        pred_cat = normalize_category(pred_raw)
-        if pred_cat == expected:
-            correct += 1
-            
-    acc = correct / len(test_cases)
-    assert acc >= 0.80, f"Expected category accuracy >= 80%, got {acc:.2f} ({correct}/{len(test_cases)})"
 
-def test_real_model_retrieval_ranking(real_pipeline):
-    """Verify instance-level retrieval recall on physical instances."""
-    # Find 4 objectron instances having both frame_0000.jpg and frame_0001.jpg
-    queries = []
-    
-    candidates = []
-    for cat in ["laptop", "book"]:
-        cat_dir = ROOT / f"data/raw/objectron_images/{cat}"
-        if not cat_dir.exists():
+def test_assets_match_their_pinned_checksums():
+    import hashlib
+    for m in _manifest():
+        assert hashlib.sha256((ASSETS / m["file"]).read_bytes()).hexdigest() == m["sha256"], m["file"]
+        assert m["license"] and m["page"].startswith("https://commons.wikimedia.org/")
+
+
+def test_open_set_gate_on_real_photos(real_pipeline):
+    rows = []
+    for m in _manifest():
+        p = real_pipeline.run_perception(_load(m))
+        rows.append((m, p))
+    sup = [(m, p) for m, p in rows if m["kind"] == "supported"]
+    uns = [(m, p) for m, p in rows if m["kind"] != "supported"]
+    correct = sum(p["decision"] == "SUPPORTED" and p["category"] == m["label"] for m, p in sup) / len(sup)
+    wrong = sum(p["decision"] == "SUPPORTED" and p["category"] != m["label"] for m, p in sup) / len(sup)
+    top1 = sum(p["candidate_category"] == m["label"] for m, p in sup) / len(sup)
+    leaked = [m["file"] for m, p in uns if p["decision"] == "SUPPORTED"]
+    report = {"supported_correct": correct, "supported_wrong": wrong, "top1": top1, "unsupported_leaked": leaked}
+    assert top1 >= 0.85, report
+    assert correct >= 0.60, report
+    assert wrong <= 0.06, report
+    assert len(leaked) <= max(1, int(0.1 * len(uns))), report
+
+
+def test_detector_never_runs_in_full_image_mode(real_pipeline, monkeypatch):
+    calls = []
+    monkeypatch.setattr(real_pipeline.models, "detect", lambda *a, **k: calls.append(1) or [])
+    m = next(x for x in _manifest() if x["kind"] == "supported")
+    real_pipeline.add_image_bytes((ASSETS / m["file"]).read_bytes(), "item_a", m["label"])
+    res = real_pipeline.infer_pil(_load(m), top_k=1)
+    assert calls == [] and res["crop"]["reason"] == "full_image_policy_detector_skipped"
+
+
+def test_reid_on_synthetic_views_of_real_photos(real_pipeline):
+    """Regression guard only: synthetic second views (see module docstring)."""
+    sup = [m for m in _manifest() if m["kind"] == "supported"]
+    for m in sup:
+        real_pipeline.add_image_bytes((ASSETS / m["file"]).read_bytes(), m["file"], m["label"])
+    r1 = r5 = 0
+    for k, m in enumerate(sup):
+        res = real_pipeline.infer_pil(_phone_view(_load(m), k), top_k=5)
+        ids = [x["item_id"] for x in res["matches"]]
+        if res["status"] == "UNSUPPORTED_ITEM":
             continue
-        for sub in cat_dir.iterdir():
-            if sub.is_dir():
-                f0 = sub / "frame_0000.jpg"
-                f1 = sub / "frame_0001.jpg"
-                if f0.exists() and f1.exists():
-                    candidates.append((sub.name, cat, f0, f1))
-                    if len(candidates) >= 4:
-                        break
-        if len(candidates) >= 4:
-            break
-            
-    assert len(candidates) >= 3, f"Expected at least 3 instances, found {len(candidates)}"
-    
-    for inst_id, cat, f0, f1 in candidates:
-        real_pipeline.add_to_gallery(str(f0), inst_id, cat)
-        queries.append((str(f1), inst_id))
-        
-    recall_at_1 = 0
-    recall_at_5 = 0
-    for q_path, target_id in queries:
-        res = real_pipeline.infer(q_path, top_k=5)
-        matches = res.get("matches", [])
-        if matches and matches[0]["item_id"] == target_id:
-            recall_at_1 += 1
-        if any(m["item_id"] == target_id for m in matches):
-            recall_at_5 += 1
-            
-    r1 = recall_at_1 / len(queries)
-    r5 = recall_at_5 / len(queries)
-    assert r1 >= 0.70, f"Expected Recall@1 >= 0.70, got {r1:.2f} ({recall_at_1}/{len(queries)})"
-    assert r5 >= 0.85, f"Expected Recall@5 >= 0.85, got {r5:.2f} ({recall_at_5}/{len(queries)})"
+        r1 += bool(ids) and ids[0] == m["file"]
+        r5 += m["file"] in ids
+    assert r1 / len(sup) >= 0.85, (r1, len(sup))
+    assert r5 / len(sup) >= 0.95, (r5, len(sup))
+
 
 def test_calibrated_reranker_behavior(real_pipeline):
-    """Verify reranker accepts genuine matches without image-only penalty."""
     reranker = real_pipeline.reranker
-    assert reranker is not None, "Calibrated reranker must be loaded"
-    
-    # 1. High visual similarity (genuine match), image-only query (text_missing = 1.0, text_sim = 0.0)
-    # [siglip_sim, dino_sim, text_sim, text_missing]
-    feat_genuine_img_only = [[0.85, 0.82, 0.0, 1.0]]
-    prob_genuine = reranker.predict_proba(feat_genuine_img_only)[0][1]
-    assert prob_genuine >= 0.65, f"Genuine image-only match should pass candidate threshold, got {prob_genuine:.3f}"
-    
-    # 2. Hard negative pair (moderate/low similarity)
-    feat_negative = [[0.40, 0.35, 0.0, 1.0]]
-    prob_neg = reranker.predict_proba(feat_negative)[0][1]
-    assert prob_neg < 0.20, f"Negative candidate should be rejected or marked low, got {prob_neg:.3f}"
+    assert reranker is not None
+    assert reranker.predict_proba([[0.85, 0.82, 0.0, 1.0]])[0][1] >= 0.65   # genuine, image-only
+    assert reranker.predict_proba([[0.40, 0.35, 0.0, 1.0]])[0][1] < 0.20    # clear negative
 
-def test_detection_failure_graceful_degradation(real_pipeline):
-    """Verify that when detector finds no proposals or unknown objects, retrieval gracefully succeeds."""
-    # Blank white image (no objects detectable)
-    blank = Image.new("RGB", (300, 300), (255, 255, 255))
-    res = real_pipeline.infer_pil(blank, top_k=3)
-    
-    assert res is not None
-    assert "matches" in res
-    assert res["crop"]["source"] in ("full_image", "full_image_fallback")
-    assert res["perception"]["decision"] in ("UNKNOWN", "UNCERTAIN")
 
-def test_end_to_end_bytes_and_gallery_sync(real_pipeline, tmp_path):
-    """Verify end-to-end inference from raw bytes, item addition, and subsequent removal sync."""
-    img = Image.new("RGB", (224, 224), (100, 150, 200))
-    buf = io.BytesIO()
-    img.save(buf, format="JPEG")
-    data = buf.getvalue()
-    
-    # 1. Add item from bytes
-    add_res = real_pipeline.add_image_bytes(data, "item_sync_test", "book")
-    assert add_res["status"] == "added"
-    assert "item_sync_test" in real_pipeline.store.item_ids()
-    
-    # 2. Query and verify item appears
-    q_res = real_pipeline.infer_pil(img, top_k=3)
-    found_ids = [m["item_id"] for m in q_res.get("matches", [])]
-    assert "item_sync_test" in found_ids
-    
-    # 3. Synchronize deletion
-    removed = real_pipeline.store.remove("item_sync_test")
-    assert removed is True
-    assert "item_sync_test" not in real_pipeline.store.item_ids()
-    
-    # 4. Query again: deleted item must not be retrieved
-    q_res2 = real_pipeline.infer_pil(img, top_k=3)
-    found_ids2 = [m["item_id"] for m in q_res2.get("matches", [])]
-    assert "item_sync_test" not in found_ids2
+def test_blank_and_noise_images_never_become_supported(real_pipeline):
+    rng = np.random.default_rng(0)
+    for im in (Image.new("RGB", (300, 300), (255, 255, 255)), Image.new("RGB", (300, 300), (0, 0, 0)),
+               Image.fromarray(rng.integers(0, 255, (300, 300, 3), dtype=np.uint8))):
+        res = real_pipeline.infer_pil(im, top_k=3)
+        assert res["perception"]["decision"] in ("UNCERTAIN", "UNSUPPORTED_ITEM")
+        if res["perception"]["decision"] == "UNSUPPORTED_ITEM":
+            assert res["status"] == "UNSUPPORTED_ITEM" and res["matches"] == []
+        assert all(x["decision"] != "candidate" for x in res["matches"])
+
+
+def test_end_to_end_bytes_and_gallery_sync(real_pipeline):
+    m = next(x for x in _manifest() if x["kind"] == "supported")
+    data = (ASSETS / m["file"]).read_bytes()
+    assert real_pipeline.add_image_bytes(data, "item_sync_test", m["label"])["status"] == "added"
+    assert real_pipeline.add_image_bytes(data, "item_sync_test", m["label"])["status"] == "already_indexed"
+    res = real_pipeline.infer_pil(_load(m), top_k=3)
+    assert res["matches"] and res["matches"][0]["item_id"] == "item_sync_test"
+    assert real_pipeline.store.remove("item_sync_test") is True
+    res2 = real_pipeline.infer_pil(_load(m), top_k=3, allowed_ids=None)
+    assert "item_sync_test" not in [x["item_id"] for x in res2["matches"]]
+
+
+@pytest.mark.skipif(not CO3D.exists(), reason="CO3D (research-only licence) not present at data/raw/co3d_research_only; "
+                                             "see docs/planning/DATASET_STRATEGY.md")
+def test_genuine_multiview_reid_on_co3d(real_pipeline):
+    """Genuine different-viewpoint frames of the same physical object (held out from training)."""
+    seqs = []
+    for cat in ("laptop", "cellphone", "book"):
+        for s in sorted((CO3D / cat).iterdir())[:8]:
+            imgs = sorted((s / "images").glob("*.jpg"))
+            if len(imgs) >= 6:
+                seqs.append((s.name, imgs[0], imgs[len(imgs) // 2]))
+    for name, g, _ in seqs:
+        real_pipeline.add_to_gallery(str(g), name, None)
+    r1 = 0
+    for name, _, q in seqs:
+        res = real_pipeline.infer(str(q), top_k=1)
+        # a gate hard-stop (UNSUPPORTED_ITEM, ~3% of CO3D frames) returns no matches: counted as a miss
+        r1 += bool(res["matches"]) and res["matches"][0]["item_id"] == name
+    # CO3D probe (59-90 objects) measured R@1 0.68-0.75; with 24 objects expect clearly above chance
+    assert r1 / len(seqs) >= 0.5, (r1, len(seqs))

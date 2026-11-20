@@ -22,7 +22,7 @@ import threading
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
+from typing import Iterable, Optional
 
 # torch and faiss-cpu (pip wheels on macOS) each bundle their own libomp.dylib. The live
 # service previously only survived because unpickling the sklearn reranker makes sklearn set
@@ -266,17 +266,49 @@ class GalleryStore:
         with self.lock:
             return sorted({e.item_id for e in self.entries})
 
-    def search(self, vec: np.ndarray, k: int, index_type: str = "visual"):
+    def allowed_rows(self, allowed_ids: Optional[Iterable[str]]) -> Optional[np.ndarray]:
+        """Row indices whose item_id is in ``allowed_ids`` (None = no restriction)."""
+        if allowed_ids is None:
+            return None
+        allowed = set(allowed_ids)
+        return np.asarray([i for i, e in enumerate(self.entries) if e.item_id in allowed], dtype=np.int64)
+
+    def search(self, vec: np.ndarray, k: int, index_type: str = "visual",
+               allowed_ids: Optional[Iterable[str]] = None):
+        """Top-k inner-product search. With ``allowed_ids`` only those items are ranked.
+
+        Restricting *before* ranking (rather than filtering the global top-k afterwards) means
+        an eligible item can never be pushed out of the result list by ineligible ones.
+        """
         with self.lock:
+            q = np.asarray(vec, dtype=np.float32).reshape(1, -1)
+            rows = self.allowed_rows(allowed_ids)
+            if rows is not None:
+                if rows.size == 0:
+                    return [], []
+                mat = self.siglip if index_type == "siglip" else self.visual
+                sims = mat[rows] @ q[0]
+                order = np.argsort(-sims, kind="stable")[: min(k, rows.size)]
+                return sims[order].tolist(), rows[order].tolist()
             k = min(k, len(self.entries))
             if k == 0:
                 return [], []
             idx = self.siglip_index if index_type == "siglip" else self.index
-            sims, out_idx = idx.search(np.asarray(vec, dtype=np.float32).reshape(1, -1), k)
+            sims, out_idx = idx.search(q, k)
             return sims[0].tolist(), out_idx[0].tolist()
 
-    def search_siglip(self, siglip_vec: np.ndarray, k: int):
-        return self.search(siglip_vec, k, index_type="siglip")
+    def search_siglip(self, siglip_vec: np.ndarray, k: int, allowed_ids: Optional[Iterable[str]] = None):
+        return self.search(siglip_vec, k, index_type="siglip", allowed_ids=allowed_ids)
+
+    def items_summary(self) -> list[dict]:
+        """One row per item: the content hashes and category it is indexed with."""
+        with self.lock:
+            out: dict[str, dict] = {}
+            for e in self.entries:
+                row = out.setdefault(e.item_id, {"item_id": e.item_id, "category": e.category, "sha256": []})
+                if e.sha256 not in row["sha256"]:
+                    row["sha256"].append(e.sha256)
+            return [out[k] for k in sorted(out)]
 
     def info(self) -> dict:
         with self.lock:

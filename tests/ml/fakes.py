@@ -54,6 +54,21 @@ class FakeModels:
             return self._detect_fn(pil)
         return [dict(d) for d in self._detections]
 
+    # Open-set gate. Default: every image looks like a confident laptop. Tests override
+    # ``gate_label`` ("laptop", "backpack", ...) or ``gate_cos`` (full per-prompt vector).
+    gate_label = "laptop"
+    gate_cos = None
+
+    @property
+    def gate_labels(self):
+        from src.inference.open_set import prompt_table
+        return prompt_table()[1]
+
+    def gate_cosines(self, siglip_image_emb):
+        if self.gate_cos is not None:
+            return np.asarray(self.gate_cos, dtype=np.float32)
+        return np.asarray([0.20 if l == self.gate_label else 0.02 for l in self.gate_labels], dtype=np.float32)
+
     def classify_probs(self, pil):
         return torch.tensor([0.55, 0.45])
 
@@ -72,3 +87,14 @@ class FakeModels:
     def embed_siglip_text(self, text, pil):
         seed = int(hashlib.sha256(text.encode()).hexdigest()[:8], 16)
         return _unit(np.random.default_rng(seed).normal(size=768))
+
+
+class CosineReranker:
+    """Deterministic stand-in for the sklearn reranker: P(match) = SigLIP cosine (clipped)."""
+
+    def predict_proba(self, rows):
+        out = []
+        for s_sim, *_ in rows:
+            p = float(min(1.0, max(0.0, s_sim)))
+            out.append([1.0 - p, p])
+        return np.asarray(out)

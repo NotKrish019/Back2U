@@ -65,12 +65,12 @@ the way a person would — by how they **look** and how they are **described**:
 
 | Stage | Model | Role |
 |---|---|---|
-| Detection & crop | Grounding DINO (tiny), zero-shot (optional) | Finds the item in the photo and crops it; full-image retrieval used by default for maximum re-ID fidelity |
-| Category classifier | SigLIP2 zero-shot & repaired multi-class M2 head | Predicts canonical category with open-set rejection for unsupported items |
-| Instance embedding | SigLIP2 (1152-d) primary baseline & DINOv2 / M4-C (256-d) | Instance-level representation matching the exact physical item across viewpoints and lighting |
+| Detection & crop | Grounding DINO (tiny), zero-shot (optional) | Only used by the `detector_crop` / `confidence_aware` crop policies. **Not run in production** (`full_image` policy), and never used to decide the category |
+| Open-set gate | SigLIP2 zero-shot, temperature-calibrated, with explicit unsupported-object prompts | `SUPPORTED` / `UNCERTAIN` / `UNSUPPORTED_ITEM`; unsupported photos stop retrieval ([`docs/OPEN_SET_GATE.md`](docs/OPEN_SET_GATE.md)) |
+| Instance embedding | SigLIP2 (768-d) primary baseline & DINOv2 / M4-C (256-d) | Instance-level representation matching the exact physical item across viewpoints and lighting |
 | Text ↔ image | SigLIP2 (base, patch16-224) | Calibrated semantic similarity scoring for text and multimodal queries |
 | Vector search | FAISS (IndexFlatIP) | Nearest-neighbour cosine search over gallery embeddings |
-| Rerank & calibrate | Calibrated 4D Logistic Reranker | Fuses visual similarity, DINOv2 features, text similarity, and explicit `text_missing` indicator |
+| Rerank & calibrate | Calibrated 4D Logistic Reranker | Fuses visual similarity, DINOv2 features, text similarity, and explicit `text_missing` indicator; auto-match only at probability ≥ 0.90 ([`docs/MATCHING_THRESHOLDS.md`](docs/MATCHING_THRESHOLDS.md)) |
 
 The trained parts (M2 head, M4-C head, reranker) are in `models/`. The pretrained backbones
 download automatically the first time the ML service starts.
@@ -79,28 +79,42 @@ Diagrams of the pipeline, user flow and architecture are in [`docs/diagrams/`](d
 
 ## 5. Results
 
-### Instance Retrieval Performance (Empirical Multi-View Benchmark)
+Results are reported **per dataset** and are not interchangeable. None is a campus or real-world deployment number. The campus validation set is designed but **not yet collected**. Full table: [`experiments.md`](experiments.md).
 
-| Retrieval Method | Image Input | Recall@1 | Recall@5 | Recall@10 | MRR |
-|---|---|---:|---:|---:|---:|
-| **SigLIP2 (Baseline)** | **Full image** | **0.9400** | **0.9800** | **1.0000** | **0.9583** |
-| SigLIP2 + DINOv2 Fusion | Full image | **0.9600** | **0.9800** | **1.0000** | **0.9700** |
-| Raw DINOv2 ViT-S/14 | Full image | 0.6800 | 0.8800 | 0.9400 | 0.7783 |
-| Trained M4-C Projection Head | Full image | 0.6000 | 0.8000 | 0.8600 | 0.6888 |
-| Trained M4-C Projection Head | Detector crop | 0.5400 | 0.7600 | 0.8200 | 0.6402 |
+### Instance re-identification
 
-*Full-image retrieval significantly outperforms tight detector cropping (+6% to +12% R@1) because cropping discards distinctive peripheral markings, wear patterns, and hardware stickers.*
+| Dataset | Gallery | Method | Recall@1 | Recall@5 |
+|---|---|---|---:|---:|
+| Objectron held-out split (in-domain for M4-C, same-video views) | 24 objects / 50 photos | SigLIP2 full image | 0.94 | 1.00 |
+| CO3D (never trained on; same capture session) | 59 objects | SigLIP2 full image | 0.75 | 0.86 |
+| CO3D | 90 objects, clean + phone-style perturbed queries | SigLIP2 + reranker | 0.68 | n/a |
+| Campus (owner photo vs. finder photo) | 28 objects (planned) | n/a | **not collected** | n/a |
 
-### Category Classification & Perception Gate
+On a harder, larger gallery, the true object and its best look-alike impostor score almost the same: mean cosine 0.83 vs 0.81 on CO3D. That is why the auto-match threshold is strict.
 
-- **SigLIP2 Zero-Shot Classifier:** **92.90% Accuracy** (144/155 test images), with 1.00 precision on open-set unknown items (`other`).
-- **Repaired M2 Head:** Multi-class DINOv2 classifier updated from buggy 2-class (`laptop`/`Laptop`) checkpoint to full canonical taxonomy with 90.32% test accuracy.
+### Auto-match threshold (CO3D test split, 156 queries)
 
-### Multimodal Reranker & Probability Calibration
+| reranker probability ≥ | precision | recall | false-match rate when the item is not in the gallery |
+|---:|---:|---:|---:|
+| 0.65 (old cutoff; previously no threshold was applied at all) | 0.59 | 0.40 | 0.20 |
+| **0.90 (deployed)** | **0.91** | **0.13** | **0.006** |
 
-- **Feature Space:** 4D vector `[siglip_img_sim, dino_img_sim, text_sim, text_missing]`.
-- **Test Performance:** ROC-AUC **0.9801**, Brier Score **0.0359**, Genuine Match Acceptance **75.0%** (up from 1.9% baseline), Rejection Rate **3.6%** (down from 19.0% false rejections).
-- **Missing-Text Bias Eliminated:** Image-only queries are no longer penalized by synthetic zero text similarities.
+Matches are suggestions for staff review. Ownership is established only by an approved claim.
+
+### Open-set gate (real photographs: Wikimedia Commons + CO3D, test split)
+
+- Supported items accepted with the correct category: **0.89**. Wrong category: 0.06. Hard-stopped: 0.02.
+- Unsupported objects accepted as supported: **1/71**. Held-out object types with no prompt: **1/28**.
+- AUROC, supported vs. unsupported: ≥ 0.99 for MSP, energy and max-cosine scores.
+
+### Latency (Apple-silicon CPU, batch size 1, ~1 MP photos)
+
+Skipping Grounding DINO in `full_image` mode cut the median warm query from **2.52 s to 0.13 s** and the gallery add from **2.59 s to 0.14 s** (`reports/benchmarks/latency_before_after.json`).
+
+### Multimodal reranker (unchanged)
+
+- **Features:** 4-D `[siglip_img_sim, dino_img_sim, text_sim, text_missing]`.
+- **Held-out metrics:** ROC-AUC 0.98, Brier 0.036.
 
 ## 6. Tech stack
 
@@ -110,7 +124,7 @@ Diagrams of the pipeline, user flow and architecture are in [`docs/diagrams/`](d
 | Backend | Python, FastAPI, SQLAlchemy, Alembic, Pydantic, SQLite (PostgreSQL-ready) |
 | Auth | Firebase Authentication (web SDK + Firebase Admin / PyJWT on the server) |
 | ML | PyTorch, Hugging Face Transformers, DINOv2, Grounding DINO, SigLIP2, FAISS, scikit-learn |
-| Testing | pytest (144 tests passing: unit tests, API tests, gallery store, and real-model regression suite) |
+| Testing | pytest (186 tests, 185 passing + 1 opt-in: unit, API, workflow, privacy, sync, gallery store, and a portable real-model regression suite on licensed photos) |
 
 ## 7. Project structure
 
@@ -217,8 +231,11 @@ source venv/bin/activate
 pytest tests
 ```
 
-The tests use a temporary database and fake ML models, so they run in a few seconds and
-don't need the ML service or a model download.
+Result: 185 passed, 1 skipped. The skipped test is an opt-in real-model crop check that needs `RUN_REAL_MODELS=1`.
+
+- **Fast tests:** use a temporary database (`test_app.db`), temporary galleries and fake ML models. They never touch `app.db` or `data/gallery`. Run only these with `SKIP_REAL_MODELS=1 pytest tests` (about 6 s).
+- **Real-model regression suite:** `tests/ml/test_real_models_regression.py`, about 40 s. It uses the real checkpoints and 55 licensed Wikimedia Commons photos committed under `tests/assets/real_model_regression/` (manifest, ground truth, licences, pinned sha256). Its CO3D multi-view test is skipped with an explicit reason when the research-only CO3D data is absent.
+- **Workflow coverage:** `tests/api/test_pipeline_repair.py` covers matching directions, the auto-match threshold, the open-set gate, index sync, found-photo privacy and the claim/approval workflow end to end.
 
 ## 10. Reproducing the ML work
 
@@ -245,11 +262,18 @@ the summary metrics and all reports, but not these large generated files.
 | [`docs/design/`](docs/design) | UI design specification and implementation plan |
 | [`docs/DEVELOPMENT_LOG.md`](docs/DEVELOPMENT_LOG.md) | Chronological log of every step, decision and result |
 | [`reports/`](reports) | Architecture notes, experiment reports, evaluation reports, model card |
+| [`context.md`](context.md) | Working context: services, source of truth, request flow, workflow rules |
+| [`experiments.md`](experiments.md) | Results separated by dataset (Objectron / CO3D / Commons / campus) |
+| [`docs/MATCHING_THRESHOLDS.md`](docs/MATCHING_THRESHOLDS.md) | Matching directions and auto-match threshold calibration |
+| [`docs/OPEN_SET_GATE.md`](docs/OPEN_SET_GATE.md) | Open-set gate design and calibration |
+| [`docs/PRIVACY.md`](docs/PRIVACY.md) | Found-photo privacy |
+| [`docs/campus_validation/`](docs/campus_validation) | Campus validation protocol, schema, consent form |
+| [`reports/PIPELINE_REPAIR_REPORT.md`](reports/PIPELINE_REPAIR_REPORT.md) | End-to-end repair: implemented / tested / not tested |
 
 ## 12. Limitations and future work
 
-- Evaluated on multi-view Objectron and CO3D datasets; a campus-collected validation set is planned
-  (`reports/evaluation/CAMPUS_VALIDATION_ACQUISITION_PLAN.md`).
-- Seven canonical categories supported: laptop, mobile phone, wallet, earphones, headphones, keys, book; open-set queries routed to "other".
-- Grounding DINO detection is CPU-intensive (~25s per image); full-image retrieval is recommended for sub-second production response times (~850ms), reserving detection for multi-object scenes or GPU deployment.
+- Evaluated on Objectron, CO3D and Wikimedia Commons photos only. The campus validation set (28 objects) is specified in [`docs/campus_validation/PROTOCOL.md`](docs/campus_validation/PROTOCOL.md) but **not collected**. Every threshold is provisional until then.
+- Seven canonical categories are supported: laptop, mobile phone, wallet, earphones, headphones, keys, book. Other objects get `UNSUPPORTED_ITEM` and no automatic matching.
+- The auto-match threshold favours precision: it suggests about 13% of true matches automatically (CO3D). Everything else relies on people browsing their search results and on staff review.
+- Grounding DINO is not run in production. It is about 2.4 s per image on CPU, so cropping would need a GPU.
 - Deletion synchronization is fully implemented: deleting a report in the API dynamically removes its embedding and rebuilds FAISS indices.

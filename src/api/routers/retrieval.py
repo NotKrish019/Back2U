@@ -1,11 +1,19 @@
+import logging
+
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from typing import Optional
 from src.api.schemas import RetrievalQuery, RetrievalResult, RetrievalResultItem
-from src.api.services.retrieval_service import RetrievalService, MockRetrievalService, RealRetrievalService
+from src.api.services.retrieval_service import (QueryRejected, RetrievalService, MockRetrievalService,
+                                                RealRetrievalService)
+from src.api.services import matching
+from src.api.services.privacy import image_for_viewer
 from src.api.database import get_db
-from src.api.auth import get_current_user
-from src.api.models import User, Report, CandidateMatch
+from src.api.auth import get_optional_user
+from src.api.models import User
+
+log = logging.getLogger(__name__)
+UNSUPPORTED_ITEM = "UNSUPPORTED_ITEM"
 
 router = APIRouter()
 
@@ -36,56 +44,77 @@ def ml_health(service: RetrievalService = Depends(get_retrieval_service)):
 
 @router.post("/search", response_model=RetrievalResult)
 def search(
-    query: RetrievalQuery, 
+    query: RetrievalQuery,
     service: RetrievalService = Depends(get_retrieval_service),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    viewer: Optional[User] = Depends(get_optional_user),
 ):
+    """Search reports of the opposite type.
+
+    ``query_type="lost"`` (default): someone lost an item → only OPEN FOUND reports are returned.
+    ``query_type="found"``: only OPEN LOST reports. Direction/eligibility rules live in
+    src/api/services/matching.py and are enforced twice: the ML service only ranks the eligible
+    items, and every result is re-checked against the database before it is returned.
+    """
     if not query.image and not query.text:
-        raise HTTPException(status_code=400, detail="A query image or text is required.")
-        
+        raise HTTPException(status_code=400, detail={"code": "EMPTY_QUERY",
+                                                     "message": "A query image or text is required."})
+    return run_search(query, service, db, viewer)
+
+
+def run_search(query: RetrievalQuery, service: RetrievalService, db: Session,
+               viewer: Optional[User] = None) -> RetrievalResult:
+    targets = matching.eligible_targets(db, query.query_type, exclude_report_id=query.exclude_report_id)
+    if not targets:
+        version = service.model_version
+        try:
+            version = service.health().get("model_version", version)
+        except Exception:
+            pass
+        return RetrievalResult(model_version=version, results=[], status="NO_ELIGIBLE_ITEMS",
+                               message=f"There are no open {matching.target_type_for(query.query_type)} "
+                                       "reports to compare against yet.")
     try:
-        # 1. Ask ML for raw candidates
-        ml_result = service.search(query)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"ML Retrieval failed: {str(e)}")
+        ml_result = service.search(query, allowed_ids=sorted(targets))
+    except QueryRejected as e:
+        raise HTTPException(status_code=400, detail={"code": e.code, "message": e.message})
+    except Exception:
+        log.exception("ML retrieval failed")
+        raise HTTPException(status_code=503, detail={"code": "ML_UNAVAILABLE",
+                                                     "message": "The matching service is unavailable. Please try again shortly."})
 
-    # 2. Enrich candidates using PostgreSQL database (ML Integration Boundary)
-    enriched_results = []
-    
+    if ml_result.status == UNSUPPORTED_ITEM:
+        p = ml_result.perception or {}
+        return RetrievalResult(
+            model_version=ml_result.model_version, results=[], status=UNSUPPORTED_ITEM,
+            mode=ml_result.mode, perception=p,
+            message="This photo does not look like an item Back2U can match yet "
+                    "(laptops, phones, wallets, earphones, headphones, keys, books). "
+                    "Please file a report with a description so staff can help.")
+
+    enriched = []
     for item in ml_result.results:
-        # The ML engine returns item_instance_id. We fetch the corresponding Report.
-        # We assume for this query we want opposite reports (if searching for a lost item, show found items).
-        report = db.query(Report).filter(Report.item_instance_id == item.item_instance_id).first()
-        
-        if report and report.status == "open":
-            # Enforce privacy constraints: blur image for found items
-            image_ref = report.image_reference
-            if report.report_type == "found" and image_ref:
-                image_ref = f"BLURRED_{image_ref}" # Abstracted for the UI
-                
-            # Populate the enriched Back2U result
-            enriched_item = RetrievalResultItem(
-                item_instance_id=item.item_instance_id,
-                similarity_score=item.similarity_score,
-                rank=len(enriched_results) + 1,  # contiguous after skipping orphans
-                report_id=report.report_id,
-                report_type=report.report_type,
-                item_category=report.item_category,
-                location=report.location,
-                image_reference=image_ref,
-                status=report.status
-            )
-            enriched_results.append(enriched_item)
-            
-            # Optional: Persist the candidate match in the database for later review
-            # Assuming this was a search originating from a new Lost report
-            # We would need the source report_id, which isn't in RetrievalQuery right now.
-            # So we skip CandidateMatch creation here until RetrievalQuery includes `source_report_id`.
-        # else: the gallery still holds vectors for an item whose report no longer exists
-        # (deletes don't remove vectors). The DB is the source of truth, so skip it.
+        report = targets.get(item.item_instance_id)
+        # Defence in depth: re-check against the live DB row, never trust the ML side alone.
+        if not matching.is_eligible_target(report, query.query_type, query.exclude_report_id):
+            continue
+        image_ref, blurred = image_for_viewer(report, viewer, db)
+        enriched.append(RetrievalResultItem(
+            item_instance_id=item.item_instance_id,
+            similarity_score=item.similarity_score,
+            rank=len(enriched) + 1,
+            decision=item.decision,
+            visual_score=item.visual_score,
+            text_score=item.text_score,
+            report_id=report.report_id,
+            report_type=report.report_type,
+            item_category=report.item_category,
+            location=report.location,
+            image_reference=image_ref,
+            image_blurred=blurred,
+            status=report.status,
+        ))
 
-    return RetrievalResult(
-        model_version=ml_result.model_version,
-        results=enriched_results
-    )
-
+    return RetrievalResult(model_version=ml_result.model_version, results=enriched,
+                           status=ml_result.status or "OK", mode=ml_result.mode,
+                           perception=ml_result.perception)

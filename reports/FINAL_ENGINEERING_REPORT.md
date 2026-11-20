@@ -1,3 +1,7 @@
+> **Note (2026-11-21):** this report predates the end-to-end pipeline repair (`reports/PIPELINE_REPAIR_REPORT.md`). Read its retrieval numbers with two corrections:
+> - The 0.94 Recall@1 is an **Objectron in-domain, same-video** result on 24 objects, not real-world accuracy. On CO3D (never trained on) the figure is 0.68–0.75, and campus data is not yet collected (see `experiments.md`).
+> - SigLIP2-base image embeddings are 768-d, not 1152-d.
+
 # Back2U: Multimodal Instance Retrieval — Comprehensive Engineering & Stabilization Report
 
 **Author:** Krish, Primary ML Engineer  
