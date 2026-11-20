@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Settings } from 'lucide-react';
+import { FileText, LogOut, Settings } from 'lucide-react';
 import { auth } from '@/lib/firebase/config';
 import { onAuthStateChanged, signOut, User } from 'firebase/auth';
 
@@ -29,7 +29,7 @@ export default function AccountMenu() {
     setDropdownOpen(false);
     router.push('/');
   };
-  
+
   // Close dropdown if clicked outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -50,69 +50,52 @@ export default function AccountMenu() {
 
   if (!isLoggedIn) {
     return (
-      <Link 
-        href="/login" 
-        className="hidden sm:inline-flex px-4 py-2 bg-[#FF3E72] text-white font-mono text-[11px] font-bold tracking-[0.08em] uppercase border border-[#211C2B] shadow-[2px_2px_0px_#211C2B] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#211C2B] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all items-center gap-1.5"
-      >
-        <span>LOGIN</span>
+      <Link href="/login" className="b2-btn b2-btn--sm b2-nav__desk-only">
+        Log in
       </Link>
     );
   }
 
-  return (
-    <div ref={dropdownRef} className="relative flex items-center gap-4">
-      <button 
-        onClick={handleSignOut}
-        className="hidden sm:inline-flex px-4 py-2 bg-[#FF3E72] text-white font-mono text-[11px] font-bold tracking-[0.08em] uppercase border border-[#211C2B] shadow-[2px_2px_0px_#211C2B] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_#211C2B] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all items-center gap-1.5"
-      >
-        <span>SIGN OUT</span>
-      </button>
+  const initials = (user?.displayName || user?.email || "Me")
+    .split(/[\s@.]+/).filter(Boolean).slice(0, 2).map((s) => s[0]?.toUpperCase()).join("") || "ME";
 
-      <button 
+  return (
+    <div ref={dropdownRef} className="relative flex items-center">
+      <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center ml-1 focus:outline-none relative"
-        aria-label="Profile menu"
+        className="b2-avatar"
+        aria-label="Account menu"
+        aria-haspopup="menu"
+        aria-expanded={dropdownOpen}
       >
-        <span 
-          className="grid place-items-center w-8 h-8 rounded-full bg-[#2A2140] text-[#FFF9F4] border border-[#211C2B] text-[10px] hover:scale-105 active:scale-95 transition-transform"
-          style={{ fontFamily: '"DM Mono", monospace' }}
-        >
-          ME
-        </span>
+        {initials}
       </button>
 
       <AnimatePresence>
         {dropdownOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            role="menu"
+            initial={{ opacity: 0, y: -6, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            transition={{ duration: 0.15, ease: 'easeOut' }}
-            className="absolute top-[calc(100%+8px)] right-0 bg-[#FFF9F4] border-[2px] border-[#211C2B] shadow-[4px_4px_0px_#211C2B] min-w-[220px] rounded-sm overflow-hidden z-50 text-[#211C2B] font-sans"
+            exit={{ opacity: 0, y: -6, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+            style={{ transformOrigin: "top right" }}
+            className="b2-menu"
           >
-            <div className="p-4 border-b-[2px] border-[#211C2B] bg-[#FFF9F4]">
-              <div className="font-bold text-[14px]">{user?.displayName || "User"}</div>
-              <div className="text-[11px] text-[#5A5261] font-mono break-all mt-1">{user?.email || ""}</div>
+            <div className="b2-menu__head">
+              <div className="font-medium text-[0.95rem]">{user?.displayName || "Signed in"}</div>
+              <div className="b2-num text-[11.5px] text-[var(--b2-graphite)] break-all mt-1">{user?.email || ""}</div>
             </div>
-            
-            {/* Links */}
-            <div className="flex flex-col p-2 bg-[#FFF9F4]">
-              <Link 
-                href="/reports" 
-                onClick={() => setDropdownOpen(false)} 
-                className="flex items-center gap-3 px-3 py-2.5 text-[13px] font-bold rounded-sm hover:bg-[#211C2B] hover:text-[#FFF9F4] transition-colors"
-              >
-                <FileText size={16} />
-                My Reports
+            <div className="py-1.5">
+              <Link role="menuitem" href="/reports" onClick={() => setDropdownOpen(false)} className="b2-menu__item">
+                <FileText size={16} strokeWidth={1.6} /> My reports
               </Link>
-              <Link 
-                href="/settings" 
-                onClick={() => setDropdownOpen(false)} 
-                className="flex items-center gap-3 px-3 py-2.5 text-[13px] font-bold rounded-sm hover:bg-[#211C2B] hover:text-[#FFF9F4] transition-colors mt-1"
-              >
-                <Settings size={16} />
-                Account Settings
+              <Link role="menuitem" href="/settings" onClick={() => setDropdownOpen(false)} className="b2-menu__item">
+                <Settings size={16} strokeWidth={1.6} /> Account settings
               </Link>
+              <button role="menuitem" onClick={handleSignOut} className="b2-menu__item border-t border-[var(--b2-line)] mt-1.5">
+                <LogOut size={16} strokeWidth={1.6} /> Sign out
+              </button>
             </div>
           </motion.div>
         )}

@@ -1,72 +1,104 @@
-import { ArrowUpRight } from 'lucide-react';
-import React from 'react';
+"use client";
 
-export function ResultCard({ item, primary = false, onClick }: { item: any; primary?: boolean; onClick: () => void }) {
-  // Extracting data from the search/match item format
-  const itemCategory = item.item_category ? String(item.item_category).replace(/_/g, ' ') : "Untitled Item";
-  // The backend prefixes found-item photos with BLURRED_ (privacy): show them, but blurred.
-  const rawRef: string = item.image_reference || "";
-  const isBlurred = rawRef.startsWith("BLURRED_");
-  const imageRef = isBlurred ? rawRef.slice("BLURRED_".length) : rawRef;
-  const description = item.description || "No description provided.";
-  const location = item.location?.split('(')[0]?.trim() || "Unknown Location";
-  const score = item.similarity_score ? (item.similarity_score * 100).toFixed(0) + "% MATCH" : "POSSIBLE MATCH";
-  const isHighMatch = item.similarity_score > 0.8;
-  const badgeColor = isHighMatch ? 'bg-[#FF3E72] text-white' : 'bg-[#FFD700]';
+import { ArrowUpRight } from "lucide-react";
+import React, { useRef } from "react";
+import { SafeImg, prettyName, resolveImage, splitLocation } from "@/components/brand/primitives";
+
+/** Score threshold for "strong match". Unchanged from the original card (similarity_score > 0.8). */
+export const STRONG_MATCH = 0.8;
+
+type Props = {
+  item: any;
+  primary?: boolean;
+  onClick: () => void;
+  index?: number;
+  feature?: boolean; // large editorial layout for the top result
+};
+
+/**
+ * A candidate. Data handling is identical to the original card: category name, blurred found-item
+ * photos (BLURRED_ prefix), location without its timestamp, and the real similarity_score.
+ */
+export function ResultCard({ item, primary = false, onClick, index = 0, feature = false }: Props) {
+  const plateRef = useRef<HTMLDivElement>(null);
+  const name = prettyName(item.item_category);
+  const { src: resolved, blurred } = resolveImage(item.image_reference);
+  const src = item.image_url || resolved;
+  const { place, when } = splitLocation(item.location);
+  const score: number | null = typeof item.similarity_score === "number" ? item.similarity_score : null;
+  const strong = score !== null && score > STRONG_MATCH;
+  const rank: number = item.rank ?? index + 1;
+
+  // Depth hover: a few degrees of pointer-driven tilt on the image plate only (fine pointers).
+  const onMove = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse" || !plateRef.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const r = plateRef.current.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    plateRef.current.style.transform = `perspective(900px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateZ(0)`;
+  };
+  const onLeave = () => {
+    if (plateRef.current) plateRef.current.style.transform = "";
+  };
 
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
-      className="bg-surface border-2 border-retro-border shadow-[4px_4px_0px_#1A1A1A] flex flex-col justify-between hover:-translate-y-1 transition-transform cursor-pointer relative font-mono text-left"
+      onPointerMove={onMove}
+      onPointerLeave={onLeave}
+      className={`b2-result ${feature ? "b2-result--feature" : ""}`}
+      aria-label={`${primary ? "Top match" : `Candidate ${rank}`}: ${name}, ${place}${score !== null ? `, similarity ${score.toFixed(2)}` : ""}`}
     >
-      <div>
-        <div className="bg-window-bar-gray px-3 py-1.5 border-b-2 border-retro-border flex items-center justify-between text-[11px]">
-          <span className="font-bold text-retro-charcoal uppercase tracking-widest">
-            {primary ? "TOP MATCH" : "CANDIDATE"}
-          </span>
-          {score && (
-            <span className={`px-2 py-0.5 border border-retro-border font-bold text-retro-charcoal ${badgeColor}`}>
-              {score}
-            </span>
+      <div ref={plateRef} className={`b2-plate b2-result__plate ${blurred ? "b2-plate--blur" : ""}`}>
+        {src ? (
+          <SafeImg src={src} alt="" loading={index < 2 ? "eager" : "lazy"} />
+        ) : (
+          <span className="b2-noimg">No photo on file</span>
+        )}
+        <span className="b2-result__corners" aria-hidden="true">
+          <span className="b2-vf__c b2-vf__c--tl" /><span className="b2-vf__c b2-vf__c--tr" />
+          <span className="b2-vf__c b2-vf__c--bl" /><span className="b2-vf__c b2-vf__c--br" />
+        </span>
+        <span className="b2-plate__veil">
+          <span>{blurred ? "Photo blurred for privacy" : ""}</span>
+          <span className="b2-num">#{String(rank).padStart(2, "0")}</span>
+        </span>
+      </div>
+
+      <div className="b2-result__body">
+        <div className="flex items-center gap-2 flex-wrap">
+          {primary && <span className="b2-tag b2-tag--ink">Top match</span>}
+          {score !== null && (
+            <span className={`b2-tag ${strong ? "b2-tag--signal" : ""}`}>{strong ? "Strong match" : "Possible match"}</span>
           )}
-        </div>
-        
-        {/* Image Block */}
-        <div className="w-full h-48 border-b-2 border-retro-border bg-surface-warm-grey relative overflow-hidden flex items-center justify-center">
-          <div className="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.18)_50%)] bg-[length:100%_4px] mix-blend-overlay pointer-events-none z-10"></div>
-          {item.image_url || imageRef ? (
-            <img 
-              src={
-                item.image_url || 
-                (imageRef ? (imageRef.match(/^(http|blob:|data:)/) ? imageRef : `http://127.0.0.1:8000${imageRef.startsWith('/') ? '' : '/'}${imageRef}`) : "")
-              } 
-              alt="Result" 
-              className={`w-full h-full object-cover relative z-0 ${isBlurred ? 'blur-md scale-110' : ''}`}
-            />
-          ) : (
-            <div className="font-mono text-sm text-retro-charcoal/50 uppercase tracking-widest">[ NO_IMAGE_DATA ]</div>
-          )}
+          <span className="b2-tag b2-tag--brass">{(item.report_type || "found").toLowerCase()}</span>
         </div>
 
-        <div className="p-5">
-          <h3 className="text-[20px] font-bold text-retro-charcoal mb-2 leading-tight">
-            {itemCategory}
-          </h3>
-          <p className="text-[13px] text-on-surface-variant mb-4 leading-relaxed h-10 overflow-hidden line-clamp-2">
-            {description}
-          </p>
-          <div className="space-y-2 pt-4 border-t border-retro-border/40 text-[11px]">
-            <div className="flex items-center gap-2 text-retro-charcoal">
-              <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
-              <span className="font-bold uppercase tracking-wider">{location}</span>
+        <h3 className="b2-display b2-result__name">{name}</h3>
+        {item.description && <p className="b2-result__desc">{item.description}</p>}
+
+        <dl className="b2-result__meta">
+          <div><dt className="b2-label">Where</dt><dd>{place}</dd></div>
+          {when && <div><dt className="b2-label">When</dt><dd className="b2-num">{when}</dd></div>}
+        </dl>
+
+        {score !== null && (
+          <div className="b2-score" aria-hidden="true">
+            <div className="b2-score__row">
+              <span className="b2-label">Similarity score</span>
+              <span className="b2-num b2-score__v">{score.toFixed(2)}</span>
+            </div>
+            <div className="b2-score__track">
+              <span className="b2-score__fill" style={{ "--s": Math.max(0, Math.min(1, score)) } as React.CSSProperties} data-strong={strong} />
+              <span className="b2-score__mark" style={{ left: `${STRONG_MATCH * 100}%` }} />
             </div>
           </div>
-        </div>
+        )}
+
+        <span className="b2-result__go">View details <ArrowUpRight size={16} strokeWidth={1.6} /></span>
       </div>
-      <div className="px-5 py-2.5 bg-surface-canvas border-t-2 border-retro-border flex justify-between items-center text-[10px] text-retro-charcoal font-bold tracking-widest uppercase">
-        <span>SYS: {(item.report_type || "found").toUpperCase()}</span>
-        <ArrowUpRight size={14} className="opacity-50" />
-      </div>
-    </div>
+    </button>
   );
 }

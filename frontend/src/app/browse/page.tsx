@@ -1,18 +1,20 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Filter, ArrowUpRight, Map as MapIcon } from 'lucide-react';
-import { SectionLabel, PageTop, Button } from '../report/lost/ManusUILab';
+import Link from 'next/link';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { ArrowUpRight, Map as MapIcon } from 'lucide-react';
 import { api, ReportOut } from '@/services/api';
-import GlobalMeshBackground from "@/components/ui/GlobalMeshBackground";
-import '../report/lost/report.css';
+import { B2Button, Eyebrow, SafeImg, SplitHeading, prettyName, resolveImage, splitLocation } from '@/components/brand/primitives';
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+const RATIOS = ["4 / 5", "1 / 1", "4 / 3", "3 / 4", "1 / 1", "5 / 4"];
 
 export default function BrowsePage() {
-  const router = useRouter();
+  const reduce = useReducedMotion();
   const [category, setCategory] = useState("All reports");
   const categories = ["All reports", "Bags", "Tech", "Cards & keys", "Clothing"];
-  
+
   const [reports, setReports] = useState<ReportOut[]>([]);
   const [dataLoading, setDataLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -30,74 +32,94 @@ export default function BrowsePage() {
       .finally(() => setDataLoading(false));
   }, []);
 
-  // Simple client side filtering
-  const filteredReports = category === "All reports" 
-    ? reports 
+  // Simple client side filtering (unchanged)
+  const filteredReports = category === "All reports"
+    ? reports
     : reports.filter(r => (r.item_category || "").toLowerCase().includes(category.toLowerCase()));
 
-  if (dataLoading) {
-    return <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading found items...</div>;
-  }
-
   return (
-    <div className="page-shell browse-page">
-      <GlobalMeshBackground />
-      <PageTop 
-        eyebrow="Browse found items" 
-        title={<>A visual map of<br /><em>what’s been found.</em></>} 
-        intro="Browse public-safe report previews from across campus. Details stay inside the right flow." 
-        action={<Button onClick={() => router.push("/map")} variant="outline" icon={<MapIcon size={16} />}>Open map</Button>} 
-      />
-      <div className="browse-toolbar container-wide">
-        <div className="category-tabs">
+    <div className="b2-page">
+      <header className="b2-container b2-pagehead b2-browse__head">
+        <div>
+          <Eyebrow>Browse found items</Eyebrow>
+          <SplitHeading className="b2-display b2-d1 mt-6">A visual record of <em>what&rsquo;s been found.</em></SplitHeading>
+          <p className="b2-lead mt-6">Public-safe previews from across campus. Details stay inside the right flow.</p>
+        </div>
+        <B2Button href="/map" variant="ghost" icon={<MapIcon size={16} />}>Open map</B2Button>
+      </header>
+
+      <div className="b2-container b2-results__bar">
+        <p className="b2-num b2-results__count">
+          {dataLoading ? "Loading…" : `${filteredReports.length} open found report${filteredReports.length === 1 ? "" : "s"}`}
+        </p>
+        <div className="b2-seg b2-seg--scroll" role="tablist" aria-label="Filter by category">
           {categories.map((c) => (
-            <button key={c} className={category === c ? "tab-active" : ""} onClick={() => setCategory(c)}>{c}</button>
+            <button key={c} role="tab" aria-selected={category === c} className="b2-seg__b" onClick={() => setCategory(c)}>
+              {category === c && <motion.span layoutId="b2-browse-seg" className="b2-seg__pill" transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 36 }} />}
+              {c}
+            </button>
           ))}
         </div>
-        <button className="filter-button"><Filter size={15} />Filters</button>
       </div>
-      
+
       {error && (
-        <section className="container-wide" style={{ color: 'var(--coral)', marginBottom: '2rem' }}>
-          <p>{error}</p>
-        </section>
+        <div className="b2-container"><div className="b2-alert" role="alert">{error}</div></div>
       )}
 
-      <section className="browse-grid container-wide">
-        {filteredReports.length === 0 && !error ? (
-          <div className="empty-state" style={{ gridColumn: '1 / -1', padding: '4rem 0', textAlign: 'center' }}>
-            <span>NO FOUND ITEMS</span>
-            <h2>Nothing matches right now.</h2>
-            <p>We don't have any active found reports matching this filter.</p>
+      <section className="b2-container">
+        {dataLoading ? (
+          <div className="b2-masonry" aria-busy="true">
+            {RATIOS.map((r, i) => <div key={i} className="b2-skeleton b2-masonry__item" style={{ aspectRatio: r, borderRadius: 10 }} />)}
+          </div>
+        ) : filteredReports.length === 0 && !error ? (
+          <div className="b2-empty">
+            <span className="b2-label">No found items</span>
+            <h2 className="b2-display b2-d2">Nothing matches right now.</h2>
+            <p className="b2-body">We don&rsquo;t have any active found reports matching this filter.</p>
           </div>
         ) : (
-          filteredReports.map((item, i) => (
-            <button className={`browse-card browse-card-${i}`} key={item.report_id} onClick={() => router.push(`/item/${item.report_id}`)}>
-              <div className="browse-image">
-                {item.image_reference ? (
-                   <img src={item.image_reference} alt={item.item_category || "Item"} />
-                ) : (
-                   <div style={{width: '100%', height: '100%', background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>No Image</div>
-                )}
-                <span>Found Item</span>
-              </div>
-              <div className="browse-card-copy">
-                <div>
-                  <span>{item.location || "Unknown location"}</span>
-                  <h3>{item.item_category || "Untitled Item"}</h3>
-                </div>
-                <ArrowUpRight size={17} />
-              </div>
-            </button>
-          ))
+          <div className="b2-masonry">
+            <AnimatePresence initial={true}>
+              {filteredReports.map((item, i) => {
+                const { src } = resolveImage(item.image_reference);
+                const { place, when } = splitLocation(item.location);
+                return (
+                  <motion.div
+                    key={item.report_id}
+                    className="b2-masonry__item"
+                    layout={!reduce}
+                    initial={{ opacity: 0, y: reduce ? 0 : 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6, delay: reduce ? 0 : Math.min(i, 8) * 0.06, ease: EASE }}
+                  >
+                    <Link href={`/item/${item.report_id}`} className="b2-bcard">
+                      <div className="b2-plate b2-bcard__plate" style={{ aspectRatio: RATIOS[i % RATIOS.length] }}>
+                        {src
+                          ? <SafeImg src={src} alt={prettyName(item.item_category)} loading={i < 4 ? "eager" : "lazy"} />
+                          : <span className="b2-noimg">No photo</span>}
+                        <span className="b2-tag b2-tag--ink b2-bcard__tag">Found</span>
+                      </div>
+                      <div className="b2-bcard__copy">
+                        <div className="min-w-0">
+                          <h3 className="b2-display b2-bcard__name">{prettyName(item.item_category)}</h3>
+                          <p className="b2-bcard__meta">{place}{when ? <span className="b2-num"> · {when}</span> : null}</p>
+                        </div>
+                        <ArrowUpRight size={18} strokeWidth={1.5} />
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
         )}
       </section>
-      <section className="browse-bottom container-wide">
-        <div>
-          <SectionLabel>Browse with care</SectionLabel>
-          <h2>Real reports.<br /><em>Respectful previews.</em></h2>
-        </div>
-        <p>Found-item photos are shown here because you’re inside the discovery flow. We don’t use them as homepage decoration or expose claimant details.</p>
+
+      <section className="b2-container b2-browse__care">
+        <span className="b2-label">Browse with care</span>
+        <h2 className="b2-display b2-d2">Real reports. <em>Respectful previews.</em></h2>
+        <p className="b2-body">Found-item photos are shown here because you&rsquo;re inside the discovery flow. We don&rsquo;t use them as homepage decoration or expose claimant details.</p>
       </section>
     </div>
   );

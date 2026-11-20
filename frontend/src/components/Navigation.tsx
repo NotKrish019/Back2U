@@ -1,67 +1,122 @@
+"use client";
+
 import Link from "next/link";
-import {
-  FileWarning,
-  FileCheck,
-  ClipboardList,
-} from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import AccountMenu from "./AccountMenu";
+import { Wordmark } from "./brand/primitives";
 
 const NAV_ITEMS = [
-  { id: "report-lost", label: "Report Lost", href: "/report/lost", icon: <FileWarning size={16} /> },
-  { id: "report-found", label: "Report Found", href: "/report/found", icon: <FileCheck size={16} /> },
-  { id: "reports", label: "My Reports", href: "/reports", icon: <ClipboardList size={16} /> },
+  { label: "Search", href: "/search" },
+  { label: "Browse found", href: "/browse" },
+  { label: "Report lost", href: "/report/lost" },
+  { label: "Report found", href: "/report/found" },
+  { label: "My reports", href: "/reports" },
 ];
 
+const isActive = (pathname: string, href: string) => pathname === href || pathname.startsWith(href + "/");
+
 export default function Navigation() {
+  const pathname = usePathname() || "/";
+  const reduce = useReducedMotion();
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Close the mobile sheet on navigation and on Escape; lock page scroll while it is open.
+  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="w-full bg-[var(--color-hot-pink)] text-[var(--color-on-primary)] border-b border-[var(--color-retro-border)]">
-        <div className="max-w-7xl mx-auto px-6 h-9 flex items-center justify-between font-mono text-[12px] tracking-[0.04em]">
-          <div className="flex items-center gap-2">
-            <span className="inline-block px-1.5 py-0.5 bg-[var(--color-retro-charcoal)] text-white font-mono text-[11px] font-bold tracking-[0.08em] uppercase border border-[var(--color-retro-border)]">
-              Campus lost & found
-            </span>
-            <span>EST. 2026</span>
-          </div>
-        </div>
-      </div>
-      <div className="w-full bg-[var(--color-surface-canvas)]/95 backdrop-blur-md border-b border-[var(--color-retro-border)]">
-        <div className="h-16 max-w-7xl mx-auto px-6 flex items-center justify-between gap-6">
-          <div className="flex items-center gap-6">
-            {/* LOGO */}
-            <Link 
-              href="/" 
-              className="relative inline-flex items-center gap-[1px] text-deep-purple text-[19px] font-[800] tracking-[-0.09em] flex-shrink-0" 
-              style={{ fontFamily: '"Syne", sans-serif' }}
-              aria-label="Back2U home"
-            >
-              <span>BACK</span>
-              <span className="text-accent-pink text-[21px] -rotate-8 inline-block">2</span>
-              <span>U</span>
-              <i className="w-[5px] h-[5px] ml-[5px] mt-[15px] bg-accent-pink rounded-full inline-block" />
-            </Link>
-            
-            {/* MAIN NAV (Stitch Styled) */}
-            <nav className="hidden xl:flex items-center gap-6 font-sans text-[13px]">
-              {NAV_ITEMS.map((item) => (
-                <Link 
-                  key={item.id} 
-                  href={item.href}
-                  className="text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors py-1 flex items-center gap-2"
-                >
-                  <span className="flex items-center justify-center opacity-80">{item.icon}</span>
+    <>
+      <header className="b2-nav" data-scrolled={scrolled || open}>
+        <div className="b2-container b2-nav__inner">
+          <Link href="/" aria-label="Back2U home" className="justify-self-start py-2">
+            <Wordmark size={21} />
+          </Link>
+
+          <nav aria-label="Primary" className="b2-nav__links">
+            {NAV_ITEMS.map((item) => {
+              const active = isActive(pathname, item.href);
+              return (
+                <Link key={item.href} href={item.href} className="b2-nav__link" aria-current={active ? "page" : undefined}>
+                  {active && (
+                    <motion.span
+                      layoutId="b2-nav-pill"
+                      className="b2-nav__pill"
+                      transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 36 }}
+                    />
+                  )}
                   {item.label}
                 </Link>
-              ))}
-            </nav>
-          </div>
+              );
+            })}
+          </nav>
 
-          {/* HEADER ACTIONS (Stitch Styled) */}
-          <div className="flex items-center gap-4">
+          <div className="b2-nav__right">
             <AccountMenu />
+            <button
+              className="b2-nav__burger"
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              aria-controls="b2-mobile-nav"
+              onClick={() => setOpen((v) => !v)}
+            >
+              {open ? <X size={18} /> : <Menu size={18} />}
+            </button>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      <AnimatePresence>
+        {open && (
+          <motion.nav
+            id="b2-mobile-nav"
+            aria-label="Mobile"
+            className="b2-sheet"
+            initial={reduce ? { opacity: 0 } : { opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {NAV_ITEMS.map((item, i) => (
+              <motion.div
+                key={item.href}
+                initial={reduce ? false : { opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: reduce ? 0 : 0.04 * i + 0.05, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Link href={item.href} className="b2-sheet__link" aria-current={isActive(pathname, item.href) ? "page" : undefined}>
+                  {item.label}
+                  <ArrowUpRight size={20} strokeWidth={1.4} />
+                </Link>
+              </motion.div>
+            ))}
+            <div className="mt-auto pt-10 flex flex-col gap-3">
+              <span className="b2-label">Campus lost &amp; found</span>
+              <Link href="/login" className="b2-btn b2-btn--ghost">Log in or create account</Link>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
