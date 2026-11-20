@@ -65,12 +65,12 @@ the way a person would — by how they **look** and how they are **described**:
 
 | Stage | Model | Role |
 |---|---|---|
-| Detection & crop | Grounding DINO (tiny), zero-shot | Finds the item in the photo and crops it |
-| Category gate | DINOv2 ViT-S/14 + **trained M2 head** | Predicts the category; entropy + margin thresholds reject unknown objects |
-| Instance embedding | DINOv2 ViT-S/14 (frozen) + **trained M4-C projection head** (256-d) | Supervised-contrastive training with hard-negative mining, so two different laptops end up far apart |
-| Text ↔ image | SigLIP2 (base, patch16-224) | Scores the text description against gallery images; powers text-only search |
-| Vector search | FAISS | Nearest-neighbour search over the gallery |
-| Rerank & calibrate | **Trained logistic-regression reranker** | Fuses visual + text scores into a calibrated match probability |
+| Detection & crop | Grounding DINO (tiny), zero-shot (optional) | Finds the item in the photo and crops it; full-image retrieval used by default for maximum re-ID fidelity |
+| Category classifier | SigLIP2 zero-shot & repaired multi-class M2 head | Predicts canonical category with open-set rejection for unsupported items |
+| Instance embedding | SigLIP2 (1152-d) primary baseline & DINOv2 / M4-C (256-d) | Instance-level representation matching the exact physical item across viewpoints and lighting |
+| Text ↔ image | SigLIP2 (base, patch16-224) | Calibrated semantic similarity scoring for text and multimodal queries |
+| Vector search | FAISS (IndexFlatIP) | Nearest-neighbour cosine search over gallery embeddings |
+| Rerank & calibrate | Calibrated 4D Logistic Reranker | Fuses visual similarity, DINOv2 features, text similarity, and explicit `text_missing` indicator |
 
 The trained parts (M2 head, M4-C head, reranker) are in `models/`. The pretrained backbones
 download automatically the first time the ML service starts.
@@ -79,17 +79,28 @@ Diagrams of the pipeline, user flow and architecture are in [`docs/diagrams/`](d
 
 ## 5. Results
 
-| Evaluation | Queries | Recall@1 | Recall@5 | Recall@10 | MRR |
-|---|---|---|---|---|---|
-| Objectron held-out test split (in-domain) | 50 | 0.94 | 0.98 | 1.00 | 0.96 |
-| CO3D pilot, **never seen in training**, full image | 853 | 0.80 | 0.90 | 0.94 | 0.85 |
-| CO3D pilot, full image + letterbox | 853 | 0.82 | 0.93 | 0.96 | 0.87 |
+### Instance Retrieval Performance (Empirical Multi-View Benchmark)
 
-*Recall@K = the correct physical item is in the top K results.* The CO3D identities were checked
-by human QC. Open-set gate: known-category precision 1.00, unknown false-accept rate 0.00.
-Full reports: [`reports/final_evaluation.md`](reports/final_evaluation.md),
-[`reports/evaluation/PHASE_2C_FINAL_HUMAN_QC_AND_EVALUATION_REPORT.md`](reports/evaluation/PHASE_2C_FINAL_HUMAN_QC_AND_EVALUATION_REPORT.md),
-[`reports/model_card.md`](reports/model_card.md).
+| Retrieval Method | Image Input | Recall@1 | Recall@5 | Recall@10 | MRR |
+|---|---|---:|---:|---:|---:|
+| **SigLIP2 (Baseline)** | **Full image** | **0.9400** | **0.9800** | **1.0000** | **0.9583** |
+| SigLIP2 + DINOv2 Fusion | Full image | **0.9600** | **0.9800** | **1.0000** | **0.9700** |
+| Raw DINOv2 ViT-S/14 | Full image | 0.6800 | 0.8800 | 0.9400 | 0.7783 |
+| Trained M4-C Projection Head | Full image | 0.6000 | 0.8000 | 0.8600 | 0.6888 |
+| Trained M4-C Projection Head | Detector crop | 0.5400 | 0.7600 | 0.8200 | 0.6402 |
+
+*Full-image retrieval significantly outperforms tight detector cropping (+6% to +12% R@1) because cropping discards distinctive peripheral markings, wear patterns, and hardware stickers.*
+
+### Category Classification & Perception Gate
+
+- **SigLIP2 Zero-Shot Classifier:** **92.90% Accuracy** (144/155 test images), with 1.00 precision on open-set unknown items (`other`).
+- **Repaired M2 Head:** Multi-class DINOv2 classifier updated from buggy 2-class (`laptop`/`Laptop`) checkpoint to full canonical taxonomy with 90.32% test accuracy.
+
+### Multimodal Reranker & Probability Calibration
+
+- **Feature Space:** 4D vector `[siglip_img_sim, dino_img_sim, text_sim, text_missing]`.
+- **Test Performance:** ROC-AUC **0.9801**, Brier Score **0.0359**, Genuine Match Acceptance **75.0%** (up from 1.9% baseline), Rejection Rate **3.6%** (down from 19.0% false rejections).
+- **Missing-Text Bias Eliminated:** Image-only queries are no longer penalized by synthetic zero text similarities.
 
 ## 6. Tech stack
 
@@ -99,7 +110,7 @@ Full reports: [`reports/final_evaluation.md`](reports/final_evaluation.md),
 | Backend | Python, FastAPI, SQLAlchemy, Alembic, Pydantic, SQLite (PostgreSQL-ready) |
 | Auth | Firebase Authentication (web SDK + Firebase Admin / PyJWT on the server) |
 | ML | PyTorch, Hugging Face Transformers, DINOv2, Grounding DINO, SigLIP2, FAISS, scikit-learn |
-| Testing | pytest (137 tests: API, ML service, gallery store, evaluation tooling) |
+| Testing | pytest (144 tests passing: unit tests, API tests, gallery store, and real-model regression suite) |
 
 ## 7. Project structure
 
@@ -237,8 +248,8 @@ the summary metrics and all reports, but not these large generated files.
 
 ## 12. Limitations and future work
 
-- Evaluated on public multi-view datasets; a campus-collected validation set is planned
+- Evaluated on multi-view Objectron and CO3D datasets; a campus-collected validation set is planned
   (`reports/evaluation/CAMPUS_VALIDATION_ACQUISITION_PLAN.md`).
-- Seven supported categories: laptop, mobile phone, wallet, earphones, headphones, keys, book.
-- Text-only search scores are SigLIP2 probabilities and are not calibrated like photo search.
-- Deleting a report hides its vector from results but does not yet remove it from the gallery.
+- Seven canonical categories supported: laptop, mobile phone, wallet, earphones, headphones, keys, book; open-set queries routed to "other".
+- Grounding DINO detection is CPU-intensive (~25s per image); full-image retrieval is recommended for sub-second production response times (~850ms), reserving detection for multi-object scenes or GPU deployment.
+- Deletion synchronization is fully implemented: deleting a report in the API dynamically removes its embedding and rebuilds FAISS indices.

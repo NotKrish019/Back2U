@@ -52,6 +52,10 @@ class RetrievalService:
         """Index a report image. Returns the ML service response dict; raises on failure."""
         raise NotImplementedError()
 
+    def remove_report(self, item_instance_id: str) -> dict:
+        """Remove a report from the retrieval gallery. Returns response dict."""
+        raise NotImplementedError()
+
     def list_indexed(self) -> tuple[str, set]:
         """Returns (model_version, set of indexed item_instance_ids)."""
         raise NotImplementedError()
@@ -82,6 +86,9 @@ class MockRetrievalService(RetrievalService):
 
     def index_report(self, report, image) -> dict:
         return {"status": "added", "duplicate_of": [], "model_version": MOCK_MODEL_VERSION}
+
+    def remove_report(self, item_instance_id: str) -> dict:
+        return {"status": "success", "item_id": item_instance_id, "model_version": MOCK_MODEL_VERSION}
 
     def list_indexed(self):
         return MOCK_MODEL_VERSION, set()
@@ -122,6 +129,18 @@ class RealRetrievalService(RetrievalService):
         payload = resp.json()
         self._remember_version(payload)
         return payload
+
+    def remove_report(self, item_instance_id: str) -> dict:
+        if not item_instance_id:
+            return {"status": "skipped"}
+        try:
+            resp = self.http.delete(f"{self.ml_url}/api/items/{item_instance_id}", timeout=self.timeout)
+            if resp.status_code == 404:
+                return {"status": "not_found", "item_id": item_instance_id}
+            resp.raise_for_status()
+            return resp.json()
+        except Exception as e:
+            return {"status": "error", "item_id": item_instance_id, "detail": str(e)}
 
     def list_indexed(self):
         resp = self.http.get(f"{self.ml_url}/api/items", timeout=self.timeout)

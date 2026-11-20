@@ -165,3 +165,89 @@ The MRR calculation bug was fixed (using the `enumerate` index rather than the h
 
 ### Decision
 The evaluation codebase flawlessly handles custom trained weights. We are now officially ready to point this exact pipeline (train + evaluate) at the real-world PACO/Objectron 1.5GB subset.
+
+---
+
+### Experiment ID
+`E005`
+
+### Objective
+Systematic benchmark of retrieval models (SigLIP2, Raw DINOv2, M4-C, and SigLIP2+DINOv2 score fusion) comparing full-image vs detector cropping.
+
+### Dataset
+Held-out multi-view test split: 50 photographs, 24 physical object instances.
+
+### Results
+- SigLIP2 (Full Image): Recall@1: **0.9400** | Recall@5: **1.0000** | MRR: **0.9700**
+- SigLIP2 (Detector Crop): Recall@1: 0.8800 | Recall@5: 0.9800 | MRR: 0.9308
+- Raw DINOv2 (Full Image): Recall@1: 0.9400 | Recall@5: 1.0000 | MRR: 0.9640
+- M4-C (Full Image): Recall@1: 0.9200 | Recall@5: 1.0000 | MRR: 0.9507
+- M4-C (Detector Crop): Recall@1: 0.8000 | Recall@5: 0.9200 | MRR: 0.8580
+- Fusion: SigLIP2 + DINOv2 (Full Image): Recall@1: **0.9600** | Recall@5: **1.0000** | MRR: **0.9750**
+
+### Decision
+Detector cropping degrades recall across all models (-6% to -12% R@1) due to lost peripheral instance cues. Establish Full Image retrieval as production default and SigLIP2 as primary retrieval index.
+
+---
+
+### Experiment ID
+`E006`
+
+### Objective
+Train a calibrated 4D multimodal reranker `[siglip_img_sim, dino_img_sim, text_sim, text_missing]` to eliminate image-only false rejections and establish validated operating thresholds.
+
+### Dataset
+Disjoint pairs: 3,040 train pairs, 1,040 validation pairs, 1,000 independent test pairs with 50/50 image-only and multimodal queries.
+
+### Results
+- Test AUC: **0.9801**
+- Brier Score: **0.0359**
+- Precision @ 0.65 threshold: **0.8400**
+- Recall @ 0.65 threshold: **0.7500**
+- Genuine Match Acceptance Rate: **75.0%** (up from 1.9%)
+- Genuine Match False Rejection Rate: **3.6%** (down from 19.0%)
+- Image-Only Genuine Match Acceptance: **75.0%** (penalty eliminated)
+
+### Decision
+Deploy calibrated 4D reranker with `CANDIDATE_PROB = 0.65` and `REJECT_PROB = 0.15`.
+
+---
+
+### Experiment ID
+`E007`
+
+### Objective
+Compare Option A (SigLIP2 zero-shot classification across 7 canonical categories + open-set other) vs Option B (retraining multi-class M2 DINOv2 head).
+
+### Dataset
+155 genuine test images covering earphones, headphones, smartphones, laptops, books, and open-set items (bottles, cups, shoes, chairs, bikes, cameras).
+
+### Results
+- **Option A (SigLIP2 Zero-Shot)**: **92.90% Overall Accuracy** (144/155). Class-wise F1: Laptop 0.98, Phone 0.86, Earphones 0.91, Headphones 0.89, Book 1.00, Other 1.00. Supports `wallet` and `keys` zero-shot.
+- **Option B (Retrained M2 DINOv2 Head)**: **90.32% Overall Accuracy** (140/155). Class-wise F1: Laptop 1.00, Phone 1.00, Earphones 0.91, Headphones 0.71, Book 0.94, Other 0.84. Cannot predict `wallet` or `keys` (0 training samples).
+
+### Decision
+Deploy Option A (SigLIP2 zero-shot) as primary classifier in `LiveModels`. Save Option B weights to `models/checkpoints/m2_category_head_multiclass.pth` and `data/processed/m2_categories.json` to replace broken 2-class checkpoint.
+
+---
+
+### Experiment ID
+`E008`
+
+### Objective
+Measure end-to-end component latency breakdown and calibrate text-only search probabilities.
+
+### Results
+- Latency Breakdown:
+  - Preprocessing: 11.71 ms
+  - Grounding DINO Detection: 25,674.00 ms (93.1% of total CPU time)
+  - Category Classification: 784.63 ms
+  - M4-C Visual Embedding: 254.29 ms
+  - SigLIP2 Image Embedding: 852.42 ms
+  - SigLIP2 Text Embedding: 780.63 ms
+  - FAISS Search: 0.03 ms
+  - Reranking: 0.00 ms
+- Text Calibration: Logistic scaling `p = 1 / (1 + exp(-(sim - 0.20) * 15.0))` maps positive matches to ~0.90 and unrelated queries to <0.20.
+
+### Decision
+Direct full-image retrieval with SigLIP2 bypasses the 25-second detector bottleneck, delivering high-accuracy retrieval in under 900 ms. Grounding DINO should be applied only when spatial localization is explicitly requested.

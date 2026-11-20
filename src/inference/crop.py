@@ -17,11 +17,12 @@ from src.categories import normalize_detector_label
 MIN_CROP_SIDE_PX = 32          # smaller boxes have too few pixels for ViT-S/14 @224
 MIN_CROP_AREA_FRAC = 0.01      # box must cover >= 1% of the image
 PAD_FRAC = 0.10                # context padding on each side, relative to box size
+DEFAULT_MIN_CONFIDENCE = 0.4   # minimum detection confidence for confidence_aware cropping
 
 
 @dataclass
 class CropInfo:
-    source: str                      # "detector" | "full_image_fallback"
+    source: str                      # "full_image" | "detector" | "full_image_fallback"
     box: list[int]                   # [x0, y0, x1, y1] actually cropped, pixel coords
     raw_box: Optional[list[float]]   # detector box before clamping/padding
     label: Optional[str]             # canonical category of the selected detection
@@ -66,18 +67,72 @@ def _validate_box(box: Sequence[float], width: int, height: int) -> tuple[Option
     return out, "ok"
 
 
-def select_crop(image: Image.Image, detections: Sequence[dict]) -> tuple[Image.Image, CropInfo]:
-    """Pick the highest-scoring valid detection of a canonical category and crop to it.
+def select_crop(
+    image: Image.Image,
+    detections: Sequence[dict],
+    policy: str = "detector_crop",
+    min_confidence: float = DEFAULT_MIN_CONFIDENCE,
+    expected_category: Optional[str] = None,
+) -> tuple[Image.Image, CropInfo]:
+    """Select crop or full image based on cropping policy.
+
+    Policies:
+    - "full_image": Production default; preserves full image context and avoids clipping
+      extremities or stickers. Still attaches detection metadata to CropInfo.
+    - "confidence_aware": Only crops if detector score >= min_confidence, valid box, and
+      matches expected_category if provided; otherwise falls back safely to full image.
+    - "detector_crop": Legacy mode; crops to highest scoring valid canonical detection.
 
     ``detections``: dicts with ``label`` (str), ``score`` (float), ``box`` ([x0,y0,x1,y1] px).
-    Falls back to the full image (recorded in ``CropInfo.source``) if nothing is valid.
     """
     width, height = image.size
+
+    # Extract best canonical detection for metadata
+    best_det = None
+    for det in sorted(detections or [], key=lambda d: -float(d.get("score", 0.0))):
+        canonical = normalize_detector_label(det.get("label"))
+        if canonical is not None:
+            box, why = _validate_box(det.get("box"), width, height)
+            if box is not None:
+                best_det = (det, canonical, box)
+                break
+
+    if policy == "full_image":
+        if best_det is not None:
+            return image, CropInfo(
+                source="full_image",
+                box=[0, 0, width, height],
+                raw_box=[float(v) for v in best_det[0]["box"]],
+                label=best_det[1],
+                raw_label=best_det[0].get("label"),
+                score=float(best_det[0].get("score", 0.0)),
+                reason="full_image_policy",
+                image_size=[width, height],
+            )
+        else:
+            return image, CropInfo(
+                source="full_image_fallback",
+                box=[0, 0, width, height],
+                raw_box=None,
+                label=None,
+                raw_label=None,
+                score=None,
+                reason="no_detections" if not detections else "no_valid_detection",
+                image_size=[width, height],
+            )
+
     rejected: list[str] = []
     for det in sorted(detections or [], key=lambda d: -float(d.get("score", 0.0))):
         canonical = normalize_detector_label(det.get("label"))
         if canonical is None:
             rejected.append("non_canonical_label")
+            continue
+        score = float(det.get("score", 0.0))
+        if policy == "confidence_aware" and score < min_confidence:
+            rejected.append(f"low_confidence_{score:.2f}<{min_confidence}")
+            continue
+        if expected_category and canonical != expected_category:
+            rejected.append(f"category_mismatch_{canonical}!={expected_category}")
             continue
         box, why = _validate_box(det.get("box"), width, height)
         if box is None:
@@ -90,8 +145,8 @@ def select_crop(image: Image.Image, detections: Sequence[dict]) -> tuple[Image.I
             raw_box=[float(v) for v in det["box"]],
             label=canonical,
             raw_label=det.get("label"),
-            score=float(det.get("score", 0.0)),
-            reason="highest_scoring_valid_detection",
+            score=score,
+            reason="confidence_aware_crop" if policy == "confidence_aware" else "highest_scoring_valid_detection",
             image_size=[width, height],
         )
 
@@ -99,10 +154,10 @@ def select_crop(image: Image.Image, detections: Sequence[dict]) -> tuple[Image.I
     return image, CropInfo(
         source="full_image_fallback",
         box=[0, 0, width, height],
-        raw_box=None,
-        label=None,
-        raw_label=None,
-        score=None,
+        raw_box=[float(v) for v in best_det[0]["box"]] if best_det else None,
+        label=best_det[1] if best_det else None,
+        raw_label=best_det[0].get("label") if best_det else None,
+        score=float(best_det[0].get("score", 0.0)) if best_det else None,
         reason=reason,
         image_size=[width, height],
     )

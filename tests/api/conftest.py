@@ -33,9 +33,13 @@ def setup_test_db():
     yield
     # Drop all tables after all tests finish
     Base.metadata.drop_all(bind=engine)
+    engine.dispose()
     # Remove the sqlite file
     if os.path.exists("./test_app.db"):
-        os.remove("./test_app.db")
+        try:
+            os.remove("./test_app.db")
+        except PermissionError:
+            pass
 
 @pytest.fixture
 def client():

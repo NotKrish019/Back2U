@@ -57,7 +57,7 @@ def search(
         # We assume for this query we want opposite reports (if searching for a lost item, show found items).
         report = db.query(Report).filter(Report.item_instance_id == item.item_instance_id).first()
         
-        if report:
+        if report and report.status == "open":
             # Enforce privacy constraints: blur image for found items
             image_ref = report.image_reference
             if report.report_type == "found" and image_ref:

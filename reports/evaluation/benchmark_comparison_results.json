@@ -1,0 +1,58 @@
+{
+  "SigLIP2 (Full Image)": {
+    "R@1": 0.94,
+    "R@5": 1.0,
+    "R@10": 1.0,
+    "MRR": 0.97,
+    "n_queries": 50
+  },
+  "SigLIP2 (Detector Crop)": {
+    "R@1": 0.88,
+    "R@5": 0.98,
+    "R@10": 0.98,
+    "MRR": 0.9308,
+    "n_queries": 50
+  },
+  "Raw DINOv2 (Full Image)": {
+    "R@1": 0.94,
+    "R@5": 1.0,
+    "R@10": 1.0,
+    "MRR": 0.964,
+    "n_queries": 50
+  },
+  "Raw DINOv2 (Detector Crop)": {
+    "R@1": 0.8,
+    "R@5": 0.94,
+    "R@10": 0.96,
+    "MRR": 0.8617,
+    "n_queries": 50
+  },
+  "M4-C (Full Image)": {
+    "R@1": 0.92,
+    "R@5": 1.0,
+    "R@10": 1.0,
+    "MRR": 0.9507,
+    "n_queries": 50
+  },
+  "M4-C (Detector Crop)": {
+    "R@1": 0.8,
+    "R@5": 0.92,
+    "R@10": 0.96,
+    "MRR": 0.858,
+    "n_queries": 50
+  },
+  "Fusion: SigLIP2 + DINOv2 (Full)": {
+    "R@1": 0.96,
+    "R@5": 1.0,
+    "R@10": 1.0,
+    "MRR": 0.975,
+    "n_queries": 50
+  },
+  "Fusion: SigLIP2 + M4-C (Full)": {
+    "R@1": 0.96,
+    "R@5": 1.0,
+    "R@10": 1.0,
+    "MRR": 0.975,
+    "n_queries": 50
+  }
+}

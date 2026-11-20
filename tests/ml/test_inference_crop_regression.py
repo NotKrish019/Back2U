@@ -33,7 +33,7 @@ def _mostly_red(pil: Image.Image) -> float:
 def test_search_embeds_detector_crop_not_full_image(tmp_path, photo):
     img, path = photo
     fake = FakeModels(detections=[{"label": "laptop", "score": 0.55, "box": OBJ_BOX}])
-    pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery")
+    pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery", crop_policy="detector_crop")
 
     res = pipe.infer(str(path), top_k=3)
 
@@ -49,10 +49,38 @@ def test_search_embeds_detector_crop_not_full_image(tmp_path, photo):
     assert fake.detect_prompts[0] == "laptop. mobile phone. wallet. earphones. headphones. keys. book."
 
 
+def test_production_default_embeds_full_image(tmp_path, photo):
+    img, path = photo
+    fake = FakeModels(detections=[{"label": "laptop", "score": 0.55, "box": OBJ_BOX}])
+    pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery")  # default crop_policy="full_image"
+
+    res = pipe.infer(str(path), top_k=3)
+
+    assert res["crop"]["source"] == "full_image"
+    assert res["crop"]["box"] == [0, 0, img.size[0], img.size[1]]
+    assert fake.visual_inputs[0].size == img.size
+    assert fake.siglip_image_inputs[0].size == img.size
+
+
+def test_confidence_aware_cropping(tmp_path, photo):
+    img, path = photo
+    # Low confidence -> fallback to full image
+    fake_low = FakeModels(detections=[{"label": "laptop", "score": 0.35, "box": OBJ_BOX}])
+    pipe_low = FinalInferencePipeline(models=fake_low, store_dir=tmp_path / "g1", crop_policy="confidence_aware")
+    res_low = pipe_low.infer(str(path), top_k=3)
+    assert res_low["crop"]["source"] == "full_image_fallback"
+
+    # High confidence -> crops
+    fake_high = FakeModels(detections=[{"label": "laptop", "score": 0.85, "box": OBJ_BOX}])
+    pipe_high = FinalInferencePipeline(models=fake_high, store_dir=tmp_path / "g2", crop_policy="confidence_aware")
+    res_high = pipe_high.infer(str(path), top_k=3)
+    assert res_high["crop"]["source"] == "detector"
+
+
 def test_gallery_add_embeds_crop_for_m4c_and_siglip(tmp_path, photo):
     img, path = photo
     fake = FakeModels(detections=[{"label": "wallet", "score": 0.4, "box": OBJ_BOX}])
-    pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery")
+    pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery", crop_policy="detector_crop")
 
     out = pipe.add_to_gallery(str(path), "item_a", "Wallet")
 
@@ -73,7 +101,7 @@ def test_query_crop_matches_gallery_crop_of_same_object_in_different_photo(tmp_p
         return [{"label": "book", "score": 0.5, "box": box}]
 
     fake = FakeModels(detect_fn=detect)
-    pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery")
+    pipe = FinalInferencePipeline(models=fake, store_dir=tmp_path / "gallery", crop_policy="detector_crop")
     pipe.add_image_bytes(to_jpeg_bytes(gallery_img), "item_blue", "book")
     pipe.add_image_bytes(to_jpeg_bytes(make_image((400, 300), seed=1)), "item_noise", "book")
     q = tmp_path / "q.png"

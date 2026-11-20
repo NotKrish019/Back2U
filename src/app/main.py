@@ -141,6 +141,14 @@ def api_items():
     return {"model_version": pipeline.model_version, "item_ids": pipeline.store.item_ids()}
 
 
+@app.delete("/api/items/{item_id}")
+def api_remove_item(item_id: str):
+    removed = pipeline.store.remove(item_id)
+    if not removed:
+        raise HTTPException(status_code=404, detail=f"Item {item_id} not found in gallery store")
+    return {"status": "success", "message": f"Item {item_id} removed from gallery.", "remaining_entries": len(pipeline.store)}
+
+
 @app.get("/api/health")
 def api_health():
     info = pipeline.store.info()

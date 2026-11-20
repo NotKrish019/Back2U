@@ -50,6 +50,10 @@ test_app.db
 # ---------- Optional third-party code ----------
 third_party/
 
+# ---------- Temporary & Scratch ----------
+scratch/
+back2u-ui-lab/
+
 # ---------- CO3D (CC BY-NC 4.0, research only): never commit derived imagery ----------
 reports/evaluation/co3d_pilot/contact_sheets/
 reports/evaluation/co3d_pilot/qc_review/

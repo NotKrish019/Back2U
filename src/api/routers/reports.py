@@ -184,6 +184,14 @@ def delete_report(
         
     if report.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not authorized to modify this report")
+
+    if report.item_instance_id:
+        try:
+            from src.api.routers.retrieval import get_retrieval_service
+            retrieval_service = get_retrieval_service()
+            retrieval_service.remove_report(report.item_instance_id)
+        except Exception as e:
+            print(f"Failed to remove {report.item_instance_id} from gallery store: {e}")
         
     db.delete(report)
     db.commit()

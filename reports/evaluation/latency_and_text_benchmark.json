@@ -1,0 +1,20 @@
+{
+  "latency_benchmark": {
+    "preprocessing_ms": 11.71,
+    "detection_ms": 25674.0,
+    "classification_ms": 784.63,
+    "m4c_visual_emb_ms": 254.29,
+    "siglip_image_emb_ms": 852.42,
+    "siglip_text_emb_ms": 780.63,
+    "faiss_search_ms": 0.03,
+    "reranking_ms": 0.0,
+    "total_latency_ms": 27577.07
+  },
+  "text_calibration": {
+    "mean_positive_similarity": 0.35,
+    "mean_negative_similarity": 0.1,
+    "calibration_formula": "1 / (1 + exp(-(sim - 0.20) * 15.0))",
+    "candidate_threshold": 0.65,
+    "reject_threshold": 0.15
+  }
+}

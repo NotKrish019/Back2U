@@ -1,1 +1,8 @@
-{"0": "laptop", "1": "Laptop"}
+{
+  "0": "book",
+  "1": "earphones",
+  "2": "headphones",
+  "3": "laptop",
+  "4": "mobile_phone",
+  "5": "other"
+}

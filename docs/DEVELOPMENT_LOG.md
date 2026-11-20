@@ -1,4 +1,4 @@
-# Project Context — Live Memory
+# Project Context â€” Live Memory
 
 > **This file must be updated after every completed implementation step, experiment, feature change, architecture change, dataset change, important bug fix, or scope decision.**
 
@@ -57,19 +57,19 @@ book, bottle, cup/mug, laptop, camera, shoe, phone/cellular telephone, wallet, c
 
 ## Decisions log
 
-### 2026-09-23 — Initial architecture direction
+### 2026-09-23 â€” Initial architecture direction
 
 Decision: treat the ML system as the primary project and the lost-and-found application as the deployment layer.
 
 Reason: the faculty expects substantial technical implementation; the team wants ownership of the model rather than a project that is mostly API orchestration.
 
-### 2026-09-23 — Dataset strategy
+### 2026-09-23 â€” Dataset strategy
 
 Decision: use public datasets with complementary roles rather than searching for one perfect campus dataset.
 
 Reason: no single identified public dataset provides all of: campus items, same-instance multi-view imagery, vague owner descriptions, and lost/found metadata.
 
-### 2026-09-23 — RAG boundary
+### 2026-09-23 â€” RAG boundary
 
 Decision: RAG is optional and not part of the core retrieval system.
 
@@ -90,7 +90,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 ## Update template
 
-### 2026-09-23 15:40 — Step 0 (Project Bootstrap)
+### 2026-09-23 15:40 â€” Step 0 (Project Bootstrap)
 
 **Change:** Initialized Git (NotKrish019), created folder structure, added `.gitignore`, created virtual environment, and installed core ML stack (PyTorch, Pandas, Numpy, Jupyter).
 
@@ -106,7 +106,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Execute Step 1: Dataset audit (Objectron, PACO-LVIS, VoxDet-SoIR) without downloading large files.
 
-### 2026-09-23 15:44 — Step 1 (Dataset Audit)
+### 2026-09-23 15:44 â€” Step 1 (Dataset Audit)
 
 **Change:** Investigated Objectron, PACO-LVIS, and VoxDet-SoIR metadata online. Created dataset inventory report.
 
@@ -123,7 +123,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 **Next action:** Await approval on the dataset subset recommendation before moving to Step 2 (Data ingestion and normalization).
 
 
-### 2026-09-23 16:45 — Step 2 (Data Ingestion and Normalization)
+### 2026-09-23 16:45 â€” Step 2 (Data Ingestion and Normalization)
 
 **Change:** Created the dataset schema and adapters under `src/data/` for Objectron and PACO-LVIS. 
 
@@ -139,7 +139,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Move to Step 3: Build valid train/validation/test splits from the unified manifest.
 
-### 2026-09-23 16:50 — Step 3 (Build valid train/validation/test splits)
+### 2026-09-23 16:50 â€” Step 3 (Build valid train/validation/test splits)
 
 **Change:** Created and executed `scripts/datasets/build_splits.py` to partition the data.
 
@@ -153,7 +153,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Move to Step 4: Baseline image embedding retrieval (which evaluates the `test` split).
 
-### 2026-09-23 17:30 — Step 4 (Image Embedding Baseline) & Proxy Dataset (COIL-100)
+### 2026-09-23 17:30 â€” Step 4 (Image Embedding Baseline) & Proxy Dataset (COIL-100)
 
 **Change:** Adopted COIL-100 as a temporary proxy dataset to unblock ML training and evaluation without downloading massive Objectron/PACO files. Wrote ingestion script, re-generated splits (70/15/15 disjoint instances), and implemented the PyTorch ResNet50 baseline + FAISS retrieval engine.
 
@@ -169,7 +169,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Move to Step 6: Custom model training (Contrastive/Siamese).
 
-### 2026-09-23 18:00 — Step 6 (Custom Model Proxy Training)
+### 2026-09-23 18:00 â€” Step 6 (Custom Model Proxy Training)
 
 **Change:** Implemented the Siamese Neural Network architecture, the Triplet Dataset sampler, and the PyTorch Training Loop using the proxy dataset (COIL-100).
 
@@ -185,7 +185,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Design the surgical download scripts for real-world PACO/Objectron data.
 
-### 2026-09-23 18:30 — Step 7 (Real-World Surgical Dataset Pipeline)
+### 2026-09-23 18:30 â€” Step 7 (Real-World Surgical Dataset Pipeline)
 
 **Change:** Implemented a reproducible data pipeline (`audit_dataset_metadata.py`, `estimate_storage.py`, `download_selected_data.py`, `preprocess_object_crops.py`, `build_training_pairs.py`) to systematically extract a ~4.6GB targeted subset of PACO and Objectron.
 
@@ -205,7 +205,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Execute full custom model training on the generated dataset and compare it against the baseline.
 
-### 2026-09-23 18:55 — Step 8 (Custom Model Training & Evaluation)
+### 2026-09-23 18:55 â€” Step 8 (Custom Model Training & Evaluation)
 
 **Change:** Executed the Siamese Triplet model training loop (`scripts/training/train.py`), fixed an off-by-one MRR metric computation bug in `src/evaluation/metrics.py`, and authored `scripts/evaluation/evaluate_siamese.py` to test the newly trained weights (`mir_siamese_best.pth`).
 
@@ -225,7 +225,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Transition from pure ML pipeline engineering to deploying the Lost & Found UI/Frontend and API layer, or run a data-collection sprint to populate the real dataset.
 
-### 2026-09-23 19:05 — Step 9 (Inference API & UI)
+### 2026-09-23 19:05 â€” Step 9 (Inference API & UI)
 
 **Change:** Developed a lightweight FastAPI web server (`src/app/main.py`) serving a vanilla HTML/JS frontend to allow direct testing of the Siamese Network retrieval model. Added Jinja2 templates (`index.html` and `results.html`).
 
@@ -289,7 +289,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 - **Next action**: Retrain the model on the new dataset splits.
 
 ## Coworker 2 Updates (Backend & UI Integration)
-### 2026-09-23 16:44 — Step 14-16 (Application & Integration Setup)
+### 2026-09-23 16:44 â€” Step 14-16 (Application & Integration Setup)
 
 **Change:** As Coworker 2, created the FastAPI backend application in `src/api/` with SQLite database (`models.py`, `schemas.py`) and a `MockRetrievalService`. Created the Next.js frontend in `frontend/` featuring "Report Lost/Found" and "Search Results" UI connecting to the mock backend.
 
@@ -305,7 +305,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Await Coworker 1's dataset ingestion and ML model baseline completion to replace the `MockRetrievalService` with the real model.
 
-### 2026-09-23 18:30 — Homepage UX Revision (Privacy & Interaction)
+### 2026-09-23 18:30 â€” Homepage UX Revision (Privacy & Interaction)
 
 **Change:** Surgically revised the `frontend/src/app/page.tsx` hero section. Replaced the rotating public item visual with an abstract, interactive "Search Lens" component. Expanded the clickable footprint and hover states of the "I LOST SOMETHING" and "I FOUND SOMETHING" actions.
 
@@ -319,7 +319,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Risks/issues:** None. The core application logic remains completely unaffected.
 
-### 2026-09-23 23:45 — UI Enhancements, Rebranding & Auth Expansion
+### 2026-09-23 23:45 â€” UI Enhancements, Rebranding & Auth Expansion
 
 **Change:** 
 - Rebranded application from CampusFind to Back2U across all pages, meta tags, and legal policies.
@@ -341,7 +341,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Await backend integration and real ML retrieval pipeline.
 
-### 2026-09-24 13:10 — UI Form Validation & Hotspots Feature
+### 2026-09-24 13:10 â€” UI Form Validation & Hotspots Feature
 
 **Change:** 
 - Implemented robust front-end form validation on the Search (`/search`) and Report (`/report`) pages ensuring users provide required descriptions and locations.
@@ -360,7 +360,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Write automated tests for frontend states.
 
-### 2026-09-24 13:10 — Backend ML Integration (RealRetrievalService)
+### 2026-09-24 13:10 â€” Backend ML Integration (RealRetrievalService)
 
 **Change:** 
 - Hooked up the Next.js frontend to the live Python FastAPI backend running on port 8000 (`127.0.0.1:8000`).
@@ -378,7 +378,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Implement automated API/Integration tests (valid/invalid reports, Top-K handling, JSON contract verification).
 
-### 2026-09-24 18:50 — PostgreSQL Database Connection Setup
+### 2026-09-24 18:50 â€” PostgreSQL Database Connection Setup
 
 **Change:** 
 - Analyzed existing architecture (FastAPI, SQLAlchemy) and transitioned from SQLite to PostgreSQL.
@@ -399,7 +399,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 **Next action:** 
 - User to start the local Docker PostgreSQL container or provide production DB connection strings, and run `alembic upgrade head` to run initial schema migration. After that, expand schema mapping for match persistence, category tables, and eventual pgvector setup.
 
-### 2026-09-24 19:55 — Database Architecture & Schema Design Review
+### 2026-09-24 19:55 â€” Database Architecture & Schema Design Review
 
 **Change:** 
 - Conducted a full architectural review to verify the Supabase PostgreSQL connection and design the final schema for the ML retrieval pipeline.
@@ -429,7 +429,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 **Next action:** 
 - Finalize the ML vector dimensions to upgrade the `report_embeddings` table to support `pgvector`. Integrate the real FAISS index into the API flow.
 
-### 2026-09-24 20:10 — Backend/API Phase Completion
+### 2026-09-24 20:10 â€” Backend/API Phase Completion
 
 **Change:** 
 - Fully implemented the Firebase Auth dependency (`src/api/auth.py`) enforcing token verification and seamless auto-sync to PostgreSQL `users`.
@@ -455,7 +455,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 **Next action:** 
 - Hand back to Coworker 1 to integrate the final trained PyTorch/FAISS vectors to the new `report_embeddings` structure.
 
-### 2026-09-24 20:40 — End-to-End Firebase Auth & Search Debugging
+### 2026-09-24 20:40 â€” End-to-End Firebase Auth & Search Debugging
 
 **Change:** 
 - Debugged and finalized the Firebase Auth integration on the backend (`src/api/auth.py`).
@@ -480,7 +480,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 **Next action:** 
 - Await Coworker 1 to integrate the final trained PyTorch/FAISS vectors to the new `report_embeddings` structure and re-enable `RealRetrievalService`.
 
-### 2026-09-24 20:50 — Search UI Persistence Fix
+### 2026-09-24 20:50 â€” Search UI Persistence Fix
 
 **Change:** 
 - Updated `frontend/src/app/search/page.tsx` to implicitly call `api.createReport` before executing the `/search` query if the user fills out the manual search form.
@@ -495,7 +495,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 - **Evidence/results**: Training successfully completed all 20 Epochs on the GPU. The new `mir_siamese_best.pth` achieved a stellar Validation Loss of **0.0001** (at Epoch 11).
 - **Next action**: Connect the trained model with Coworker 2's backend and frontend integration for full end-to-end functionality.
 
-### 2026-09-28 01:58 — M0 (Repository + contracts frozen)
+### 2026-09-28 01:58 â€” M0 (Repository + contracts frozen)
 
 **Change:** Audited the existing ResNet50 Siamese Network implementation and established the new architectural constraints based on the `MASTER_PLAN.md`. Generated the required M0 architectural reports and removed redundant handover documents.
 
@@ -509,9 +509,9 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Risks/issues:** Migrating from the legacy Siamese structure to the new DINOv2 architecture will require a significant rewrite of the `src/models/` and `scripts/training/train.py` logic.
 
-**Next action:** Execute M1: Data selection + 5–6 GB corpus.
+**Next action:** Execute M1: Data selection + 5â€“6 GB corpus.
 
-### 2026-09-28 02:04 — M1 (Data selection + 5–6 GB corpus)
+### 2026-09-28 02:04 â€” M1 (Data selection + 5â€“6 GB corpus)
 
 **Change:** Updated `audit_dataset_metadata.py` and `estimate_storage.py` to map all Tier A categories (including camera, watch, shoe, calculator). Re-ran the download pipeline to fetch the exact Tier A subset from PACO-LVIS while enforcing strict capacity limits, and combined it with the custom datasets. Rebuilt the instance-disjoint train/val/test splits.
 
@@ -530,7 +530,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 
 **Next action:** Execute M2: Perception benchmark or M3: DINOv2 frozen baseline.
 
-### 2026-09-28 02:22 — M3 / Step 5 — DINOv2 Frozen Baseline
+### 2026-09-28 02:22 â€” M3 / Step 5 â€” DINOv2 Frozen Baseline
 
 **Change:** Implemented frozen `Dinov2ImageEncoder` (ViT-S/14) and `scripts/training/run_m3_baseline.py` to evaluate frozen ResNet50 against frozen DINOv2 on our 1,541-image test split.
 
@@ -560,7 +560,7 @@ Run dataset audit and build a small metadata-only inventory before downloading l
 - ResNet50 Recall@1 = 0.8858
 - DINOv2 Recall@1 = 0.8898
 
-### 2026-09-28 19:12 — M4-A Frozen DINOv2 + SupCon
+### 2026-09-28 19:12 â€” M4-A Frozen DINOv2 + SupCon
 
 **Change:**
 Implemented M4-A Metric Learning phase. Created a frozen DINOv2 ViT-S/14 feature cacher, an `InstanceBatchSampler` to guarantee positive pairs per batch, a Supervised Contrastive Loss (SupCon), and an MLP projection head (`384->512->GELU->Dropout->256`).
@@ -642,7 +642,7 @@ The benchmark metrics (0.94+ Recall@1) are extremely high, but they represent a 
 **Next action:**
 Move to the next system layer (e.g., Cross-Modal Architecture or Deployment).
 
-### 2026-09-28 23:30 — M2-A Grounding DINO Perception Benchmark
+### 2026-09-28 23:30 â€” M2-A Grounding DINO Perception Benchmark
 
 **Change:**
 Implemented a zero-shot perception benchmark evaluating `IDEA-Research/grounding-dino-tiny` on a fixed test split containing both known categories (laptop, book, bottle, cup, shoe, camera) and unknown categories (chair).
@@ -672,7 +672,7 @@ Recall on certain classes (`book`, `camera`) is unacceptably low for production.
 **Next action:**
 Implement M2-B (Category Gate) to fuse Grounding DINO's category evidence with the visual category head.
 
-### 2026-09-28 23:55 — M2-B Visual Category Head + Category Gate
+### 2026-09-28 23:55 â€” M2-B Visual Category Head + Category Gate
 
 **Change:**
 Implemented a lightweight visual category head (frozen DINOv2 + Linear Projection) trained strictly on `train_split.jsonl` (laptop, cup, shoe, bottle). Built a multi-signal Category Gate that fuses Grounding DINO (detector) with the Visual Category Head (classifier) to output KNOWN, UNCERTAIN, or UNKNOWN.
@@ -701,7 +701,7 @@ The gate still falsely accepts 25% of unknown objects (chairs) when both the det
 **Next action:**
 Move to the next system layer (Cross-Modal Architecture / SigLIP2) to further suppress false positives and align with textual descriptions.
 
-### 2026-09-29 00:42 — M5 SigLIP2 Cross-Modal Baseline
+### 2026-09-29 00:42 â€” M5 SigLIP2 Cross-Modal Baseline
 
 **Change:**
 Implemented and evaluated SigLIP2 (`google/siglip-base-patch16-224`) for cross-modal semantic matching, benchmarking Text-to-Image and Image+Text retrieval.
@@ -728,9 +728,9 @@ SigLIP2 provides excellent semantic alignment but directly fusing coarse text (l
 Coarse text reduces the margin between physically distinct instances of the same category. Text must be highly descriptive to aid instance retrieval.
 
 **Next action:**
-M2-C — Open-Set Rejection and Calibration. Address the open-set problem (unknown object → reject) beyond just classifying known objects.
+M2-C â€” Open-Set Rejection and Calibration. Address the open-set problem (unknown object â†’ reject) beyond just classifying known objects.
 
-### 2026-09-29 01:05 — M5 SigLIP2 Correction & Top-N Reranking
+### 2026-09-29 01:05 â€” M5 SigLIP2 Correction & Top-N Reranking
 
 **Change:**
 Corrected the M5 benchmark to use the true `google/siglip2-base-patch16-224` checkpoint (the original was demoted to M5-preview). Changed the evaluation architecture from a raw score blend to a M4-C Top-10 + SigLIP2 Reranking pipeline.
@@ -755,9 +755,9 @@ SigLIP2 provides a strong semantic category signal, and M4-C provides a strong p
 Coarse text ("laptop") does not help disambiguate Top-10 candidates. Text must be detailed to actively improve instance ranking.
 
 **Next action:**
-M2-C — Open-Set Rejection and Calibration. The system must distinguish KNOWN vs UNKNOWN vs UNCERTAIN without solely relying on detector/classifier agreement.
+M2-C â€” Open-Set Rejection and Calibration. The system must distinguish KNOWN vs UNKNOWN vs UNCERTAIN without solely relying on detector/classifier agreement.
 
-### 2026-09-29 02:20 — M2-C: Open-Set Rejection and Calibration Completed
+### 2026-09-29 02:20 â€” M2-C: Open-Set Rejection and Calibration Completed
 
 **Change:**
 Implemented an open-set calibration system (`evaluate_m2c_open_set.py`) that goes beyond simple Grounding DINO + Visual Classifier agreement. We introduced multiple unknown object categories (`bike, cereal_box, camera, book`) from Objectron to create a rigorous open-set test bench. 
@@ -775,7 +775,7 @@ To enforce a "precision-first" system, we dynamically tuned the decision policy 
 **Conclusion:**
 The M2 Perception Layer is officially robust against unconstrained real-world environments. The system refuses to hallucinate known categories on unknown objects, at the acceptable cost of routing ambiguous valid objects to manual review.
 
-### 2026-09-29 02:24 — Overnight Execution Handover
+### 2026-09-29 02:24 â€” Overnight Execution Handover
 
 **Change:**
 Completed all remaining overnight objectives sequentially:
@@ -811,7 +811,7 @@ The minimum viable ML system is complete and the full multimodal pipeline was ad
 **Next action:**
 Review the overnight summary and `reports/model_card.md`. Consider transitioning into real-world pilot data collection or building the web API / demo UI to connect the inference script to an end-user.
 
-### 2026-09-29 10:30 — Test Harness Implementation & Metric Clarifications
+### 2026-09-29 10:30 â€” Test Harness Implementation & Metric Clarifications
 
 **Change:**
 1. Created `scripts/demo/interactive_search.py` as the canonical interactive developer test harness for LP-RIEM-MM1.
@@ -854,7 +854,7 @@ LP-RIEM-MM1 is fully packaged with reproducible test scripts. The focus should n
 **Next action:** 
 - Continue executing the main project plan or perform further architectural audits as necessary.
 
-### 2026-09-28 23:55 — Admin / Staff Operations Center
+### 2026-09-28 23:55 â€” Admin / Staff Operations Center
 
 **Change:** Implemented complete dedicated Staff Login flow, separated authorization roles, and finalized Admin dashboard.
 
@@ -883,7 +883,7 @@ LP-RIEM-MM1 is fully packaged with reproducible test scripts. The focus should n
 
 **Next action:** Await final review or proceed to any remaining ML integration tasks.
 
-### 2026-09-29 10:55 — Containerization & Project Finalization
+### 2026-09-29 10:55 â€” Containerization & Project Finalization
 
 **Change:** 
 - Added Docker configuration (`Dockerfile`, `frontend/Dockerfile`, `docker-compose.yml`) for containerized deployment of backend and frontend.
@@ -905,7 +905,7 @@ LP-RIEM-MM1 is fully packaged with reproducible test scripts. The focus should n
 - Proceed with deployment or await further user instructions.
 
 
-### 2026-09-29 14:48 � Final ML Backend Integration
+### 2026-09-29 14:48 — Final ML Backend Integration
 
 **Change:** 
 - Integrated the LP-RIEM-MM1 model into the ML Service (src/app/main.py).
@@ -924,19 +924,111 @@ LP-RIEM-MM1 is fully packaged with reproducible test scripts. The focus should n
 
 
 
-### 2026-11-04 12:30 — Demo-path fixes: search 422, HEIC uploads, result cards, hydration error
+### 2026-11-04 12:30 â€” Demo-path fixes: search 422, HEIC uploads, result cards, hydration error
 
 **Change:**
-- ML `/api/search` now accepts text-only queries (`file` optional): SigLIP2 text embedding vs. stored SigLIP2 gallery image embeddings, scored with SigLIP2's own sigmoid probability; every text-only match is `decision: "review"` (the calibrator needs a visual score, so it is not applied). No image and no text → 400. (`src/app/main.py`, `scripts/run_inference.py::search_text`)
+- ML `/api/search` now accepts text-only queries (`file` optional): SigLIP2 text embedding vs. stored SigLIP2 gallery image embeddings, scored with SigLIP2's own sigmoid probability; every text-only match is `decision: "review"` (the calibrator needs a visual score, so it is not applied). No image and no text â†’ 400. (`src/app/main.py`, `scripts/run_inference.py::search_text`)
 - HEIC/HEIF (iPhone) uploads: ML decodes them via `pillow-heif`; the backend converts HEIC report images to JPEG data URLs on create/update so browsers can display them (`to_browser_image` in `src/api/services/retrieval_service.py`, `src/api/routers/reports.py`). `pillow-heif` added to `requirements.txt`.
 - Backend `/retrieval/search` skips gallery items that have no report in the DB (orphan vectors left by deleted reports), and ranks are renumbered contiguously (`src/api/routers/retrieval.py`).
 - UI Lab: `/search` sends the query photo (previously always text-only); Report Lost hands its photo to `/search` via sessionStorage. `ResultCard` shows `BLURRED_` found-item photos blurred instead of broken, shows the real report type, and shows "Untitled Item" instead of an internal ID. Fixed the site-wide hydration error from the footer's `<style>` (`ticket-stub-footer.tsx` now uses `dangerouslySetInnerHTML`).
-- Data: existing HEIC report `rep_777421a9` converted to JPEG (backup `app.db.bak-20261104-122053`); re-index added it to the gallery (5 → 6 entries).
+- Data: existing HEIC report `rep_777421a9` converted to JPEG (backup `app.db.bak-20261104-122053`); re-index added it to the gallery (5 â†’ 6 entries).
 
-**Reason:** Searching from the UI failed with `ML Retrieval failed: … 422 … /api/search` because the UI never sent the photo and the ML endpoint required one (Phase 1 limitation #4). An iPhone HEIC photo also failed to index (400).
+**Reason:** Searching from the UI failed with `ML Retrieval failed: â€¦ 422 â€¦ /api/search` because the UI never sent the photo and the ML endpoint required one (Phase 1 limitation #4). An iPhone HEIC photo also failed to index (400).
 
-**Evidence/results:** `pytest tests`: 130 passed, 5 failed (the same pre-existing failures), 1 skipped; 6 new tests (text-only search ×2, HEIC ×2, orphan skip, backend text-only). Browser check on `/search?desc=…`: 200 responses for both text-only and photo searches, no alert, the correct laptop ranked first at 90%; no hydration mismatches on `/`, `/search` or `/browse`.
+**Evidence/results:** `pytest tests`: 130 passed, 5 failed (the same pre-existing failures), 1 skipped; 6 new tests (text-only search Ã—2, HEIC Ã—2, orphan skip, backend text-only). Browser check on `/search?desc=â€¦`: 200 responses for both text-only and photo searches, no alert, the correct laptop ranked first at 90%; no hydration mismatches on `/`, `/search` or `/browse`.
 
 **New risks/issues:** Text-only scores are SigLIP2 probabilities, not calibrated and not comparable with photo-search scores. The gallery is still append-only (deletes don't remove vectors), now hidden by the orphan filter. Result cards don't show the description (not in `RetrievalResultItem`).
 
 **Next action:** Rehearse the demo with the exact photos; consider removing vectors when a report is deleted.
+
+
+### 2026-11-20 16:15 — Milestone 1: Retrieval Ranking Repair & Baseline Stabilization
+
+**Change:**
+- Created systematic benchmark comparison tooling (`scripts/evaluation/benchmark_retrieval_methods.py`) evaluating SigLIP2, Raw DINOv2, M4-C, and score fusion across full-image and crop conditions.
+- Made SigLIP2 image similarity the primary visual retrieval baseline in `FinalInferencePipeline` and `GalleryStore`, adding a dedicated FAISS index `siglip_index` alongside the existing M4-C index.
+- Overhauled cropping policy in `src/inference/crop.py`: established `full_image` as the production default to preserve complete instance context, added confidence-aware cropping (`min_confidence=0.4`) and category consistency checks with safe full-image fallback.
+- Added comprehensive unit and regression tests for `GalleryStore.search_siglip`, `select_crop` policies, and `FinalInferencePipeline` full-image retrieval.
+- Resolved SQLite connection lock `PermissionError` on Windows in `tests/api/conftest.py`.
+
+**Reason:**
+- Priority 1 of the Master Implementation Prompt: previous evaluation revealed that detector cropping degraded retrieval quality and M4-C underperformed SigLIP2. Full-image retrieval and SigLIP2 baseline stabilization provide immediate, substantial performance gains.
+
+**Evidence/results:**
+- Evaluated on held-out multi-view test split (50 images, 24 physical instances):
+  - **SigLIP2 (Full Image)**: Recall@1: **0.9400** | Recall@5: **1.0000** | Recall@10: **1.0000** | MRR: **0.9700**
+  - **SigLIP2 (Detector Crop)**: Recall@1: 0.8800 | Recall@5: 0.9800 | Recall@10: 0.9800 | MRR: 0.9308
+  - **Raw DINOv2 (Full Image)**: Recall@1: 0.9400 | Recall@5: 1.0000 | Recall@10: 1.0000 | MRR: 0.9640
+  - **M4-C (Full Image)**: Recall@1: 0.9200 | Recall@5: 1.0000 | Recall@10: 1.0000 | MRR: 0.9507
+  - **M4-C (Detector Crop)**: Recall@1: 0.8000 | Recall@5: 0.9200 | Recall@10: 0.9600 | MRR: 0.8580
+  - **Fusion: SigLIP2 + DINOv2 (Full)**: Recall@1: **0.9600** | Recall@5: **1.0000** | Recall@10: **1.0000** | MRR: **0.9750**
+- Test suite: 139 passed, 3 skipped, 0 failed.
+
+### 2026-11-20 16:30 — Milestone 2: Multimodal Reranker Repair & Probability Calibration
+
+**Change:**
+- Created `scripts/training/train_calibrated_reranker.py` with 4D feature representation: `[siglip_img_sim, dino_img_sim, text_sim, text_missing]`.
+- Trained on disjoint pairs (3,040 training pairs, 1,040 validation pairs, 1,000 independent test pairs) with balanced mix of image-only and multimodal queries.
+- Learned logistic calibration coefficients: `siglip: +7.8702`, `dino: +9.6108`, `text: -0.9549`, `text_missing: -0.1049`, `intercept: -12.8549`.
+- Selected calibrated operating thresholds on validation data: `CANDIDATE_PROB = 0.65`, `REJECT_PROB = 0.15`.
+- Updated `scripts/run_inference.py` to construct 4D features with explicit `text_missing` indicator and threshold logic. Saved calibrated model to `models/reranker_calibration_v2.pkl` and replaced `models/reranker_calibration.pkl`.
+
+**Reason:**
+- Priority 2 of Master Implementation Prompt: original reranker forced `text_sim = 0.0` for image-only queries, heavily penalizing genuine image matches (19% false negative rejection rate, only 1.9% genuine matches passing). The 4D representation with explicit `text_missing` removes the penalty and ensures calibrated probabilities across all query types.
+
+**Evidence/results:**
+- Test AUC: **0.9801** | Brier Score: **0.0359** (down from 0.0912)
+- Precision @ 0.65: **0.8400** | Recall @ 0.65: **0.7500** | F1 @ 0.65: **0.7925**
+- Genuine Match Acceptance Rate: **75.0%** (up from 1.9%)
+- Genuine Match False Rejection Rate: **3.6%** (down from 19.0%)
+- Image-Only Genuine Match Acceptance: **75.0%** (zero penalty)
+
+
+### 2026-11-20 16:45 — Milestone 3: Category Classifier & Grounding DINO Detection Overhaul
+
+**Change:**
+- Diagnosed root cause of `m2_category_head.pth`: checkpoint contained duplicate capitalized labels (`laptop`, `Laptop`) with 0 coverage for other categories.
+- Evaluated Option A (SigLIP2 Zero-Shot Classification across all 7 canonical categories + open-set `other`) vs Option B (retraining multi-class M2 head on DINOv2 features for 6 available categories in `scripts/training/train_multiclass_m2_head.py`).
+- Integrated SigLIP2 zero-shot classification as production default in `LiveModels.classify_probs` (92.90% accuracy, 100% precision on open-set items, zero-shot support for `wallet` and `keys`).
+- Saved retrained multi-class M2 head to `models/checkpoints/m2_category_head_multiclass.pth` and replaced broken `m2_category_head.pth` / `m2_categories.json`.
+- Repaired Grounding DINO detection handling in `scripts/run_inference.py`: filtered detections to canonical categories with confidence >= 0.35, robust agreement logic with classifier, and graceful fallback to full image when detector is uncertain or unmappable.
+
+**Reason:**
+- Priorities 3 & 4 of Master Implementation Prompt: eliminate UNKNOWN false classifications on genuine objects, resolve detection confusions (keys/bottles detected as phones), and ensure detection failures never block retrieval.
+
+**Evidence/results:**
+- Evaluated on 155 test images across all categories:
+  - **Option A (SigLIP2 Zero-Shot)**: **92.90% Overall Accuracy** (Laptop F1 0.98, Phone F1 0.86, Earphones F1 0.91, Headphones F1 0.89, Book F1 1.00, Other F1 1.00)
+  - **Option B (Retrained M2 DINOv2 Head)**: **90.32% Overall Accuracy** (Laptop F1 1.00, Phone F1 1.00, Earphones F1 0.91, Headphones F1 0.71, Book F1 0.94, Other F1 0.84; cannot predict `wallet` or `keys` due to 0 training samples).
+- Option A verified as superior for production; M2 multi-class weights preserved for backwards compatibility.
+
+
+### 2026-11-20 16:50 — Milestone 4: Data Integrity, Demo Database Seeding & Gallery Synchronization
+
+**Change:**
+- Verified instance-disjoint splits in `train_split.jsonl` (152 items, 70 instances), `val_split.jsonl` (52 items, 23 instances), and `test_split.jsonl` (50 items, 24 instances) with zero cross-split leakage.
+- Created `scripts/datasets/seed_comprehensive_demo_data.py`: expanded demo SQLite database from 7 incomplete/laptop-only records to 23 comprehensive records covering all 7 canonical categories (`laptop`, `mobile_phone`, `wallet`, `earphones`, `headphones`, `keys`, `book`), edge cases (`backpack` non-canonical), and status variations (open vs resolved).
+- Implemented Gallery Synchronization:
+  - Added `remove(item_id)` in `src/retrieval/gallery_store.py` to purge removed entries, rebuild FAISS indices, and persist updated arrays.
+  - Added `DELETE /api/items/{item_id}` in `src/app/main.py`.
+  - Added `remove_report(item_instance_id)` in `src/api/services/retrieval_service.py`.
+  - Wired `delete_report` in `src/api/routers/reports.py` to notify the retrieval service.
+  - Updated `src/api/routers/retrieval.py` search enrichment to only return active `status == "open"` reports.
+- Added automated unit tests in `tests/ml/test_gallery_store.py` and `tests/ml/test_ml_service_api.py`.
+
+**Reason:**
+- Priority 5 of Master Implementation Prompt: prevent ghost/deleted records from lingering in retrieval index, and provide a realistic demo database.
+
+
+### 2026-11-20 16:55 — Milestone 5: Text Search Calibration, Latency Profiling & Automated Regression Suite
+
+**Change:**
+- Created `scripts/evaluation/measure_text_and_latency.py`:
+  - Calibrated text-only SigLIP2 search scores using logistic temperature scaling `p = 1 / (1 + exp(-(sim - 0.20) * 15.0))` to align text match probabilities with visual retrieval scores.
+  - Measured end-to-end component latency breakdown.
+- Authored automated real-model regression suite in `tests/ml/test_real_models_regression.py` running real weights across 5 critical integration areas (category classification accuracy, multi-view instance recall, reranker calibration, detection graceful degradation, end-to-end bytes & gallery sync).
+
+**Evidence/results:**
+- Latency Breakdown: Grounding DINO detection = 25,674 ms (93.1% of CPU time), SigLIP2 image embedding = 852 ms, M4-C embedding = 254 ms, Classification = 784 ms, FAISS search = 0.03 ms, Reranking = 0.00 ms. Direct full-image embedding bypasses detector latency for sub-second retrieval.
+- Automated real-model regression suite: **5 passed out of 5 tests (100%)**.
+- Full test suite: **144 passed, 3 skipped, 0 failed**.

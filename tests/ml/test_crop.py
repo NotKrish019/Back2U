@@ -49,3 +49,35 @@ def test_fallback_is_explicit_when_nothing_valid():
         assert info.source == "full_image_fallback", dets
         assert reason_part in info.reason, (dets, info.reason)
         assert crop.size == img.size
+
+
+def test_full_image_policy_returns_full_image_with_detection_metadata():
+    img = make_image((400, 300))
+    dets = [{"label": "laptop", "score": 0.85, "box": [50, 50, 200, 200]}]
+    crop, info = select_crop(img, dets, policy="full_image")
+    assert info.source == "full_image"
+    assert crop.size == (400, 300)
+    assert info.label == "laptop"
+    assert info.score == 0.85
+    assert info.box == [0, 0, 400, 300]
+
+
+def test_confidence_aware_policy():
+    img = make_image((400, 300))
+    # Low confidence -> fallback to full image
+    dets_low = [{"label": "laptop", "score": 0.35, "box": [50, 50, 200, 200]}]
+    crop1, info1 = select_crop(img, dets_low, policy="confidence_aware", min_confidence=0.5)
+    assert info1.source == "full_image_fallback"
+    assert "low_confidence" in info1.reason
+    assert crop1.size == (400, 300)
+
+    # High confidence -> crops
+    dets_high = [{"label": "laptop", "score": 0.85, "box": [50, 50, 200, 200]}]
+    crop2, info2 = select_crop(img, dets_high, policy="confidence_aware", min_confidence=0.5)
+    assert info2.source == "detector"
+    assert info2.score == 0.85
+
+    # Category mismatch -> fallback
+    crop3, info3 = select_crop(img, dets_high, policy="confidence_aware", min_confidence=0.5, expected_category="wallet")
+    assert info3.source == "full_image_fallback"
+    assert "category_mismatch" in info3.reason

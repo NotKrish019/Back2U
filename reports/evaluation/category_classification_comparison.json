@@ -1,0 +1,46 @@
+{
+  "method": "siglip2_zero_shot",
+  "overall_accuracy": 0.929,
+  "class_stats": {
+    "laptop": {
+      "correct": 25,
+      "total": 25,
+      "predicted": 26
+    },
+    "mobile_phone": {
+      "correct": 19,
+      "total": 25,
+      "predicted": 19
+    },
+    "wallet": {
+      "correct": 0,
+      "total": 0,
+      "predicted": 5
+    },
+    "earphones": {
+      "correct": 25,
+      "total": 25,
+      "predicted": 30
+    },
+    "headphones": {
+      "correct": 20,
+      "total": 25,
+      "predicted": 20
+    },
+    "keys": {
+      "correct": 0,
+      "total": 0,
+      "predicted": 0
+    },
+    "book": {
+      "correct": 25,
+      "total": 25,
+      "predicted": 25
+    },
+    "other": {
+      "correct": 30,
+      "total": 30,
+      "predicted": 30
+    }
+  }
+}

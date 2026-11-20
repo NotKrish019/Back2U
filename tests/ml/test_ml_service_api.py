@@ -143,3 +143,24 @@ def test_heic_upload_is_indexed(svc):
                     files={"file": ("IMG_0001.HEIC", io.BytesIO(buf.getvalue()), "image/heic")})
     assert r.status_code == 200, r.text
     assert r.json()["status"] == "added"
+
+
+def test_delete_item_removes_from_gallery(svc):
+    client, _ = svc
+    client.post("/api/add", data={"item_id": "item_to_delete", "category": "laptop"},
+                files=_upload(_img(50)))
+    items_resp = client.get("/api/items")
+    assert "item_to_delete" in items_resp.json()["item_ids"]
+
+    # Delete item
+    del_resp = client.delete("/api/items/item_to_delete")
+    assert del_resp.status_code == 200
+    assert del_resp.json()["status"] == "success"
+
+    # Verify gone from gallery
+    items_resp2 = client.get("/api/items")
+    assert "item_to_delete" not in items_resp2.json()["item_ids"]
+
+    # Deleting non-existent returns 404
+    del_resp2 = client.delete("/api/items/non_existent")
+    assert del_resp2.status_code == 404

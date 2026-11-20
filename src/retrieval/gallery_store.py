@@ -84,6 +84,7 @@ class GalleryStore:
         self.visual = np.zeros((0, visual_dim), dtype=np.float32)
         self.siglip = np.zeros((0, siglip_dim), dtype=np.float32)
         self.index = faiss.IndexFlatIP(visual_dim)
+        self.siglip_index = faiss.IndexFlatIP(siglip_dim)
         self.generation = 0
         self.quarantined_to: Optional[str] = None
         self.load_error: Optional[str] = None
@@ -123,6 +124,7 @@ class GalleryStore:
         self.visual = np.zeros((0, self.visual_dim), dtype=np.float32)
         self.siglip = np.zeros((0, self.siglip_dim), dtype=np.float32)
         self.index = faiss.IndexFlatIP(self.visual_dim)
+        self.siglip_index = faiss.IndexFlatIP(self.siglip_dim)
         self.generation = 0
 
     def _load_checked(self):
@@ -151,8 +153,10 @@ class GalleryStore:
                 f"vector shapes {visual.shape}/{siglip.shape} do not match {len(entries)} entries")
         self.entries, self.visual, self.siglip, self.generation = entries, visual, siglip, gen
         self.index = faiss.IndexFlatIP(self.visual_dim)
+        self.siglip_index = faiss.IndexFlatIP(self.siglip_dim)
         if len(entries):
             self.index.add(self.visual)
+            self.siglip_index.add(self.siglip)
         log.info("Loaded gallery store: %d entries (model_version=%s)", len(entries), self.model_version)
 
     def _save(self):
@@ -228,7 +232,31 @@ class GalleryStore:
                 self.entries, self.visual, self.siglip = prev  # keep memory consistent with disk
                 raise
             self.index.add(visual_vec[None, :])
+            self.siglip_index.add(siglip_vec[None, :])
             return AddResult("added", entry, dup_ids)
+
+    def remove(self, item_id: str) -> bool:
+        """Remove all gallery entries matching item_id, rebuild FAISS indices, and persist."""
+        with self.lock:
+            keep = [i for i, e in enumerate(self.entries) if e.item_id != item_id]
+            if len(keep) == len(self.entries):
+                return False
+            prev = (self.entries, self.visual, self.siglip)
+            self.entries = [self.entries[i] for i in keep]
+            self.visual = self.visual[keep] if keep else np.empty((0, self.visual_dim), dtype=np.float32)
+            self.siglip = self.siglip[keep] if keep else np.empty((0, self.siglip_dim), dtype=np.float32)
+            try:
+                self._save()
+            except Exception:
+                self.entries, self.visual, self.siglip = prev
+                raise
+            self.index = faiss.IndexFlatIP(self.visual_dim)
+            if len(self.visual) > 0:
+                self.index.add(self.visual)
+            self.siglip_index = faiss.IndexFlatIP(self.siglip_dim)
+            if len(self.siglip) > 0:
+                self.siglip_index.add(self.siglip)
+            return True
 
     # ------------------------------------------------------------------ queries
     def __len__(self) -> int:
@@ -238,13 +266,17 @@ class GalleryStore:
         with self.lock:
             return sorted({e.item_id for e in self.entries})
 
-    def search(self, visual_vec: np.ndarray, k: int):
+    def search(self, vec: np.ndarray, k: int, index_type: str = "visual"):
         with self.lock:
             k = min(k, len(self.entries))
             if k == 0:
                 return [], []
-            sims, idx = self.index.search(np.asarray(visual_vec, dtype=np.float32).reshape(1, -1), k)
-            return sims[0].tolist(), idx[0].tolist()
+            idx = self.siglip_index if index_type == "siglip" else self.index
+            sims, out_idx = idx.search(np.asarray(vec, dtype=np.float32).reshape(1, -1), k)
+            return sims[0].tolist(), out_idx[0].tolist()
+
+    def search_siglip(self, siglip_vec: np.ndarray, k: int):
+        return self.search(siglip_vec, k, index_type="siglip")
 
     def info(self) -> dict:
         with self.lock:

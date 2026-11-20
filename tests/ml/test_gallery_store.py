@@ -108,3 +108,38 @@ def test_concurrent_adds_all_persist(tmp_path):
     for i, e in enumerate(reloaded.entries):  # vectors stay aligned with their entries
         n = int(e.item_id.split("_")[1])
         assert np.allclose(reloaded.visual[i], vec(n, V))
+
+
+def test_search_siglip(tmp_path):
+    st = new_store(tmp_path / "g")
+    st.add("item_0", "laptop", vec(0, V), vec(100, S), "sha0", "/img/0.jpg")
+    st.add("item_1", "laptop", vec(1, V), vec(101, S), "sha1", "/img/1.jpg")
+    sims, idxs = st.search_siglip(vec(101, S), 1)
+    assert st.entries[idxs[0]].item_id == "item_1"
+    assert sims[0] == pytest.approx(1.0, abs=1e-5)
+
+
+def test_remove_item_updates_indices_and_persists(tmp_path):
+    st = new_store(tmp_path / "g")
+    st.add("item_0", "laptop", vec(0, V), vec(100, S), "sha0", "/img/0.jpg")
+    st.add("item_1", "laptop", vec(1, V), vec(101, S), "sha1", "/img/1.jpg")
+    st.add("item_2", "book", vec(2, V), vec(102, S), "sha2", "/img/2.jpg")
+    assert len(st) == 3
+
+    # Remove item_1
+    removed = st.remove("item_1")
+    assert removed is True
+    assert len(st) == 2
+    assert st.item_ids() == ["item_0", "item_2"]
+
+    # Searching for item_1's vector returns the next closest item, never item_1
+    sims, idxs = st.search_siglip(vec(101, S), 1)
+    assert st.entries[idxs[0]].item_id != "item_1"
+
+    # Removing non-existent item returns False
+    assert st.remove("non_existent") is False
+
+    # Reload store to verify persistence
+    st2 = new_store(tmp_path / "g")
+    assert len(st2) == 2
+    assert st2.item_ids() == ["item_0", "item_2"]
