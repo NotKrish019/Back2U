@@ -59,7 +59,7 @@ No model was retrained. Trained weights (M2, M4-C, reranker) are unchanged. The 
 
 - **Campus validation: photos not collected.** No campus number exists. Collection is a manual step (§7 of the protocol, about half a day for 2 people).
 - **The 19 existing pending matches** were created under the old no-threshold rule. They were left untouched (real data). Staff can review them, or a one-off re-score could be run with approval.
-- **Seeded demo images:** `frontend/public/mocks/*` remain publicly reachable by direct URL (documented in `docs/PRIVACY.md`).
+- **Seeded demo reports:** two reference `/mocks/*_macbook.jpg` files that do not exist (404). Nothing private is exposed, but their images are broken. *(Corrected 2026-11-21; the original text wrongly said the images were reachable by URL. See `docs/PRIVACY.md`.)*
 - **Model versioning:** `model_version` does not encode crop policy or gate config. Changing the crop policy needs a manual `--rebuild`.
 - **Not done here:** concurrency and load testing; multi-worker deployment (the gallery is per-process); a GPU path for the detector.
 

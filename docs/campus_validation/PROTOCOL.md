@@ -52,7 +52,7 @@ Full schema: `configs/campus_validation/instance.schema.json`.
 - `views{<file>: {role, background, viewpoint, clutter}}`
 
 **Optional fields:**
-- `lookalike_of`
+- `lookalike_of`: optional in the schema, but **the evaluator identifies look-alike twins only from this field**, never from slot numbers or folder order. Set it on both twins (each pointing to the other, same category). Without it, the pair is not evaluated and `campus_eval.py` reports the dataset as INCOMPLETE.
 - lighting, device, and a human-verified `bbox`
 - `privacy_review`
 
@@ -101,6 +101,9 @@ It uses the production pipeline: full-image SigLIP2 retrieval, the reranker, the
   - precision, recall and F1 in the closed set;
   - false-match rate in the open set (the query's own object removed from the gallery, which is the common lost-and-found case).
 - **Look-alikes:** how often the twin ranked above the true object, and how often the twin would have been auto-matched.
+- **Validation first:** before any model loads, it validates every `instance.json` against the schema, the folder layout, role↔view consistency, `lookalike_of` references, and exact and near-duplicate images. Exit codes: 0 ok, 2 not collected, 3 invalid, 4 incomplete. `--validate-only` runs just this step.
+- **Uncertainty:** cluster-adjusted 95% Wilson intervals (clusters = physical objects).
+- **Threshold sweep:** per fold, labelled development / held-out (`--dev-fold`). It is analysis only: it never writes configuration or selects a threshold.
 - **Open-set gate:** decision counts on object views and on the negatives.
 
 **Statistical power:** 28 objects × 2 queries gives roughly ±13 points on Recall@1 (95% CI). Only large effects are detectable, so report confidence intervals.

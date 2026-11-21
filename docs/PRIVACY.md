@@ -33,6 +33,6 @@ Lost-report photos are published by their owner to help finders and are returned
 
 ## Known limitations
 
-- **Seeded demo files:** two images under `frontend/public/mocks/` are static files served by Next.js, so they are reachable by direct URL. The API no longer returns their path for found reports, but the files themselves are public. Real reports store images as data URLs inside the database, so this does not apply to them.
+- **Seeded demo reports (corrected 2026-11-21):** two seeded reports reference `/mocks/lost_macbook.jpg` and `/mocks/found_macbook.jpg`, but those files do not exist (direct URL returns 404), so nothing is exposed; the reports simply have broken images. The files that do exist in `frontend/public/mocks/` are rendered homepage illustrations with no real item photos, and they are public by design. Real reports store images as data URLs inside the database. See `docs/campus_validation/EXECUTION_PLAN.md` §G2.
 - **ML service static files:** the ML service used to mount all of `data/` under `/data`, which served the gallery's original found photos by direct URL. It now serves only `data/uploads/queries/` (the `query_img` of a search); `tests/ml/test_ml_service_api.py` checks that gallery files return 404. Query uploads are still personal photos, so the ML service must stay bound to `127.0.0.1`, as it is in `start_local.sh`.
 - **No re-identification guarantee:** a blurred photo still shows the colour and rough shape. This is intended; it lets owners recognise the category, while proof of ownership comes from the claim text.

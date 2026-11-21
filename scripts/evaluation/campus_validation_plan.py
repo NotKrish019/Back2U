@@ -3,6 +3,7 @@ and check collected photos against the protocol. Never invents photographs.
 
     python scripts/evaluation/campus_validation_plan.py            # (re)build plan + manifest + registry
     python scripts/evaluation/campus_validation_plan.py --check     # verify collected photos vs protocol
+                                                                    # exit 0 ok, 1 problems, 2 nothing collected
 
 Layout for collected photos (git-ignored):
     data/raw/campus_validation/<category>/<instance_id>/view_0{1..4}.jpg + instance.json
@@ -101,10 +102,18 @@ def build():
 def check():
     """Protocol check for photos placed under data/raw/campus_validation/ (none exist yet)."""
     from src.evaluation.phase2.dataset_audit import audit_instance_root
+    try:  # .heic views are allowed by the schema; decode them as production does
+        from pillow_heif import register_heif_opener
+        register_heif_opener()
+    except ImportError:
+        pass
     if not RAW.exists():
         print("BLOCKED: data/raw/campus_validation/ does not exist — no campus photos collected yet.")
-        return
+        return 2
     res = audit_instance_root(RAW)
+    if not res["instances"]:
+        print("BLOCKED: data/raw/campus_validation/ contains no object folders — nothing to check.")
+        return 2
     problems = []
     for inst in res["instances"]:
         meta = json.loads((Path(inst["dir"]) / "instance.json").read_text()) if (Path(inst["dir"]) / "instance.json").exists() else {}
@@ -119,10 +128,11 @@ def check():
             if not cond:
                 problems.append(f"{inst['physical_instance_id']}: {msg}")
     print(json.dumps({"instances_found": len(res["instances"]), "problems": problems}, indent=1))
+    return 1 if problems else 0
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
     a = ap.parse_args()
-    check() if a.check else build()
+    sys.exit(check() if a.check else (build() or 0))
